@@ -15,9 +15,9 @@ CREATE SCHEMA IF NOT EXISTS `cidade-inteligente` DEFAULT CHARACTER SET utf8 ;
 USE `cidade-inteligente` ;
 
 -- -----------------------------------------------------
--- Table `cidade-inteligente`.`area`
+-- Table `cidade-inteligente`.`areas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`area` (
+CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`areas` (
   `id_area` INT NOT NULL,
   `descricao` LONGTEXT NOT NULL,
   PRIMARY KEY (`id_area`))
@@ -25,35 +25,59 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cidade-inteligente`.`projeto`
+-- Table `cidade-inteligente`.`cursos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`projeto` (
+CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`cursos` (
+  `id_curso` INT NOT NULL AUTO_INCREMENT,
+  `curso` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id_curso`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `cidade-inteligente`.`projetos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`projetos` (
   `id_projeto` INT NOT NULL AUTO_INCREMENT,
   `id_area` INT NOT NULL,
+  `id_curso` INT NOT NULL,
   `descricao_geral` MEDIUMTEXT NOT NULL,
   `descricao_detalhe` LONGTEXT NOT NULL,
   `data` DATE NOT NULL,
   PRIMARY KEY (`id_projeto`),
   INDEX `fk_projeto_area_idx` (`id_area` ASC),
+  INDEX `fk_projetos_cursos1_idx` (`id_curso` ASC),
   CONSTRAINT `fk_projeto_area`
     FOREIGN KEY (`id_area`)
-    REFERENCES `cidade-inteligente`.`area` (`id_area`)
+    REFERENCES `cidade-inteligente`.`areas` (`id_area`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_projetos_cursos1`
+    FOREIGN KEY (`id_curso`)
+    REFERENCES `cidade-inteligente`.`cursos` (`id_curso`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cidade-inteligente`.`usuario`
+-- Table `cidade-inteligente`.`usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`usuario` (
+CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`usuarios` (
   `id_usuario` INT NOT NULL AUTO_INCREMENT,
+  `id_curso` INT NOT NULL,
   `nome` VARCHAR(100) NOT NULL,
   `email` VARCHAR(55) NOT NULL,
-  `senha` VARCHAR(55) NOT NULL,
+  `senha` VARCHAR(255) NOT NULL,
   `tipo` CHAR(5) NOT NULL,
   `nivel` VARCHAR(40) NOT NULL,
-  PRIMARY KEY (`id_usuario`))
+  PRIMARY KEY (`id_usuario`),
+  INDEX `fk_usuarios_cursos1_idx` (`id_curso` ASC),
+  CONSTRAINT `fk_usuarios_cursos1`
+    FOREIGN KEY (`id_curso`)
+    REFERENCES `cidade-inteligente`.`cursos` (`id_curso`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -67,21 +91,21 @@ CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`projeto_usuario` (
   INDEX `fk_projeto_has_usuario_projeto1_idx` (`id_projeto` ASC),
   CONSTRAINT `fk_projeto_has_usuario_projeto1`
     FOREIGN KEY (`id_projeto`)
-    REFERENCES `cidade-inteligente`.`projeto` (`id_projeto`)
+    REFERENCES `cidade-inteligente`.`projetos` (`id_projeto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_projeto_has_usuario_usuario1`
     FOREIGN KEY (`id_usuario`)
-    REFERENCES `cidade-inteligente`.`usuario` (`id_usuario`)
+    REFERENCES `cidade-inteligente`.`usuarios` (`id_usuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cidade-inteligente`.`midia`
+-- Table `cidade-inteligente`.`midias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`midia` (
+CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`midias` (
   `id_midia` INT NOT NULL AUTO_INCREMENT,
   `id_projeto` INT NOT NULL,
   `nome` VARCHAR(100) NOT NULL,
@@ -92,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`midia` (
   INDEX `fk_midia_projeto1_idx` (`id_projeto` ASC),
   CONSTRAINT `fk_midia_projeto1`
     FOREIGN KEY (`id_projeto`)
-    REFERENCES `cidade-inteligente`.`projeto` (`id_projeto`)
+    REFERENCES `cidade-inteligente`.`projetos` (`id_projeto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

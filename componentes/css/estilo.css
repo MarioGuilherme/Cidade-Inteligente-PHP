@@ -12,6 +12,15 @@ body {
     ;
 }
 
+.main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .painel {
     border-radius: 8px;
     background: rgba(69, 109, 117, 0.726);
