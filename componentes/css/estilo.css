@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
 body {
     background: rgb(218, 218, 218);
+    font-family: 'Poppins', sans-serif;
 }
 
 .cidade {
@@ -9,12 +12,11 @@ body {
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
     border-right: solid 1px rgba(255, 255, 255, 0.644);
-    ;
+    
 }
 
 .main {
     width: 100vw;
-    height: 100vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -23,9 +25,10 @@ body {
 
 .painel {
     border-radius: 8px;
-    background: rgba(69, 109, 117, 0.726);
+    background: rgb(136, 173, 150);
     box-shadow: 0 0 2em rgb(99, 97, 88);
     margin: 1em;
+
 }
 
 .btn-entrar {
@@ -44,8 +47,113 @@ body {
 
 .icon {
     font-size: 100px;
+    color: rgb(57, 87, 88);
+}
+
+.titulo-projeto{
+    color: rgb(57, 87, 88);
 }
 
 .login h1 {
     padding: 10px;
+}
+
+.esqueceu:hover{
+cursor: pointer;
+}
+
+.form-input{
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-input:focus{
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+.form-input::placeholder{
+color: rgb(57, 87, 88);
+}
+
+.inputIcon{
+	position: relative;
+}
+
+.inputIcon i {
+	position: absolute;
+	left: 0;
+	top: 0px;
+	padding: 9px 8px;
+	color: rgb(57, 87, 88);
+	transition: .3s;
+}
+
+.inputIcon input:focus + i {
+	color: rgb(255, 255, 255);
+} 
+
+.inputIcon.inputIconBg i {
+	background-color: #aaa;
+	color: #fff;
+	padding: 9px 4px;
+	border-radius: 4px 0 0 0 4px;
+}
+
+  /* teste */
+
+  .limiter {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .container-login100 {
+    width: 100%;  
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    z-index: 1;  
+  }
+  
+  .container-login100::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255,255,255,0.9);
+  }
+  
+  @media screen and (max-width: 600px) {
+    .display-4{
+        font-size: 2em;
+    }
 }

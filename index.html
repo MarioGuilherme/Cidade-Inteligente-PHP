@@ -13,46 +13,49 @@
 </head>
 
 <body>
-    <div class="main">
-        <div class="container">
-            <div class="painel">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-6 d-sm-block d-none cidade">
+    <div class="limiter">
+		<div class="container-login100" style="background-image: url('img/cidade.jpg');">
+            <div class="main">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12 col-md-6 painel">
+                            <h1 class="text-center">
+                                <i class="mdi mdi-city-variant-outline icon "></i>
+                            </h1>
+                            <h1 class="text-center titulo-projeto">
+                                Projeto Cidade Inteligente
+                            </h1>
+                            
+                            <form id="formulario" class="form">
 
-                    </div>
-                    <div class="col-12 col-md-6 login">
-                        <h1 class="text-center">
-                            <i class="mdi mdi-account-circle text-light icon "></i>
-                        </h1>
-                        <h1 class="text-center text-light">
-                            Login do Sistema
-                        </h1>
-                        <form id="formulario" class="form">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">
-                                Email
-                            </label>
-                                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Digite o email">
-                                <small id="emailHelp" class="form-text text-light">
-                                Nunca compartilharemos seu e-mail com mais ninguém.
-                            </small>
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">
-                                Senha
-                            </label>
-                                <input type="password" name="senha" class="form-control" id="exampleInputPassword1" placeholder="Digite a sua senha">
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">
-                                Lembrar de mim?
-                            </label>
-                            </div>
-                            <button type="submit" class="btn mt-2 btn-block btn-entrar">
-                            Entrar
-                        </button>
-                        </form>
+                                <div class="inputIcon">
+                                    <input type="email" name="email" class="form-input" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Digite o email">
+                                    <i class="mdi mdi-email-check"></i>
+                                </div>
+
+                                <div class="inputIcon mt-3">
+                                    <input type="password" name="senha" class="form-input" id="exampleInputPassword1" placeholder="Digite a sua senha">
+                                    <i class="mdi mdi-key"></i>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-6 col-md-6">
+                                        <div class="form-check mt-2">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">
+                                            Lembrar de mim?
+                                        </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-6 mt-2 text-right">
+                                        <p class="esqueceu">Esqueceu a senha?</p>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn mt-2 btn-block btn-entrar">
+                                Entrar
+                            </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
