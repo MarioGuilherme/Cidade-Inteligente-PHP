@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`cursos` (
   PRIMARY KEY (`id_curso`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `cidade-inteligente`.`projetos`
 -- -----------------------------------------------------

@@ -9,6 +9,7 @@
     define('NAO_CADASTRADO', ['msg' => 'Perfil não cadastrado', 'icone' => 'error']);
     define('SENHA_INCORRETA', ['msg' => 'Senha incorreta', 'icone' => 'error']);
     define('CAMPOS_VAZIOS', ['msg' => 'Preencha os campos vazios', 'icone' => 'error']);
+    define('SUCCESSO_CADASTRO', ['msg' => 'Cadastrado! Efetuando login', 'icone' => 'success']);
     define('SUCCESSO_LOGIN', ['msg' => 'Efetuando login', 'icone' => 'success']);
 
     $conexao = mysqli_connect(HOST, USER, SENHA, BANCO);
