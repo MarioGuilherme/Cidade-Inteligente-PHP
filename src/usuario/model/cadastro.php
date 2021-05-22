@@ -18,8 +18,8 @@
 
             $sql = 'INSERT INTO usuarios (id_curso, nome, email, senha, tipo, nivel) VALUES (":curso", ":nome", ":email", ":senha", ":tipo", ":nivel")';
             $campos = [':curso', ':nome', ':email', ':senha', ':tipo', ':nivel'];
-            $valores = [$curso, $nome, $email, $senha, $tipo, $nivel];
-            $sql = str_replace($campos, $valores, $sql);
+            $dados = [$curso, $nome, $email, $senha, $tipo, $nivel];
+            $sql = str_replace($campos, $dados, $sql);
             $consulta = mysqli_query($conexao, $sql);
 
             if($consulta){

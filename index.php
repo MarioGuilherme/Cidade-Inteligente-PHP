@@ -1,3 +1,9 @@
+<?
+    session_start();
+    if(!empty($_SESSION)){
+        header("Location: menu");
+    }
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -29,12 +35,12 @@
                             <form id="formulario" class="form">
 
                                 <div class="inputIcon">
-                                    <input type="email" name="email" class="form-input" aria-describedby="emailHelp" placeholder="Digite o email">
+                                    <input type="email" class="form-input" aria-describedby="emailHelp" placeholder="Digite o email">
                                     <i class="mdi mdi-email-check"></i>
                                 </div>
 
                                 <div class="inputIcon mt-3">
-                                    <input type="password" name="senha" class="form-input" placeholder="Digite a sua senha">
+                                    <input type="password" class="form-input" placeholder="Digite a sua senha">
                                     <i class="mdi mdi-key"></i>
                                 </div>
                                 <div class="row mt-3">
@@ -65,6 +71,7 @@
     <script src="componentes/js/bootstrap.js"></script>
     <script src="componentes/libs/sweetalert2/dist/sweetalert2.js"></script>
     <script src="src/usuario/controller/login.js"></script>
+    <script src="ws.js"></script>
 </body>
 
 </html>

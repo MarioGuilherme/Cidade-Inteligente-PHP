@@ -3,7 +3,7 @@ $(document).ready(() => {
         e.preventDefault()
         $("input[type='checkbox']").is(':checked') == true ? conectado = 1 : conectado = 0
         $.ajax({
-            url: 'src/usuario/model/login.php',
+            url: 'src/usuario/model/login',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -15,14 +15,14 @@ $(document).ready(() => {
             var confirmar = true
             var janela = true
             if (retorno.icone == 'success') {
-                $('.input[name="email"],[name="senha"]').val('')
+                $("input[type='email'],input[type='password']").val('')
                 confirmar = false
                 janela = false
                 setInterval(() => {
                     $('.carregando').append('.')
                 }, 600)
                 setTimeout(() => {
-                    $(location).attr('href', 'menu.html')
+                    $(location).attr('href', 'menu')
                 }, 2000)
             }
             Swal.fire({
