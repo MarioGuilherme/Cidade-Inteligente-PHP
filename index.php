@@ -1,8 +1,6 @@
 <?
     session_start();
-    if(!empty($_SESSION)){
-        header("Location: menu");
-    }
+    !empty($_SESSION) ? header("Location: menu") : "";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,16 +9,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="componentes/css/bootstrap.css">
-    <link rel="stylesheet" href="componentes/css/estilo.css">
-    <link rel="stylesheet" href="componentes/libs/MaterialDesign/css/materialdesignicons.css">
-    <link rel="stylesheet" href="componentes/libs/sweetalert2/dist/sweetalert2.css">
-    <title>Projeto Fatec</title>
+    <title>
+        Login
+    </title>
+    <link rel="stylesheet" href="public/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/assets/MaterialDesign/css/materialdesignicons.css">
+    <link rel="stylesheet" href="public/fonts/font.css">
+    <link rel="stylesheet" href="public/css/login.css">
 </head>
 
 <body>
     <div class="limiter">
-        <div class="container-login100" style="background-image: url('img/cidade.jpg');">
+        <div class="container-login100" style="background-image: url('public/img/cidade.jpg');">
             <div class="main">
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
@@ -31,35 +31,33 @@
                             <h1 class="text-center titulo-projeto">
                                 Projeto Cidade Inteligente
                             </h1>
-
                             <form id="formulario" class="form">
-
                                 <div class="inputIcon">
-                                    <input type="email" class="form-input" aria-describedby="emailHelp" placeholder="Digite o email">
+                                    <input type="email" name="email" class="form-input" aria-describedby="emailHelp" placeholder="Digite o email">
                                     <i class="mdi mdi-email-check"></i>
                                 </div>
-
                                 <div class="inputIcon mt-3">
-                                    <input type="password" class="form-input" placeholder="Digite a sua senha">
+                                    <input type="password" name="password" class="form-input" placeholder="Digite a sua senha">
                                     <i class="mdi mdi-key"></i>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-6 col-md-6">
                                         <div class="form-check mt-2">
-                                            <input type="checkbox" class="form-check-input" id="checkbox">
+                                            <input type="checkbox" maxlength="55" name="remember" class="form-check-input" id="checkbox">
                                             <label class="form-check-label" for="checkbox">
-                                            Lembrar de mim?
-                                        </label>
+                                                Lembrar de mim?
+                                            </label>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-6 mt-2 text-right">
-                                        <p class="esqueceu">Esqueceu a senha?</p>
+                                        <p class="esqueceu">
+                                            Esqueceu a senha?
+                                        </p>
                                     </div>
                                 </div>
-
-                                <button type="submit" class="btn mt-2 btn-block btn-entrar">
-                                Entrar
-                            </button>
+                                <button type="button" class="btn mt-2 btn-block btn-login">
+                                    Entrar
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -67,11 +65,11 @@
             </div>
         </div>
     </div>
-    <script src="componentes/js/jquery-3.6.0.min.js"></script>
-    <script src="componentes/js/bootstrap.js"></script>
-    <script src="componentes/libs/sweetalert2/dist/sweetalert2.js"></script>
-    <script src="src/usuario/controller/login.js"></script>
-    <script src="ws.js"></script>
+    <script src="public/assets/jQuery/jquery-3.6.0.min"></script>
+    <script src="public/assets/bootstrap/js/bootstrap.min"></script>
+    <script src="public/assets/sweetalert2/sweetalert2.all.min"></script>
+    <script src="public/js/functions"></script>
+    <script src="public/js/access"></script>
 </body>
 
 </html>
