@@ -1,3 +1,5 @@
-<?php
-    session_start();
-    echo json_encode($_SESSION);
+<?
+
+session_start();
+
+$_SESSION["tipo"] = "Professor(a)";

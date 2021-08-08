@@ -2,6 +2,7 @@
 
     // Resposta genérica quando há erro no servidor
         const GENERAL_ERROR = ["msg"=>"Erro no servidor, por favor, entre em contato", "icon"=>"error"];
+        const INVALID_PERMISSION = ["msg"=>"Sem permissão, apenas Professor(a)es ou administradores!", "icon"=>"error"];
 
     // Respostas no Login
         // Success
@@ -23,3 +24,8 @@
 
     const ERRO_CONEXAO = ["msg"=>"Erro interno no servidor!","icon"=>"error"];
     const SUCCESSO_CADASTRO = ["msg"=>"Cadastrado! Efetuando login","icon"=>"success"];
+    const INVALID_EXTENSION = ["msg"=>"Extensão inválida!","icon"=>"error"];
+    const PROJECT_CREATED = ["msg"=>"Projeto Criado com êxito!","icon"=>"success"];
+    const LARGER_SIZE = ["msg"=>"Tamanho do arquivo excede o limite!","icon"=>"error"];
+    const LARGER_SERVER_SIZE = ["msg"=>"Tamanho do arquivo excede o limite do servidor!","icon"=>"error"];
+    const NOTHING_FOUND = "<h2>Nenhum projeto criado!</h2>";

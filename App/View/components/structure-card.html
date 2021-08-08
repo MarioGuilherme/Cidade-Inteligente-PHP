@@ -1,0 +1,35 @@
+<div class='col-12 col-sm-12 col-lg-3 col-md-3'>
+    <div class='card'>
+        <div id='carousel-{{ id }}' data-interval='0' class='carousel slide' data-ride='carousel'>
+            <ol class='carousel-indicators'>
+                <li data-target='#carousel-{{ id }}' data-slide-to='0' class='active'></li>
+                {{ li }}
+            </ol>
+            <div class='carousel-inner d-flex align-items-center' style='height: 400px !important;'>
+                <div class='carousel-item active'>
+                    <img class='d-block w-100' src='src/medias/{{ path }}'>
+                </div>
+                {{ img }}
+            </div>
+            <a class='carousel-control-prev' href='#carousel-{{ id }}' role='button' data-slide='prev'>
+                <span class='carousel-control-prev-icon' aria-hidden='true'></span>
+                <span class='sr-only'>Anterior</span>
+            </a>
+            <a class='carousel-control-next' href='#carousel-{{ id }}' role='button' data-slide='next'>
+                <span class='carousel-control-next-icon' aria-hidden='true'></span>
+                <span class='sr-only'>Próximo</span>
+            </a>
+        </div>
+        <div class='card-body'>
+            <h1 class='card-title font-weight-bold'>
+                {{ general_description }}
+            </h1>
+            <p class='card-text'>
+                {{ detail_description }}
+            </p>
+            <a href='projeto?id={{ id }}' target='_blank' class='btn btn-card btn-block'>
+                Ver Mais
+            </a>
+        </div>
+    </div>
+</div>

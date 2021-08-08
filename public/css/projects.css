@@ -1,0 +1,16 @@
+.btn-card {
+    background: rgb(57, 87, 88);
+    color: white;
+}
+
+.btn-card:hover {
+    background: rgb(31, 47, 48);
+    color: white;
+}
+
+.galeria {
+    background: rgb(245, 244, 244);
+    border-radius: 10px;
+    padding: 1em;
+    margin-bottom: 1em;
+}

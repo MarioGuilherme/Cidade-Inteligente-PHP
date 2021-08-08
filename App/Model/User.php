@@ -39,7 +39,7 @@
                     $_SESSION["nome"] = $row["nome"];
                     $_SESSION["email"] = $row["email"];
                     $_SESSION["tipo"] = $row["tipo"];
-                    $_SESSION["nivel"] = $row["nivel"];                    
+                    $_SESSION["nivel"] = $row["nivel"];  
                     $_SESSION["timestamp"] = $timestamp == "on" ? time() + 14400 : 1;
                     return LOGGED;
                 }else{

@@ -1,0 +1,13 @@
+.navCity {
+    color: rgb(57, 87, 88);
+    background: rgb(16, 15, 17);
+}
+
+.jumbotron {
+    background-image: url(../img/cidade.jpg);
+    background-size: cover;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-right: solid 1px rgba(255, 255, 255, 0.644);
+    color: rgb(243, 243, 243);
+}

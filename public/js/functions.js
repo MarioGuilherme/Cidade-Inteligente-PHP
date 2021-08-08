@@ -15,3 +15,7 @@ function SweetAlert(icon, msg) {
         allowOutsideClick: false
     })
 }
+
+function Create() {
+
+}

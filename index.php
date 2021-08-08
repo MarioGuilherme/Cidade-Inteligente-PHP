@@ -1,6 +1,6 @@
-<?
+<?php
     session_start();
-    !empty($_SESSION) ? header("Location: menu") : "";
+    !empty($_SESSION) ? header("Location: main") : "";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
