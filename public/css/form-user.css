@@ -1,0 +1,51 @@
+.form-inputUser {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-inputUser:focus {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(105, 105, 105);
+    color: rgb(59, 59, 59);
+}
+
+.form-inputUser::placeholder {
+    color: rgb(57, 87, 88);
+}
+
+.inputIcon {
+    position: relative;
+}
+
+.inputIcon i {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    padding: 9px 8px;
+    color: rgb(105, 105, 105);
+    transition: .3s;
+}
+
+.inputIcon input:focus+i {
+    color: rgb(39, 41, 61);
+}
+
+.inputIcon.inputIconBg i {
+    background-color: #aaa;
+    color: #fff;
+    padding: 9px 4px;
+    border-radius: 4px 0 0 0 4px;
+}

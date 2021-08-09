@@ -32,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '56a5da9e0f625d304315c8275db67ff611169707',
+    'reference' => 'a67bd8ee1a1023ad67608e38c1a9b228ca0387be',
     'name' => 'cidade/inteligente',
   ),
   'versions' => 
@@ -44,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '56a5da9e0f625d304315c8275db67ff611169707',
+      'reference' => 'a67bd8ee1a1023ad67608e38c1a9b228ca0387be',
     ),
   ),
 );
@@ -227,23 +227,9 @@ return $installed[0]['root'];
 
 
 
-
 public static function getRawData()
 {
-@trigger_error('getRawData only returns the first dataset loaded, which may not be what you expect. Use getAllRawData() instead which returns all datasets for all autoloaders present in the process.', E_USER_DEPRECATED);
-
 return self::$installed;
-}
-
-
-
-
-
-
-
-public static function getAllRawData()
-{
-return self::getInstalled();
 }
 
 

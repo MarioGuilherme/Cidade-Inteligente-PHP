@@ -23,7 +23,7 @@
 
         // Carrega o esqueleto da tela principal e renderiza os componentes dinâmicos (css, titulo, botões e conteúdo)
         public function __construct($title, $fileName){
-            $this->buttons["rendered"] = $_SESSION["tipo"] == "Professor(a)" ? $this->buttons[0] . $this->buttons[1] : "";
+            $this->buttons["rendered"] = $_SESSION["tipo"] == "Adm" ? $this->buttons[0] . $this->buttons[1] : "";
             $this->content = file_get_contents(__DIR__ . "../../View/$fileName.html");
             $this->structure = file_get_contents(__DIR__ . "../../View/structure.html");
             $this->structure = str_replace([

@@ -10,7 +10,7 @@
         const HOST = "localhost";
         const DATABASE = "cidade-inteligente";
         const USER = "root";
-        const PASSWORD = "root";
+        const PASSWORD = "";
 
         public function __construct() {
             try{

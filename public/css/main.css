@@ -11,3 +11,90 @@
     border-right: solid 1px rgba(255, 255, 255, 0.644);
     color: rgb(243, 243, 243);
 }
+
+.conteudo{
+    background: rgba(228, 228, 228, 0.973);
+    padding: 10px;
+    box-shadow: 0 0 1em rgb(85, 85, 85);
+    border-radius: 10px;
+    margin-bottom: 2em;
+}
+
+
+.form-control{
+    color: rgb(57, 87, 88);
+}
+
+.form-control option{
+background: rgb(228, 228, 228);
+}
+
+.btn-criar{
+    background:rgb(57, 59, 88) ;
+    color: white;
+}
+
+.btn-criar:hover{
+    background:rgb(39, 41, 61) ;
+    color: white;
+}
+
+.title_criar{
+    color:rgb(57, 59, 88) ;
+}
+
+.title_criar hr{
+    background:rgb(39, 41, 61) ;
+}
+
+.form-input {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-input:focus {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+
+.form-input::placeholder {
+    color: rgb(57, 87, 88);
+}
+
+.inputIcon {
+    position: relative;
+}
+
+.inputIcon i {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    padding: 9px 8px;
+    color: rgb(57, 87, 88);
+    transition: .3s;
+}
+
+.inputIcon input:focus+i {
+    color: rgb(255, 255, 255);
+}
+
+.inputIcon.inputIconBg i {
+    background-color: #aaa;
+    color: #fff;
+    padding: 9px 4px;
+    border-radius: 4px 0 0 0 4px;
+}
