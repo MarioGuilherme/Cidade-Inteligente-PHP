@@ -69,10 +69,11 @@ CREATE TABLE IF NOT EXISTS `cidade-inteligente`.`usuarios` (
   `nome` VARCHAR(100) NOT NULL,
   `email` VARCHAR(55) NOT NULL,
   `senha` VARCHAR(255) NOT NULL,
-  `tipo` CHAR(5) NOT NULL,
+  `tipo` VARCHAR(12) NOT NULL,
   `nivel` VARCHAR(40) NOT NULL,
   PRIMARY KEY (`id_usuario`),
   INDEX `fk_usuarios_cursos1_idx` (`id_curso` ASC),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   CONSTRAINT `fk_usuarios_cursos1`
     FOREIGN KEY (`id_curso`)
     REFERENCES `cidade-inteligente`.`cursos` (`id_curso`)

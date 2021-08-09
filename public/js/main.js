@@ -1,10 +1,5 @@
 $(document).ready(() => {
-    class CRUD {
-        constructor() {
-            this.init();
-        }
-    }
-    $(".btn").click(() => {
+    $(".btn-new-project").click(() => {
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -16,6 +11,25 @@ $(document).ready(() => {
             processData: false,
         }).done((response) => {
             SweetAlert(response.icon, response.msg)
+            if (response.icon === "success") {
+                $("input, textarea, select").val("")
+            }
+        })
+    })
+    $(".btn-new-user").click(function() {
+        Ajax("src/users/register", "json", $("form").serialize(), (response) => {
+            SweetAlert(response.icon, response.msg)
+            if (response.icon === "success") {
+                $("input, textarea, select").val("")
+            }
+        })
+    })
+    $(".btn-delete-media").click(function() {
+        Ajax("src/projects/delete-media", "json", `id=${$(this).attr("id")}&path=${$(this).parent().parent().find("img, video").attr("src")}`, (response) => {
+            SweetAlert(response.icon, response.msg)
+            if (response.icon === "success") {
+                $(this).parent().parent().remove()
+            }
         })
     })
 })

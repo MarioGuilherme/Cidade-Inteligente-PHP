@@ -18,13 +18,20 @@
                 $cards = "";
                 foreach($data as $key => $value){
                     $li = "";
-                    $imgs = "";
+                    $medias = "";
                     for($i = 1; $i < count($value["medias"]); $i++){
                         $li .= "<li data-target='#carousel-$value[id_projeto]' data-slide-to='$i'></li>";
-                        $imgs .=
-                        "<div class='carousel-item'>
-                            <img class='d-block w-100' src='src/medias/".$value["medias"][$i]["path"]."'>
-                        </div>";
+                        if($value["medias"][$i]["type"] == "mp4"){
+                            $medias .=
+                            "<div class='carousel-item'>
+                                <video class='d-block' style='width:inherit;' preload='metadata' controls src='src/medias/".$value["medias"][$i]["path"]."'></video>
+                            </div>";
+                        }else{
+                            $medias .=
+                            "<div class='carousel-item'>
+                                <img class='d-block w-100' src='src/medias/".$value["medias"][$i]["path"]."'>
+                            </div>";
+                        }
                     }
                     $cards .= str_replace([
                         "{{ id }}",
@@ -37,7 +44,7 @@
                         $value["id_projeto"],
                         $li,
                         $value["medias"][0]["path"],
-                        $imgs,
+                        $medias,
                         $value["descricao_geral"],
                         $value["descricao_detalhe"]
                     ], $structure_card);
@@ -48,9 +55,9 @@
             return str_replace("{{ projects }}", $cards, $page->structure);
         }
 
-        public function View($id){
-            $datas = $this->model->View($id);
+        public function View($id_project){
             $page = new Page("Ver Projeto", "view-project");
+            $datas = $this->model->View($id_project);
             for ($i = 0; $i < count($datas[0]["medias"]) - 1; $i++) {
                 switch ($datas[0]["medias"][$i]["type"]) {
                     case "mp4":
@@ -59,7 +66,7 @@
                             <video controls src='src/medias/".$datas[0]["medias"][$i]["path"]."'></video>
                         </div>";
                         break;
-                    
+
                     default:
                         $datas[0]["medias"]["rendered"] .=
                         "<div class='col-12 col-sm-12 col-md-2 col-lg-2 mt-1 mb-1'>
@@ -68,7 +75,7 @@
                         break;
                 }
             }
-            return  str_replace([
+            return str_replace([
                 "{{ general_description }}",
                 "{{ detail_description }}",
                 "{{ area }}",
@@ -99,6 +106,61 @@
                         return $this->model->VerifyFiles($medias);
                     }
                 }
+            }else{
+                return $this->model->VerifyUser();
+            }
+        }
+        public function DeleteMedia($id_media, $path){
+            if($this->model->VerifyUser() === 1){
+                if(empty($id_media) || empty($path)){
+                    return EMPTY_FIELDS;
+                }else{
+                    return $this->model->DeleteMedia($id_media, $path);
+                }
+            }else{
+                return $this->model->VerifyUser();
+            }
+        }
+        public function EditProject($id_project){
+            if($this->model->VerifyUser() === 1){
+                $page = new Page("Editar Projeto", "edit-project");
+                $datas = $this->model->View($id_project);
+                for ($i = 0; $i < count($datas[0]["medias"]) - 1; $i++) {
+                    switch ($datas[0]["medias"][$i]["type"]) {
+                        case "mp4":
+                            $datas[0]["medias"]["rendered"] .=
+                            "<div class='col-12 col-sm-12 col-md-2 col-lg-2 mt-1 mb-1'>
+                                <div>
+                                    <button style='z-index: 999;' type='button' id='".$datas[0]["medias"][$i]["id_media"]."'class='btn btn-danger btn-delete-media position-absolute'>Apagar Vídeo</button>
+                                </div>
+                                <video controls src='src/medias/".$datas[0]["medias"][$i]["path"]."'></video>
+                            </div>";
+                            break;
+                        
+                        default:
+                            $datas[0]["medias"]["rendered"] .=
+                            "<div class='col-12 col-sm-12 col-md-2 col-lg-2 mt-1 mb-1'>
+                                <div>
+                                    <button type='button' id='".$datas[0]["medias"][$i]["id_media"]."'class='btn btn-danger btn-delete-media position-absolute'>Apagar Foto</button>
+                                </div>
+                                <img src='src/medias/".$datas[0]["medias"][$i]["path"]."' alt=''>
+                            </div>";
+                            break;
+                    }
+                }
+                return  str_replace([
+                    "{{ general_description }}",
+                    "{{ detail_description }}",
+                    "{{ area }}",
+                    "{{ course }}",
+                    "{{ medias }}"
+                ], [
+                    $datas[0]["descricao_geral"],
+                    $datas[0]["descricao_detalhe"],
+                    $datas[0]["id_area"],
+                    $datas[0]["id_curso"],
+                    $datas[0]["medias"]["rendered"]
+                ], $page->structure);
             }else{
                 return $this->model->VerifyUser();
             }

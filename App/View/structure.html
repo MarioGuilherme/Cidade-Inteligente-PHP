@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="public/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/assets/MaterialDesign/css/materialdesignicons.css">
     <link rel="stylesheet" href="public/fonts/font.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="public/css/main.css">
     <link rel="stylesheet" href="public/css/{{ css }}.css">
 </head>
@@ -25,12 +28,6 @@
             </button>
         <div id="my-nav" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-                <li class='nav-item active'>
-                    <a class='nav-link' href='main'>
-                        Ver Projetos
-                        <span class='sr-only'>(current)</span>
-                    </a>
-                </li>
                 {{ buttons }}
                 <li class='nav-item active'>
                     <a class='nav-link' href='src/users/logout'>
@@ -57,8 +54,8 @@
             {{ content }}
         </div>
     </main>
-<footer>
-</footer>
+    <footer>
+    </footer>
     <script src="public/assets/jQuery/jquery-3.6.0.min"></script>
     <script src="public/assets/bootstrap/js/bootstrap.min"></script>
     <script src="public/assets/sweetalert2/sweetalert2.all.min"></script>

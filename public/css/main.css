@@ -1,3 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 .navCity {
     color: rgb(57, 87, 88);
     background: rgb(16, 15, 17);
@@ -12,7 +22,7 @@
     color: rgb(243, 243, 243);
 }
 
-.conteudo{
+.conteudo {
     background: rgba(228, 228, 228, 0.973);
     padding: 10px;
     box-shadow: 0 0 1em rgb(85, 85, 85);
@@ -20,31 +30,32 @@
     margin-bottom: 2em;
 }
 
-
-.form-control{
+.form-control {
     color: rgb(57, 87, 88);
 }
 
-.form-control option{
-background: rgb(228, 228, 228);
+.form-control option {
+    background: rgb(228, 228, 228);
 }
 
-.btn-criar{
-    background:rgb(57, 59, 88) ;
+.btn-new-project,
+.btn-new-user {
+    background: rgb(57, 59, 88);
     color: white;
 }
 
-.btn-criar:hover{
-    background:rgb(39, 41, 61) ;
+.btn-new-project,
+.btn-new-user:hover {
+    background: rgb(39, 41, 61);
     color: white;
 }
 
-.title_criar{
-    color:rgb(57, 59, 88) ;
+.title_criar {
+    color: rgb(57, 59, 88);
 }
 
-.title_criar hr{
-    background:rgb(39, 41, 61) ;
+.title_criar hr {
+    background: rgb(39, 41, 61);
 }
 
 .form-input {

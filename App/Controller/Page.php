@@ -8,6 +8,12 @@
         public $form;
         public $buttons = [
             "<li class='nav-item active'>
+                <a class='nav-link' href='main'>
+                    Ver Projetos
+                    <span class='sr-only'>(current)</span>
+                </a>
+            </li>",
+            "<li class='nav-item active'>
                 <a class='nav-link' href='criar-projeto'>
                     Cadastrar Projeto
                     <span class='sr-only'>(current)</span>
@@ -23,7 +29,8 @@
 
         // Carrega o esqueleto da tela principal e renderiza os componentes dinâmicos (css, titulo, botões e conteúdo)
         public function __construct($title, $fileName){
-            $this->buttons["rendered"] = $_SESSION["tipo"] == "Adm" ? $this->buttons[0] . $this->buttons[1] : "";
+            empty($_SESSION) ? header("Location: /") : "";
+            $this->buttons["rendered"] = $_SESSION["tipo"] == "Professor(a)" ? $this->buttons[0] . $this->buttons[1] . $this->buttons[2] : "";
             $this->content = file_get_contents(__DIR__ . "../../View/$fileName.html");
             $this->structure = file_get_contents(__DIR__ . "../../View/structure.html");
             $this->structure = str_replace([

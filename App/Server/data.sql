@@ -1,4 +1,4 @@
-INSERT INTO cursos (curso) VALUES ("Administrador");
+INSERT INTO cursos (curso) VALUES ("Professor(a)");
 INSERT INTO cursos (curso) VALUES ("Análise e Desenvolvimento de Sistemas");
 INSERT INTO cursos (curso) VALUES ("Gestão Empresarial");
 INSERT INTO cursos (curso) VALUES ("Gestão da Produção Indústrial");

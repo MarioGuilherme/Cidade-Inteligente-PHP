@@ -8,11 +8,11 @@
         public function Insert($id_course, $name, $email, $password, $type, $level){
             $sql = "SELECT id_usuario FROM usuarios WHERE email = ?";
             $stmt = $this->PDO->prepare($sql);
-            $stmt->execute($email);
-            if($stmt->rowCount() > 0){
+            $stmt->execute([$email]);
+            if($stmt->rowCount() === 1){
                 return EMAIL_ALREADY_EXISTS;
             }else{
-                $sql = "INSERT INTO usuarios (id_curso, nome, email, senha, tipo, nivel) VALUES (?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO usuarios (id_curso, nome, email, senha, tipo, nivel) VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt = $this->PDO->prepare($sql);
                 $stmt->execute([
                     $id_course,
@@ -22,7 +22,7 @@
                     $type,
                     $level
                 ]);
-                return $stmt->rowCount() > 0 ? REGISTERED : GENERAL_ERROR;
+                return $stmt->rowCount() > 0 ? USER_REGISTERED : GENERAL_ERROR;
             }
         }
 

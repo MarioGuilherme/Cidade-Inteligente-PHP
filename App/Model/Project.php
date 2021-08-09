@@ -13,17 +13,18 @@
             $stmt = $this->PDO->prepare($sql);
             $stmt->execute();
             $datas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $datas = $this->AssocMedias($datas, "AND tipo <> 'mp4'");
+            $datas = $this->AssocMedias($datas);
             return $datas;
         }
 
-        public function AssocMedias($datas, $action = null){
+        public function AssocMedias($datas){
             foreach ($datas as $key => $value) {
-                $sql = "SELECT tipo, path FROM midias WHERE id_projeto = ? $action";
+                $sql = "SELECT id_midia, tipo, path FROM midias WHERE id_projeto = ?";
                 $stmt = $this->PDO->prepare($sql);
                 $stmt->execute([$value["id_projeto"]]);
                 $medias = $stmt->fetchAll();
                 for ($i=0; $i < count($medias); $i++) {
+                    $datas[$key]["medias"][$i]["id_media"] .= $medias[$i]["id_midia"];
                     $datas[$key]["medias"][$i]["type"] .= $medias[$i]["tipo"];
                     $datas[$key]["medias"][$i]["path"] .= $medias[$i]["path"];
                 }
@@ -53,11 +54,22 @@
                 }
                 return PROJECT_CREATED;
             }else{
-                return $stmt->errorInfo();
+                return GENERAL_ERROR;
+            }
+        }
+        public function DeleteMedia($id_media, $path){
+            $sql = "DELETE FROM midias WHERE id_midia = ?";
+            $stmt = $this->PDO->prepare($sql);
+            $stmt->execute([$id_media]);
+            if($stmt->rowCount()){
+                unlink(__DIR__ . "../../../$path");
+                return MEDIA_DELETED;
+            }else{
+                return GENERAL_ERROR;
             }
         }
         public function View($id){
-            $sql = "SELECT p.id_projeto, a.descricao AS area, c.curso, descricao_geral,
+            $sql = "SELECT p.id_projeto, a.id_area, a.descricao AS area, c.curso, c.id_curso, descricao_geral,
             descricao_detalhe, data FROM projetos p
             INNER JOIN areas a ON p.id_area = a.id_area
             INNER JOIN cursos c ON p.id_curso = c.id_curso WHERE p.id_projeto = ?";

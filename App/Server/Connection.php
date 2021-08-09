@@ -10,7 +10,7 @@
         const HOST = "localhost";
         const DATABASE = "cidade-inteligente";
         const USER = "root";
-        const PASSWORD = "";
+        const PASSWORD = "root";
 
         public function __construct() {
             try{
@@ -21,7 +21,7 @@
         }
 
         public function VerifyUser(){
-            if($_SESSION["tipo"] == "Professor(a)" || $_SESSION["tipo"] == "Adm"){
+            if($_SESSION["tipo"] == "Professor(a)"){
                 return 1;
             }else{
                 return INVALID_PERMISSION;

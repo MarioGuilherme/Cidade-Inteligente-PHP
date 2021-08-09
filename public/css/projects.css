@@ -8,6 +8,11 @@
     color: white;
 }
 
+.carousel-inner>div>img,
+video {
+    height: 400px !important;
+}
+
 .galeria {
     background: rgb(245, 244, 244);
     border-radius: 10px;
