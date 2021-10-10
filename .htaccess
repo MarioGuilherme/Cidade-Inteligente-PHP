@@ -1,6 +1,6 @@
-options All -Indexes
+#options All -Indexes
 
-ErrorDocument 403 "Acesso bloqueado"
+#ErrorDocument 403 "Acesso bloqueado"
 
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-d

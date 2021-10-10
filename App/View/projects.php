@@ -8,6 +8,12 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        {{ projects }}
+        <?php
+            if(!empty($projects)){
+                foreach ($projects as $key) { require __DIR__ . "/card.php"; } 
+            }else{
+                echo(NOTHING_FOUND);
+            }
+        ?>
     </div>
 </div>

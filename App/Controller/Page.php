@@ -1,21 +1,23 @@
 <?php
 
     namespace App\Controller;
+    use App\Utils\Utils;
 
     class Page{
-        public $structure;
-        public $content;
-        public $form;
-        public $buttons = [
+        /**
+         * Botões que serão exibidos na página
+         * @var array
+         */
+        private $buttons = [
             "<li class='nav-item active'>
-                <a class='nav-link' href='main'>
+                <a class='nav-link' href='projetos'>
                     Ver Projetos
                     <span class='sr-only'>(current)</span>
                 </a>
             </li>",
             "<li class='nav-item active'>
                 <a class='nav-link' href='criar-projeto'>
-                    Cadastrar Projeto
+                    Criar Projeto
                     <span class='sr-only'>(current)</span>
                 </a>
             </li>",
@@ -27,22 +29,35 @@
             </li>"
         ];
 
-        // Carrega o esqueleto da tela principal e renderiza os componentes dinâmicos (css, titulo, botões e conteúdo)
-        public function __construct($title, $fileName){
+        /**
+         * Construtor da classe que inicializa a estrutura da página e escreve os campos dinâmicos
+         * @param string $title
+         * @param string $css
+         * @param int $indexBtn
+         * @param object $object
+         * @param string $action
+         * @return void
+         */
+        public function __construct($title, $css, $indexBtn, $object, $action){
+            date_default_timezone_set("America/Sao_Paulo");
+            Utils::StartSession();
             empty($_SESSION) ? header("Location: /") : "";
-            $this->buttons["rendered"] = $_SESSION["tipo"] == "Professor(a)" ? $this->buttons[0] . $this->buttons[1] . $this->buttons[2] : "";
-            $this->content = file_get_contents(__DIR__ . "../../View/$fileName.html");
-            $this->structure = file_get_contents(__DIR__ . "../../View/structure.html");
-            $this->structure = str_replace([
-                "{{ title }}",
-                "{{ css }}",
-                "{{ buttons }}",
-                "{{ content }}"
-            ], [
-                $title,
-                $fileName,
-                $this->buttons["rendered"],
-                $this->content
-            ],$this->structure);
+            Utils::LoadResponses();
+            $buttons = $this->RenderButtons($indexBtn);
+            require __DIR__ . "/../View/structure.php";
+        }
+
+        /**
+         * Função que remove o botão da página atual e renderiza os demais de acordo com o nível de acesso
+         * @param int $indexBtn
+         * @return string
+         */
+        public function RenderButtons($indexBtn){
+            unset($this->buttons[$indexBtn]);
+            if($_SESSION["type"] != "Professor(a)"){
+                unset($this->buttons[1]);
+                unset($this->buttons[2]);
+            }
+            return implode("", $this->buttons);
         }
     }

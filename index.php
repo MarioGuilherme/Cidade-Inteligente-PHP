@@ -1,6 +1,6 @@
 <?php
     session_start();
-    !empty($_SESSION) ? header("Location: main") : "";
+    !empty($_SESSION) ? header("Location: projetos") : "";
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -12,15 +12,15 @@
     <title>
         Login
     </title>
-    <link rel="stylesheet" href="public/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="public/assets/MaterialDesign/css/materialdesignicons.css">
-    <link rel="stylesheet" href="public/fonts/font.css">
-    <link rel="stylesheet" href="public/css/login.css">
+    <link rel="stylesheet" href="assets/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/libs/MaterialDesign/css/materialdesignicons.css">
+    <link rel="stylesheet" href="assets/fonts/font.css">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 
 <body>
     <div class="limiter">
-        <div class="container-login100" style="background-image: url('public/img/cidade.jpg');">
+        <div class="container-login100" style="background-image: url('assets/img/cidade.jpg');">
             <div class="main">
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
@@ -29,7 +29,7 @@
                                 <i class="mdi mdi-city-variant-outline icon "></i>
                             </h1>
                             <h1 class="text-center titulo-projeto">
-                                Projeto Cidade Inteligente
+                                Cidade Inteligente
                             </h1>
                             <form id="formulario" class="form">
                                 <div class="inputIcon">
@@ -55,21 +55,21 @@
                                         </p>
                                     </div>
                                 </div>
-                                <button type="button" class="btn mt-2 btn-block btn-login">
-                                    Entrar
-                                </button>
                             </form>
+                            <button type="button" class="btn mb-2 btn-block btn-login">
+                                Entrar
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="public/assets/jQuery/jquery-3.6.0.min"></script>
-    <script src="public/assets/bootstrap/js/bootstrap.min"></script>
-    <script src="public/assets/sweetalert2/sweetalert2.all.min"></script>
-    <script src="public/js/functions"></script>
-    <script src="public/js/access"></script>
+    <script src="assets/libs/jQuery/jquery-3.6.0.min"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.min"></script>
+    <script src="assets/libs/sweetalert2/sweetalert2.all.min"></script>
+    <script src="assets/js/functions"></script>
+    <script src="assets/js/access"></script>
 </body>
 
 </html>

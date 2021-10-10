@@ -1,6 +1,6 @@
-<form class="form">
-    <div class="container justify-content-center">
-        <div class="conteudo">
+<div class="container justify-content-center">
+    <div class="conteudo">
+        <form class="form">
             <div class="row">
                 <div class="col-12 col-md-12 title_criar mt-2">
                     <h3>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>
                             Tipo de Usuário
@@ -49,12 +49,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-6">
                     <div class="form-group">
                         <label>
                             Curso do usuário
                         </label>
-                        <select id="my-select" class="form-control" name="course">
+                        <select id="my-select" class="form-control" name="id_course">
                             <option value="1">Análise e Desenvolvimento de Sistemas</option>
                             <option value="2">Gestão Empresarial</option>
                             <option value="3">Gestão da Produção Indústrial</option>
@@ -64,29 +64,12 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div class="form-group">
-                        <label for="my-select">
-                            Nivel
-                        </label>
-                        <select id="my-select" class="form-control" name="level">
-                            <option value="Doutorado">Doutorado</option>
-                            <option value="Bacharelado">Bacharelado</option>
-                            <option value="Licenciatura">Licenciatura</option>
-                            <option value="Mestrado">Mestrado</option>
-                            <option value="Pós-Graduação">Pós-Graduação</option>
-                            <option value="Graduação">Graduação</option>
-                            <option value="Tecnólogo">Tecnólogo</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                </div>
             </div>
-            <div class="col-12 col-md-12">
-                <button class="btn btn-new-user btn-block" type="button">
-                    Cadastrar
-                </button>
-            </div>
+        </form>
+        <div class="col-12 col-md-12">
+            <button class="btn btn-new-user btn-block" type="button">
+                Cadastrar
+            </button>
         </div>
     </div>
-</form>
+</div>

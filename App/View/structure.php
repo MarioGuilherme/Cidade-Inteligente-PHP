@@ -6,16 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        {{ title }}
+        <?= $title ?>
     </title>
-    <link rel="stylesheet" href="public/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="public/assets/MaterialDesign/css/materialdesignicons.css">
-    <link rel="stylesheet" href="public/fonts/font.css">
+    <link rel="stylesheet" href="assets/libs/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/libs/MaterialDesign/css/materialdesignicons.css">
+    <link rel="stylesheet" href="assets/fonts/font.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="public/css/main.css">
-    <link rel="stylesheet" href="public/css/{{ css }}.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/<?= $css ?>.css">
 </head>
 
 <body>
@@ -28,11 +28,11 @@
             </button>
         <div id="my-nav" class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-                {{ buttons }}
-                <li class='nav-item active'>
-                    <a class='nav-link' href='src/users/logout'>
+                <?= $buttons ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="services/users/logout">
                         Sair
-                        <span class='sr-only'>(current)</span>
+                        <span class="sr-only">(current)</span>
                     </a>
                 </li>
             </ul>
@@ -41,26 +41,24 @@
 
     <div class="jumbotron rounded-0">
         <h1 class="display-4">
-            Projeto Cidade Inteligente Fatec 2021
+            Cidade Inteligente
         </h1>
         <hr class="my-4 bg-light">
         <p>
-            Desenvolvido na Fatec de Lins
+            Fatec Lins - Prof. Antônio Seabra
         </p>
     </div>
 
     <main>
         <div class="container-fluid mt-4">
-            {{ content }}
+            <?= $object->$action() ?>
         </div>
     </main>
-    <footer>
-    </footer>
-    <script src="public/assets/jQuery/jquery-3.6.0.min"></script>
-    <script src="public/assets/bootstrap/js/bootstrap.min"></script>
-    <script src="public/assets/sweetalert2/sweetalert2.all.min"></script>
-    <script src="public/js/functions"></script>
-    <script src="public/js/main"></script>
+    <script src="assets/libs/jQuery/jquery-3.6.0.min"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.min"></script>
+    <script src="assets/libs/sweetalert2/sweetalert2.all.min"></script>
+    <script src="assets/js/functions"></script>
+    <script src="assets/js/main"></script>
 </body>
 
 </html>
