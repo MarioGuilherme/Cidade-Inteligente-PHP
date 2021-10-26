@@ -18,7 +18,6 @@
          */
         public function __construct(){
             $this->PDO = Connection::Connect();
-            Utils::LoadResponses();
         }
 
         /**

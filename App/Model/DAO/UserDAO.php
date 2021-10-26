@@ -17,11 +17,10 @@
          */
         public function __construct(){
             $this->PDO = Connection::Connect();
-            Utils::LoadResponses();
         }
 
         /**
-         * Função que faz seleção de um usuário para o login e inicia a sessão
+         * Função que retorna um usuário do banco de dados através de seu email
          * @param User $user
          * @return array
          */
@@ -31,25 +30,9 @@
                         INNER JOIN courses c ON u.id_course=c.id_course WHERE email = ?";
                 $stmt = $this->PDO->prepare($sql);
                 if($stmt->execute([$user->getEmail()])){
-                    if($stmt->rowCount()){
-                        $datas = $stmt->fetch(\PDO::FETCH_ASSOC);
-                        if(password_verify($user->getPassword(), $datas["password"])){
-                            Utils::StartSession();
-                            $_SESSION["id_user"] = $datas["id_user"];
-                            $_SESSION["id_course"] = $datas["id_course"];
-                            $_SESSION["course"] = $datas["course"];
-                            $_SESSION["name"] = $datas["name"];
-                            $_SESSION["email"] = $datas["email"];
-                            $_SESSION["type"] = $datas["type"];
-                            return true;
-                        }else{
-                            return WRONG_PASSWORD;
-                        }
-                    }else{
-                        return USER_NOT_FOUND;
-                    }
+                    return $stmt->fetch(\PDO::FETCH_ASSOC);
                 }else{
-                    return GENERAL_ERROR;
+                    Utils::ReturnResponse(GENERAL_ERROR);
                 }
             }catch(\PDOException $e){
                 echo "Erro: {$e->getMessage()}";
@@ -57,18 +40,13 @@
         }
 
         /**
-         * Função que faz registro de um usuário
+         * Função que faz registro de um usuário se não houver email igual
          * @param User $user
          * @return array
          */
         public function Create($user){
             try{
-                $sql = "SELECT id_user FROM users WHERE email = ?";
-                $stmt = $this->PDO->prepare($sql);
-                $stmt->execute([$user->getEmail()]);
-                if($stmt->rowCount()){
-                    return EMAIL_ALREADY_EXISTS;
-                }else{
+                if(empty($this->SelectOne($user))){
                     $sql = "INSERT INTO users (id_course, name, email, password, type) VALUES (?, ?, ?, ?, ?)";
                     $stmt = $this->PDO->prepare($sql);
                     $stmt->execute([
@@ -78,8 +56,9 @@
                         $user->getPassword(),
                         $user->getType()
                     ]);
-                    return $stmt->rowCount() ? USER_REGISTERED : GENERAL_ERROR;
-                }
+                    $stmt->rowCount() ? Utils::ReturnResponse(USER_REGISTERED) : Utils::ReturnResponse(GENERAL_ERROR);
+                }else
+                    Utils::ReturnResponse(EMAIL_ALREADY_EXISTS);
             }catch(\PDOException $e){
                 echo "Erro: {$e->getMessage()}";
             }

@@ -125,3 +125,17 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO courses (course) VALUES ("Análise e Desenvolvimento de Sistemas");
+INSERT INTO courses (course) VALUES ("Gestão Empresarial");
+INSERT INTO courses (course) VALUES ("Gestão da Produção Indústrial");
+INSERT INTO courses (course) VALUES ("Gestão da Qualidade");
+INSERT INTO courses (course) VALUES ("Logística");
+INSERT INTO courses (course) VALUES ("Sistema para Internet");
+INSERT INTO courses (course) VALUES ("Professor(a)");
+
+INSERT INTO areas (area) VALUES ("Industrial");
+INSERT INTO areas (area) VALUES ("Rural");
+INSERT INTO areas (area) VALUES ("Urbana");
+
+INSERT INTO users (id_course, name, email, password, type) VALUES (7, "Administrador", "adm@gmail.com", "$2y$10$dH66ePCdDdTReo04QwDmRO/8IbXXrnLpvf8TgTZuFuhQ1p0aIfmzu", "Professor(a)");

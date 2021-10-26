@@ -1,9 +1,9 @@
-function Ajax(url, dataType, data, callback) {
+function AjaxFile(url, dataType, data, callback) {
     $.ajax({
         type: "POST",
-        dataType: dataType,
         url: url,
-        data: new FormData(data),
+        dataType: dataType,
+        data: data,
         nimeType: "multipart/form-data",
         cache: false,
         contentType: false,
@@ -11,13 +11,38 @@ function Ajax(url, dataType, data, callback) {
     }).done(callback)
 }
 
+function Ajax(url, dataType, data, callback) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: dataType,
+        data: data,
+    }).done(callback)
+}
+
 function SweetAlert(icon, msg) {
     Swal.fire({
         icon: icon,
         html: `<h2 style="color:white; font-weight:bold;">${msg}</h2>`,
-        background: "rgb(31 50 51)",
+        background: "rgb(31, 50, 51)",
         allowOutsideClick: false
     })
+}
+
+
+function Redirect(icon, url) {
+    if (icon == "success") {
+        setTimeout(function() {
+            $(location).attr("href", url);
+        }, 2000);
+    }
+}
+
+function VerifyPasswords() {
+    if ($($("input[type=password")[0]).val() != $($("input[type=password")[1]).val()) {
+        SweetAlert("error", "As senhas não conferem")
+        throw "exit"
+    }
 }
 
 function VerifyFields(form) {
@@ -26,13 +51,6 @@ function VerifyFields(form) {
             SweetAlert("error", "Preencha o(s) campo(s) vazio(s)")
             throw "exit"
         }
-    }
-}
-
-function VerifyPasswords() {
-    if ($($("input[type=password")[0]).val() != $($("input[type=password")[1]).val()) {
-        SweetAlert("error", "As senhas não conferem")
-        throw "exit"
     }
 }
 

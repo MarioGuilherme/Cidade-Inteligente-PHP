@@ -1,7 +1,7 @@
 $(document).ready(() => {
     $(".btn-new-project").click(() => {
         VerifyFields($("form")[0])
-        Ajax("services/projects/new-project", "json", $("form")[0], (response) => {
+        AjaxFile("services/projects/new-project", "json", $("form").serialize(), (response) => {
             SweetAlert(response.icon, response.msg)
             CleanFields(response.icon)
             $(".medias-uploaded").empty()
@@ -10,7 +10,7 @@ $(document).ready(() => {
     $(".btn-new-user").click(() => {
         VerifyFields($("form")[0])
         VerifyPasswords()
-        Ajax("services/users/register", "json", $("form")[0], (response) => {
+        Ajax("services/users/register", "json", $("form").serialize(), (response) => {
             SweetAlert(response.icon, response.msg)
             CleanFields(response.icon)
         })

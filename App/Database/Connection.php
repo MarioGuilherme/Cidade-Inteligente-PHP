@@ -31,7 +31,7 @@
          * Senha do Banco de Dados
          * @var string
          */
-        const PASSWORD = "root";
+        const PASSWORD = "";
 
         /**
          * Charset dos caracteres usado no servidor em contato com o Banco de Dados

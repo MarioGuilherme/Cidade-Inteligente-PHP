@@ -8,7 +8,7 @@
          * Botões que serão exibidos na página
          * @var array
          */
-        private $buttons = [
+        public $buttons = [
             "<li class='nav-item active'>
                 <a class='nav-link' href='projetos'>
                     Ver Projetos
@@ -38,13 +38,15 @@
          * @param string $action
          * @return void
          */
-        public function __construct($title, $css, $indexBtn, $object, $action){
-            date_default_timezone_set("America/Sao_Paulo");
+        public function __construct($title, $css, $indexBtn, $page){
             Utils::StartSession();
             empty($_SESSION) ? header("Location: /") : "";
+            date_default_timezone_set("America/Sao_Paulo");
             Utils::LoadResponses();
             $buttons = $this->RenderButtons($indexBtn);
-            require __DIR__ . "/../View/structure.php";
+            require __DIR__ . "/../View/header.php";
+            require __DIR__ . "/../View/$page.php";
+            require __DIR__ . "/../View/footer.php";
         }
 
         /**

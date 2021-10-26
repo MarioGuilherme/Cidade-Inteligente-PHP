@@ -1,7 +1,7 @@
 <?php
 
     const GENERAL_ERROR = ["msg"=>"Erro no servidor, por favor, entre em contato", "icon"=>"error"];
-    const INVALID_PERMISSION = ["msg"=>"Você não tem permissão, apenas Professores!", "icon"=>"error"];
+    const INVALID_PERMISSION = ["msg"=>"Você não tem permissão para tal ação!", "icon"=>"error"];
     const LOGGED = ["msg"=>"Login efetuado, redirecionando...", "icon"=>"success"];
     const USER_REGISTERED = ["msg"=>"Usuário cadastrado!", "icon"=>"success"];
     const WRONG_PASSWORD = ["msg"=>"Senha incorreta", "icon"=>"error"];
@@ -16,4 +16,5 @@
     const LARGER_SIZE = ["msg"=>"Tamanho do arquivo excede o limite!","icon"=>"error"];
     const LARGER_SERVER_SIZE = ["msg"=>"Tamanho do arquivo excede o limite do servidor!","icon"=>"error"];
     const MEDIA_DELETED = ["msg"=>"Mídia Deletada!","icon"=>"success"];
+    const INVALID_COURSE = ["msg"=>"Curso inválido!","icon"=>"error"];
     const NOTHING_FOUND = "<h2>Nenhum projeto criado!</h2>";

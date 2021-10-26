@@ -51,14 +51,3 @@
 
     <main>
         <div class="container-fluid mt-4">
-            <?= $object->$action() ?>
-        </div>
-    </main>
-    <script src="assets/libs/jQuery/jquery-3.6.0.min"></script>
-    <script src="assets/libs/bootstrap/js/bootstrap.min"></script>
-    <script src="assets/libs/sweetalert2/sweetalert2.all.min"></script>
-    <script src="assets/js/functions"></script>
-    <script src="assets/js/main"></script>
-</body>
-
-</html>

@@ -5,11 +5,11 @@
         $li .= "<li data-target='#carousel-$key[id_project]' data-slide-to='$i'></li>";
         if($key["medias"][$i]["type"] == "video/mp4"){
             $medias .= "<div class='carousel-item'>
-                            <video class='d-block' style='width:inherit;' preload='metadata' controls src='medias/".$key["medias"][$i]["path"]."'></video>
+                            <video class='d-block' style='width:inherit;' preload='metadata' controls src='services/paths/".$key["medias"][$i]["path"]."'></video>
                         </div>";
         }else{
             $medias .= "<div class='carousel-item'>
-                            <img class='d-block w-100' src='medias/".$key["medias"][$i]["path"]."'>
+                            <img class='d-block w-100' src='services/paths/".$key["medias"][$i]["path"]."'>
                         </div>";
         }
     }
@@ -23,7 +23,7 @@
             </ol>
             <div class="carousel-inner" style="height: 400px;">
                 <div class="carousel-item active">
-                    <img class="d-block w-100" src="medias/<?= $key["medias"][0]["path"] ?>">
+                    <img class="d-block w-100" src="services/paths/<?= $key["medias"][0]["path"] ?>">
                 </div>
                 <?= $medias ?>
             </div>

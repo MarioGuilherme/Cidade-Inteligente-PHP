@@ -54,13 +54,25 @@
                         <label>
                             Curso do usuário
                         </label>
-                        <select id="my-select" class="form-control" name="id_course">
-                            <option value="1">Análise e Desenvolvimento de Sistemas</option>
-                            <option value="2">Gestão Empresarial</option>
-                            <option value="3">Gestão da Produção Indústrial</option>
-                            <option value="4">Gestão da Qualidade</option>
-                            <option value="5">Logística</option>
-                            <option value="6">Sistema para Internet</option>
+                        <select id="my-select" class="form-control" name="course">
+                            <option value="1">
+                                Análise e Desenvolvimento de Sistemas
+                            </option>
+                            <option value="2">
+                                Gestão Empresarial
+                            </option>
+                            <option value="3">
+                                Gestão da Produção Indústrial
+                            </option>
+                            <option value="4">
+                                Gestão da Qualidade
+                            </option>
+                            <option value="5">
+                                Logística
+                            </option>
+                            <option value="6">
+                                Sistema para Internet
+                            </option>
                         </select>
                     </div>
                 </div>

@@ -5,43 +5,39 @@
     abstract class Utils{
 
         /**
-         * Função que verifica o tipo de usuário na sessão
+         * Método responsável por verificar o tipo de usuário da sessão
          * @return array
          */
         public static function VerifyUser(){
-            if(!$_SESSION["type"] == "Professor(a)"){
-                return INVALID_PERMISSION;
+            if($_SESSION["type"] != "Professor(a)"){
+                self::ReturnResponse(INVALID_PERMISSION);
             }
         }
 
         /**
-         * Função que verifica se há campos vazios
+         * Método responsável por verificar se há campos vazios em um array e em seguida retornar uma mensagem de erro
          * @param array $form
          * @return void
          */
         public static function VerifyInputs($form){
             foreach($form as $key){
                 if($key == ""){
-                    echo json_encode(EMPTY_FIELDS);
-                    exit;
+                    self::ReturnResponse(EMPTY_FIELDS);
                 }
             }
         }
 
         /**
-         * Função que faz a sanaização dos formulário
-         * @param array $form
-         * @return array
+         * Método responsável por fazer a sanatização de um campo
+         * @param string $field
+         * @return string
          */
-        public static function SanitizerInputs($form){
-            foreach($form as $key => $value){
-                $form[$key] = trim(htmlspecialchars($value));
-            }
-            return $form;
+        public static function SanitizeInput($field){
+            return trim(htmlspecialchars($field));
         }
 
         /**
-         * Função que faz o carregamento das respostas
+         * Método responsável por carregar as respostas
          * @return void
          */
         public static function LoadResponses(){
@@ -49,7 +45,17 @@
         }
 
         /**
-         * Função que inicia a sessão
+         * Método responsável retornar uma respostas
+         * @param array $response
+         * @return void
+         */
+        public static function ReturnResponse($response){
+            echo json_encode($response);
+            exit;
+        }
+
+        /**
+         * Método responsável por iniciar a sessão
          * @return void
          */
         public static function StartSession(){
@@ -57,7 +63,7 @@
         }
 
         /**
-         * Função que destroy a sessão e redireciona para a raíz
+         * Método responsável por finiliar a sessão e redireciona para a raíz do projeto
          * @return void
          */
         public static function DestroySession(){
