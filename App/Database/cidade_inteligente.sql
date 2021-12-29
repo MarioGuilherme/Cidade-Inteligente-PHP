@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`projects` (
   `id_course` INT NOT NULL,
   `title` VARCHAR(60) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
-  `date` DATE NOT NULL,
+  `date` DATE NOT NULL DEFAULT DEFAULT CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id_project`),
   INDEX `fk_projects_areas1_idx` (`id_area` ASC),
   INDEX `fk_projects_courses1_idx` (`id_course` ASC),
@@ -70,6 +70,8 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`users` (
   `email` VARCHAR(60) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `type` VARCHAR(12) NOT NULL,
+  `token` CHAR(156) NULL,
+  `token_expiration` DATETIME NULL,
   PRIMARY KEY (`id_user`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
   INDEX `fk_users_courses1_idx` (`id_course` ASC),
@@ -125,17 +127,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-INSERT INTO courses (course) VALUES ("Análise e Desenvolvimento de Sistemas");
-INSERT INTO courses (course) VALUES ("Gestão Empresarial");
-INSERT INTO courses (course) VALUES ("Gestão da Produção Indústrial");
-INSERT INTO courses (course) VALUES ("Gestão da Qualidade");
-INSERT INTO courses (course) VALUES ("Logística");
-INSERT INTO courses (course) VALUES ("Sistema para Internet");
-INSERT INTO courses (course) VALUES ("Professor(a)");
-
-INSERT INTO areas (area) VALUES ("Industrial");
-INSERT INTO areas (area) VALUES ("Rural");
-INSERT INTO areas (area) VALUES ("Urbana");
-
-INSERT INTO users (id_course, name, email, password, type) VALUES (7, "Administrador", "adm@gmail.com", "$2y$10$dH66ePCdDdTReo04QwDmRO/8IbXXrnLpvf8TgTZuFuhQ1p0aIfmzu", "Professor(a)");

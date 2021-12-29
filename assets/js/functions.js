@@ -3,12 +3,12 @@ function AjaxFile(url, dataType, data, callback) {
         type: "POST",
         url: url,
         dataType: dataType,
-        data: data,
+        data: new FormData(data),
         nimeType: "multipart/form-data",
         cache: false,
         contentType: false,
         processData: false,
-    }).done(callback)
+    }).done(callback);
 }
 
 function Ajax(url, dataType, data, callback) {
@@ -17,7 +17,7 @@ function Ajax(url, dataType, data, callback) {
         url: url,
         dataType: dataType,
         data: data,
-    }).done(callback)
+    }).done(callback);
 }
 
 function SweetAlert(icon, msg) {
@@ -26,9 +26,8 @@ function SweetAlert(icon, msg) {
         html: `<h2 style="color:white; font-weight:bold;">${msg}</h2>`,
         background: "rgb(31, 50, 51)",
         allowOutsideClick: false
-    })
+    });
 }
-
 
 function Redirect(icon, url) {
     if (icon == "success") {
@@ -40,22 +39,23 @@ function Redirect(icon, url) {
 
 function VerifyPasswords() {
     if ($($("input[type=password")[0]).val() != $($("input[type=password")[1]).val()) {
-        SweetAlert("error", "As senhas não conferem")
-        throw "exit"
+        SweetAlert("error", "As senhas não conferem");
+        throw "exit";
     }
 }
 
 function VerifyFields(form) {
     for (let i = 0; i < form.length; i++) {
         if (form[i].value == "") {
-            SweetAlert("error", "Preencha o(s) campo(s) vazio(s)")
-            throw "exit"
+            SweetAlert("error", "Preencha o(s) campo(s) vazio(s)");
+            throw "exit";
         }
     }
 }
 
 function CleanFields(icon) {
-    icon === "success" ? $("input, textarea, select").val("") : ""
+    icon == "success" ? $("input, textarea, select").val("") : "";
+    icon == "success" ? $("select").prop("selectedIndex", 0) : "";
 }
 
 function Redirect(icon, url) {

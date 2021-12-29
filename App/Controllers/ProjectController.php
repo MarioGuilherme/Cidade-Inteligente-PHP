@@ -1,0 +1,176 @@
+<?php
+
+    declare(strict_types=1);
+
+    namespace App\Controllers;
+
+    use PDO;
+    use App\Core\Controller;
+    use App\Controllers\MediaController;
+    use App\Controllers\UserController;
+    use App\Models\Project;
+    use App\Models\Project_User;
+    use App\Utils\Form;
+    use App\Utils\Response;
+use App\Utils\Session;
+
+/**
+     * Classe herdada de Controller responsável por controlar as ações do Projeto
+     *
+     * @author Mário Guilherme
+     */
+    class ProjectController extends Controller {
+        private Project $projectModel;
+        private Project_User $projectUserModel;
+
+        /**
+         * Método responsável de carregar a configuração do
+         * banco de dados e instanciar o modelo de projeto
+         * @return void
+         */
+        private function GetModel() : void {
+            require __DIR__ . "/../Database/Connection.php";
+            $this->projectModel = new Project();
+            $this->projectUserModel = new Project_User();
+        }
+
+        /**
+         * Método responsável por retornar todos os projetos
+         * @return array Array de Projetos
+         */
+        private function GetProjects() : array {
+            $this->GetModel();
+            return $this->projectModel->Select()->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * Método responsável por retornar um projeto pelo seu id
+         * @param int $id_project ID do projeto
+         * @return array Dados do Projeto
+         */
+        private function GetProjectByID(int $id_project) : array {
+            $this->GetModel();
+            return $this->projectModel->Select("INNER JOIN areas ON projects.id_area = areas.id_area
+                                                INNER JOIN courses ON projects.id_course = courses.id_course",
+                                               "projects.id_project = ?", "", "",
+                                               "projects.id_project, areas.area AS area, courses.course, title, projects.description, date",
+                                                [$id_project])->fetch(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * Método responsável por carregar a página principal,
+         * listando todos os projetos e suas mídias
+         * @return void
+         */
+        public function NewProject(array $form, array $medias) : void {
+            // VERIFICA SE O USUÁRIO É PROFESSOR
+            Session::VerifyAdm() ? "" : Response::Message(INVALID_PERMISSION);
+
+            // LIMPEZA DOS CAMPOS
+            $id_area = (int) Form::SanatizeField($form["area"], FILTER_SANITIZE_NUMBER_INT);
+            $id_course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
+            $title = Form::SanatizeField($form["title"], FILTER_SANITIZE_STRING);
+            $date = Form::SanatizeField($form["date"], FILTER_SANITIZE_STRING);
+            $description = Form::SanatizeField($form["description"], FILTER_SANITIZE_STRING);
+
+            // VALIDAÇÃO DOS CAMPOS
+            Form::VerifyEmptyFields([$id_area, $id_course, $title, $date, $description]);
+
+            if(filter_var($id_area, FILTER_VALIDATE_INT) && $id_area > 0 && $id_area <= 3) {
+                if(filter_var($id_course, FILTER_VALIDATE_INT) && $id_course > 0 && $id_course <= 7) {
+                    // OBTENÇÃO DO MODEL
+                    $this->GetModel();
+                    $id_project = $this->projectModel->Insert([
+                        "id_area" => $id_area,
+                        "id_course" => $id_course,
+                        "title" => $title,
+                        "date" => $date,
+                        "description" => $description
+                    ]);
+                    if($id_project > 0) {
+                        for($i = 0; $i < count($medias["name"]); $i++) {
+                            $media = [
+                                "id_project" => $id_project,
+                                "name" => $form["medias"][$i]["name"],
+                                "type" => $medias["type"][$i],
+                                "size" => $medias["size"][$i],
+                                "name_file" => $medias["name"][$i],
+                                "tmp_name" => $medias["tmp_name"][$i],
+                                "error" => $medias["error"][$i],
+                                "description" => $form["medias"][$i]["description"]
+                            ];
+                            (new MediaController())->NewMedia($media);
+                        }
+                        foreach($form["users"] as $user) {
+                            $this->projectUserModel->Insert([
+                                "id_project" => $id_project,
+                                "id_user" => $user
+                            ]);
+                        }
+                         Response::Message(PROJECT_REGISTERED);
+                    } else {
+                        Response::Message(GENERAL_ERROR);
+                    }
+                } else
+                    Response::Message(INVALID_COURSE);
+            } else
+                Response::Message(INVALID_AREA);
+        }
+
+        /**
+         * Método responsável por carregar a página principal,
+         * listando todos os projetos e suas mídias
+         * @return void
+         */
+        public function Index() : void {
+            $projects = $this->GetProjects();
+            foreach ($projects as $key => $project) {
+                $projects[$key]["medias"] = (new MediaController())->GetMedias((int) $projects[$key]["id_project"]);
+            }
+            $data = [
+                "title" => "Projetos",
+                "css" => "projects",
+                "btns" => $this->RenderButtons(1),
+                "projects" => $projects,
+                "js" => "projects"
+            ];
+            $this->View("Projects/listAll", $data);
+        }
+
+        /**
+         * Método responsável de trazer os dados de um projeto de
+         * acordo com seu id
+         * @param int $id_project ID do projeto
+         * @return void
+         */
+        public function ViewProject(int $id_project) : void {
+            $project = $this->GetProjectByID($id_project);
+            $project["users"] = (new ProjectUserController())->GetUsersByProject((int) $project["id_project"]);
+            $project["medias"] = (new MediaController())->GetMedias((int) $project["id_project"]);
+            $data = [
+                "title" => "Projeto - $project[title]",
+                "css" => "view-project",
+                "btns" => $this->RenderButtons(),
+                "project" => $project,
+                "js" => "view-project"
+            ];
+            $this->View("Projects/view-project", $data);
+        }
+
+        /**
+         * Método responsável por carregar a View do formulário para criar um projeto
+         * @return void
+         */
+        public function FormProject() : void {
+            if(Session::VerifyAdm()) {
+                $data = [
+                    "title" => "Cadastro de Projeto",
+                    "css" => "new-project",
+                    "btns" => $this->RenderButtons(2),
+                    "js" => "new-project"
+                ];
+                $this->View("Projects/new-project", $data);
+            } else
+                Session::Redirect("projetos");
+        }
+    }
