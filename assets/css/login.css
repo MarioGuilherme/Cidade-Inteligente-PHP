@@ -17,9 +17,10 @@
 
 .painel {
     border-radius: 8px;
-    background: rgb(136, 173, 150);
+    background: rgb(155, 194, 170);
     box-shadow: 0 0 2em rgb(99, 97, 88);
-    margin: 1em;
+    margin: 2em;
+    padding: 50px;
 }
 
 .btn-login {
