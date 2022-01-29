@@ -12,9 +12,9 @@
     use App\Models\Project_User;
     use App\Utils\Form;
     use App\Utils\Response;
-use App\Utils\Session;
+    use App\Utils\Session;
 
-/**
+    /**
      * Classe herdada de Controller responsável por controlar as ações do Projeto
      *
      * @author Mário Guilherme
@@ -38,7 +38,7 @@ use App\Utils\Session;
          * Método responsável por retornar todos os projetos
          * @return array Array de Projetos
          */
-        private function GetProjects() : array {
+        public function GetProjects() : array {
             $this->GetModel();
             return $this->projectModel->Select()->fetchAll(PDO::FETCH_ASSOC);
         }

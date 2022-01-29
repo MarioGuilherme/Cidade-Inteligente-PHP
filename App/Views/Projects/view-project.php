@@ -15,7 +15,7 @@
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
             <h2 class="font-weight-bold">
-                Descrição Detalhada
+                Descrição
             </h2>
             <p>
                 <?= $data["project"]["description"] ?>

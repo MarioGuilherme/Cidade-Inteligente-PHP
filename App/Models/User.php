@@ -7,11 +7,6 @@
     use App\Database\Database;
     use PDOStatement;
 
-    /**
-     * Classe herdada do Model responsável por fazer as abstrações de dados do Usuário
-     * 
-     * @author Mário Guilherme
-     */
     class User {
         /**
          * Método responsável por o SELECT na tabela de Usários
@@ -34,15 +29,5 @@
          */
         public static function Insert(array $params) : int {
             return (new Database("users"))->Insert($params);
-        }
-
-        /**
-         * Método responsável por o UPDATE na tabela de Usários
-         * @param string $where Condição para atualização
-         * @param array $values Valores a serem atualizados (Array associativo ["field" => $value])
-         * @return bool
-         */
-        public static function Update(string $where, array $values) : bool {
-            return (new Database("users"))->Update($where, $values);
         }
     }

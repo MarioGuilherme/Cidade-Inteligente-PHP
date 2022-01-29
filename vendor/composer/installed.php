@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ca58469c57d95e2f760ee8205ec5a31882ddfd0e',
+        'reference' => 'c1f88cfafa9a339eab8702e85d60108c1e3e61eb',
         'name' => 'cidade/inteligente',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ca58469c57d95e2f760ee8205ec5a31882ddfd0e',
+            'reference' => 'c1f88cfafa9a339eab8702e85d60108c1e3e61eb',
             'dev_requirement' => false,
         ),
         'phpmailer/phpmailer' => array(

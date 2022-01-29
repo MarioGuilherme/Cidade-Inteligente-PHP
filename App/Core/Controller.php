@@ -22,6 +22,12 @@
             </li>",
            "<li class='nav-item active'>
                 <a class='nav-link' href='projetos'>
+                    Meus Projetos
+                    <span class='sr-only'>(current)</span>
+                </a>
+            </li>",
+           "<li class='nav-item active'>
+                <a class='nav-link' href='projetos'>
                     Ver Projetos
                     <span class='sr-only'>(current)</span>
                 </a>
@@ -35,6 +41,12 @@
             "<li class='nav-item active'>
                 <a class='nav-link' href='criar-usuario'>
                     Cadastrar Professor(a)/Aluno
+                    <span class='sr-only'>(current)</span>
+                </a>
+            </li>",
+            "<li class='nav-item active'>
+                <a class='nav-link' href='criar-usuario'>
+                    Meu Perfil
                     <span class='sr-only'>(current)</span>
                 </a>
             </li>",

@@ -6,6 +6,7 @@
 
     use PDO;
     use App\Core\Controller;
+    use App\Controllers\ProjectController;
     use App\Models\User;
     use App\Utils\Form;
     use App\Utils\Response;
@@ -57,6 +58,28 @@
                     "js" => "register"
                 ];
                 $this->View("Users/register", $data);
+            } else
+                Session::Redirect("projetos");
+        }
+
+        /**
+         * Método responsável por carregar a View de cadastro de usuário
+         * @return void
+         */
+        public function MyProjects() : void {
+            if(Session::VerifySession()) {
+                $projects = (new ProjectController)->GetProjects();
+                foreach ($projects as $key => $project) {
+                    $projects[$key]["medias"] = (new MediaController())->GetMedias((int) $projects[$key]["id_project"]);
+                }
+                $data = [
+                    "title" => "Meus Projetos",
+                    "css" => "my-projects",
+                    "projects" => $projects,
+                    "btns" => $this->RenderButtons(),
+                    "js" => "my-projects"
+                ];
+                $this->View("Users/my-projects", $data);
             } else
                 Session::Redirect("projetos");
         }
