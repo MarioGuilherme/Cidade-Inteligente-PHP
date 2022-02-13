@@ -1,134 +1,3 @@
-<<<<<<< HEAD
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Poppins", sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-.parallax {
-    /* The image used */
-    background-image: url(../img/fundo.jpg);
-    /* Set a specific height */
-    min-height: 500px;
-    /* Create the parallax scrolling effect */
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-nav.navbar.navbar-expand-lg.navCity {
-    background: transparent !important;
-    color: #515A2D !important;
-    padding: 20px;
-}
-
-nav.navbar.navbar-expand-lg.navCity a {
-    text-decoration: none !important;
-    color: #515A2D !important;
-}
-
-.jumbotron {
-    background-image: url(../img/cidade.jpg);
-    background-size: cover;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    border-right: solid 1px rgba(255, 255, 255, 0.644);
-    color: rgb(243, 243, 243);
-}
-
-.conteudo {
-    background: rgba(228, 228, 228, 0.973);
-    padding: 10px;
-    box-shadow: 0 0 1em rgb(85, 85, 85);
-    border-radius: 10px;
-    margin-bottom: 2em;
-}
-
-.form-control {
-    color: rgb(57, 87, 88);
-}
-
-.form-control option {
-    background: rgb(228, 228, 228);
-}
-
-.btn-new-project,
-.btn-new-user {
-    background: rgb(57, 59, 88);
-    color: white;
-}
-
-.btn-new-project,
-.btn-new-user:hover {
-    background: rgb(39, 41, 61);
-    color: white;
-}
-
-.title_criar {
-    color: rgb(57, 59, 88);
-}
-
-.title_criar hr {
-    background: rgb(39, 41, 61);
-}
-
-.form-input {
-    padding-left: 40px;
-    width: 100%;
-    line-height: 1.2;
-    height: 40px;
-    outline: none;
-    border: none;
-    background: none;
-    border-bottom: solid 1px rgb(57, 87, 88);
-    color: rgb(57, 87, 88);
-}
-
-.form-input:focus {
-    padding-left: 40px;
-    width: 100%;
-    line-height: 1.2;
-    height: 40px;
-    outline: none;
-    border: none;
-    background: none;
-    border-bottom: solid 1px rgb(255, 255, 255);
-    color: rgb(255, 255, 255);
-}
-
-.form-input::placeholder {
-    color: rgb(57, 87, 88);
-}
-
-.inputIcon {
-    position: relative;
-}
-
-.inputIcon i {
-    position: absolute;
-    left: 0;
-    top: 0px;
-    padding: 9px 8px;
-    color: rgb(57, 87, 88);
-    transition: .3s;
-}
-
-.inputIcon input:focus+i {
-    color: rgb(255, 255, 255);
-}
-
-.inputIcon.inputIconBg i {
-    background-color: #aaa;
-    color: #fff;
-    padding: 9px 4px;
-    border-radius: 4px 0 0 0 4px;
-}
-=======
     body {
         margin: 0;
         padding: 0;
@@ -138,32 +7,30 @@ nav.navbar.navbar-expand-lg.navCity a {
     * {
         box-sizing: border-box;
     }
-    
-    .parallax {
-        /* The image used */
-        background-image: url(../img/fundo.jpg);
-        /* Set a specific height */
-        min-height: 500px;
-        /* Create the parallax scrolling effect */
-        background-attachment: fixed;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
+    /*
+.parallax {
+
+    background-image: url(../img/fundo.jpg);
+    min-height: 500px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+*/
     
     nav.navbar.navbar-expand-lg.navCity {
         background: transparent !important;
         color: #515A2D !important;
-        padding: 20px;
     }
     
     nav.navbar.navbar-expand-lg.navCity a {
         text-decoration: none !important;
-        color: #515A2D !important;
+        color: #515A2D;
     }
     
-    .jumbotron {
-        background-image: url(../img/cidade.jpg);
+    .img-teste {
+        background-image: url(../img/cidade.jpg) !important;
         background-size: cover;
         border-top-left-radius: 6px;
         border-bottom-left-radius: 6px;
@@ -171,12 +38,15 @@ nav.navbar.navbar-expand-lg.navCity a {
         color: rgb(243, 243, 243);
     }
     
+    label {
+        color: #fff;
+    }
+    
     .conteudo {
-        background: rgba(228, 228, 228, 0.973);
-        padding: 10px;
-        box-shadow: 0 0 1em rgb(85, 85, 85);
-        border-radius: 10px;
-        margin-bottom: 2em;
+        background: rgba(81, 90, 45, 0.336);
+        background: linear-gradient(356deg, rgba(81, 90, 45, 1) 0%, rgba(115, 165, 83, 1) 33%, rgba(183, 226, 156, 1) 99%);
+        margin: 1em;
+        padding: 25px;
     }
     
     .form-control {
@@ -189,22 +59,25 @@ nav.navbar.navbar-expand-lg.navCity a {
     
     .btn-new-project,
     .btn-new-user {
-        background: rgb(57, 59, 88);
+        background: #515A2D;
         color: white;
     }
     
     .btn-new-project,
     .btn-new-user:hover {
-        background: rgb(39, 41, 61);
+        background: #515A2D;
         color: white;
     }
     
     .title_criar {
-        color: rgb(57, 59, 88);
+        color: rgb(255, 255, 255);
+        text-align: center;
+        margin-bottom: 2em;
     }
     
     .title_criar hr {
-        background: rgb(39, 41, 61);
+        background: rgb(255, 255, 255);
+        text-align: center;
     }
     
     .form-input {
@@ -258,4 +131,123 @@ nav.navbar.navbar-expand-lg.navCity a {
         padding: 9px 4px;
         border-radius: 4px 0 0 0 4px;
     }
->>>>>>> bb35f17a9ffc74cbae70c062f837771e0e70d70f
+    
+    .lado-a {
+        font-family: "Poppins", sans-serif;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .img-conteudo {
+        height: 50%;
+        width: 100%;
+    }
+    
+    .btn-site {
+        padding: 10px;
+        color: white;
+        background: #515A2D;
+        text-transform: uppercase;
+    }
+    
+    .btn-site:hover {
+        padding: 10px;
+        color: white;
+        background: #73A553;
+        text-transform: uppercase;
+    }
+    
+    .btn-insta {
+        padding: 10px;
+        color: white;
+        background: #515A2D;
+        text-transform: uppercase;
+    }
+    
+    .btn-insta:hover {
+        padding: 10px;
+        color: white;
+        background: #73A553;
+        text-transform: uppercase;
+    }
+    
+    .btn-entrar {
+        background: #515A2D;
+        color: #fff !important;
+    }
+    
+    .title-galeria {
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .fundo {
+        background-image: url(../img/fundo.jpg);
+        width: 100%;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .fundo::before {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .rodape {
+        background: #515a2d91;
+        padding: 20px;
+        color: #fff;
+        font-family: "Poppins", sans-serif;
+    }
+    
+    .fundo-form {
+        background-image: url(../img/fundo.jpg);
+        width: 100%;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .fundo-form::before {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(255, 255, 255, 0.9);
+    }

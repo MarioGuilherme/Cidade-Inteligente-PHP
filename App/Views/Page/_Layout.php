@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="assets/css/font.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/<?= $data["css"] ?>.css">
+    <link rel="icon" type="imagem/png" href="assets\img\logo3.png" />
 </head>
 
 <body>

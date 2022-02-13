@@ -44,7 +44,7 @@
                 </a>
             </li>",
             "<li class='nav-item active'>
-                <a class='nav-link' href='login'>
+                <a class='nav-link btn btn-entrar' href='login'>
                     Login
                     <span class='sr-only'>(current)</span>
                 </a>
