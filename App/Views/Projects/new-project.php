@@ -3,19 +3,27 @@
     require __DIR__ . "/../Components/jumbotron.php";
 ?>
 
-<div class="container justify-content-center">
+<div class="container-fluid justify-content-center">
     <div class="conteudo">
         <form class="form">
             <div class="row">
                 <div class="col-12 col-md-12 title_criar">
                     <h3>
-                        Criar projetos
+                        Criar projeto
                     </h3>
                     <hr>
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-sm-12 col-lg-5 col-md-5">
+                    <div class="form-group">
+                        <label for="my-textarea">
+                            Título
+                        </label>
+                        <input class="form-control" maxlength="60" type="text" name="title">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-lg-2 col-md-2">
                     <div class="form-group">
                         <label>
                             Área do projeto
@@ -33,7 +41,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-sm-12 col-lg-3 col-md-3">
                     <div class="form-group">
                         <label for="my-select">
                             Curso do projeto
@@ -60,17 +68,7 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-6">
-                    <div class="form-group">
-                        <label for="my-textarea">
-                            Título
-                        </label>
-                        <input class="form-control" type="text" name="title">
-                    </div>
-                </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-sm-12 col-lg-2 col-md-2">
                     <div class="form-group">
                         <label>
                             Data
@@ -79,13 +77,21 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-12 col-lg-6 col-md-6">
+                    <div class="form-group">
+                        <label for="my-select">
+                            Pessoas Envolvidas
+                        </label>
+                        <select id="my-select" class="form-control" name="" multiple=""></select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-lg-6 col-md-6">
                     <div class="form-group">
                         <label for="my-textarea">
                             Descrição
                         </label>
-                        <textarea class="form-control" name="description_project" rows="3"></textarea>
+                        <textarea class="form-control" name="description_project" maxlength="300" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -97,16 +103,16 @@
                         </label>
                         <input class="form-control-file" multiple="multiple" type="file" name="medias[]">
                     </div>
-                    <div class="row medias-uploaded p-3 justify-content-center"></div>
+                </div>
+            </div>
+            <div class="row medias-uploaded"></div>
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <button class="btn btn-new-project btn-block" type="button">
+                        Criar Projeto
+                    </button>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col-12 col-md-12">
-                <button class="btn btn-new-project btn-block" type="button">
-                    Criar Projeto
-                </button>
-            </div>
-        </div>
     </div>
 </div>
