@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
 .cidade {
     background-image: url(../../img/cidade.jpg);
     background-size: cover;
@@ -15,17 +20,26 @@
     align-items: center;
 }
 
+.img-logo-cidade {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.img-logo-cidade img {
+    width: 100px;
+}
+
 .painel {
-    border-radius: 8px;
-    background: rgb(51, 44, 70);
-    box-shadow: 0 0 2em rgb(99, 97, 88);
-    margin: 2em;
-    padding: 50px;
+    background: rgb(81, 90, 45);
+    background: linear-gradient(356deg, rgba(81, 90, 45, 1) 0%, rgba(115, 165, 83, 1) 33%, rgba(183, 226, 156, 1) 99%);
+    margin: 1em;
+    padding: 25px;
 }
 
 .btn-login {
-    background: rgb(57, 87, 88);
+    background: #515A2D;
     color: white;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .btn-login:hover {
@@ -39,15 +53,22 @@
 
 .icon {
     font-size: 100px;
-    color: rgb(57, 87, 88);
+    color: white;
 }
 
 .titulo-projeto {
-    color: rgb(57, 87, 88);
+    color: white;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.login h1 {
-    padding: 10px;
+.form-check-label {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+}
+
+.esqueceu-senha {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
 }
 
 .esqueceu-senha:hover {
@@ -55,6 +76,7 @@
 }
 
 .form-input {
+    font-family: 'Montserrat', sans-serif;
     padding-left: 40px;
     width: 100%;
     line-height: 1.2;
@@ -62,8 +84,8 @@
     outline: none;
     border: none;
     background: none;
-    border-bottom: solid 1px rgb(57, 87, 88);
-    color: rgb(57, 87, 88);
+    border-bottom: solid 1px white;
+    color: white;
 }
 
 .form-input:focus {
@@ -74,12 +96,12 @@
     outline: none;
     border: none;
     background: none;
-    border-bottom: solid 1px rgb(255, 255, 255);
-    color: rgb(255, 255, 255);
+    border-bottom: solid 1px #6C6B6C;
+    color: #6C6B6C;
 }
 
 .form-input::placeholder {
-    color: rgb(57, 87, 88);
+    color: white;
 }
 
 .inputIcon {
@@ -91,7 +113,7 @@
     left: 0;
     top: 0px;
     padding: 9px 8px;
-    color: rgb(57, 87, 88);
+    color: white;
     transition: .3s;
 }
 

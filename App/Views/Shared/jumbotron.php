@@ -1,4 +1,4 @@
-<div class="jumbotron rounded-0 m-0">
+<!-- <div class="jumbotron rounded-0 m-0">
     <h1 class="display-4">
         Cidade Inteligente
     </h1>
@@ -6,4 +6,4 @@
     <p>
         Fatec Lins - Prof. Antônio Seabra
     </p>
-</div>
+</div> -->

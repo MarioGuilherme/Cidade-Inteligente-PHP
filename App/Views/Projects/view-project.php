@@ -1,3 +1,4 @@
+<div class="parallax">
 <?php
     require __DIR__ . "/../Shared/navbar.php";
     require __DIR__ . "/../Shared/jumbotron.php";
@@ -72,4 +73,6 @@
             }
         ?>
     </div>
+</div>
+
 </div>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark navCity">
+<nav class="navbar navbar-expand-lg navCity">
     <h4 class="navbar-brand">
         <i class="mdi mdi-city-variant-outline"></i> Cidade Inteligente
     </h4>
