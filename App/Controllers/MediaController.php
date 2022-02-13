@@ -18,7 +18,7 @@
         private Media $mediaModel;
 
         /**
-         *  Método responsável de instanciar o modelo de Mídia.
+         * Método responsável de instanciar o modelo de Mídia.
          * @return void
          */
         private function GetModel() : void {
@@ -48,6 +48,6 @@
          */
         public function GetMedias(int $id_project) : array {
             $this->GetModel();
-            return $this->mediaModel->Select("", "id_project = ?", "", "", "id_media, name, type, path", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+            return $this->mediaModel->Select("", "id_project = ?", "", "", "id_media, name, type, path, description", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
         }
     }

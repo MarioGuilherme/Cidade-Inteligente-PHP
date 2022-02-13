@@ -30,7 +30,7 @@
         private Project_User $projectUserModel;
 
         /**
-         *  Método responsável de instanciar o modelo de Projeto e de Projeto_Usuário.
+         * Método responsável de instanciar o modelo de Projeto e de Projeto_Usuário.
          * @return void
          */
         private function GetModel() {
@@ -130,21 +130,32 @@
          * @return void
          */
         public function ViewProject(int $id_project) : void {
-            $project = $this->projectModel->Select("INNER JOIN areas ON projects.id_area = areas.id_area
+            $this->GetModel();
+            $project = $this->projectModel::Select("INNER JOIN areas ON projects.id_area = areas.id_area
                                                     INNER JOIN courses ON projects.id_course = courses.id_course",
                                                     "projects.id_project = ?", "", "",
                                                     "projects.id_project, areas.area AS area, courses.course, title, projects.description, date",
                                                     [$id_project])->fetch(PDO::FETCH_ASSOC);
-            $project["users"] = (new ProjectUserController())->GetUsersByProject((int) $project["id_project"]);
-            $project["medias"] = (new MediaController())->GetMedias((int) $project["id_project"]);
-            $data = [
-                "title" => "Projeto - $project[title]",
-                "css" => "view-project",
-                "btns" => $this->RenderButtons(),
-                "project" => $project,
-                "js" => "view-project"
-            ];
-            $this->View("Projects/view-project", $data);
+            if(empty($project)) {
+                $data = [
+                    "title" => "Projeto não encontrado",
+                    "css" => "project-not-found",
+                    "btns" => $this->RenderButtons(),
+                    "js" => "project-not-found",
+                ];
+                $this->View("Projects/notFound", $data);
+            } else {
+                $project["users"] = (new ProjectUserController())->GetUsersByProject((int) $project["id_project"]);
+                $project["medias"] = (new MediaController())->GetMedias((int) $project["id_project"]);
+                $data = [
+                    "title" => "Projeto - $project[title]",
+                    "css" => "view-project",
+                    "btns" => $this->RenderButtons(),
+                    "project" => $project,
+                    "js" => "view-project"
+                ];
+                $this->View("Projects/view", $data);
+            }
         }
 
         /**
