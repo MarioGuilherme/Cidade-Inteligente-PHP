@@ -21,27 +21,29 @@ $(document).ready(() => {
                 } else if (type == "video") {
                     media = `<video style="width: -webkit-fill-available;" src="${e.target.result}" controls></video>`;
                 }
-                $(".medias-uploaded").append(`
-                    <div class="col-12 col-sm-12 col-lg-3 col-md-3">
-                        <div class="card">
-                            <div class="card-body">
-                                ${media}
-                                <div class="form-group">
-                                    <label>
-                                        Nome
-                                    </label>
-                                    <input class="form-control" type="text" name="name_media[]">
-                                </div>
-                                <div class="form-group">
-                                    <label>
-                                        Descrição
-                                    </label>
-                                    <textarea class="form-control" name="description_media[]" rows="3"></textarea>
+                if (type == "image" || type == "video") {
+                    $(".medias-uploaded").append(`
+                        <div class="col-12 col-sm-12 col-lg-3 col-md-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    ${media}
+                                    <div class="form-group">
+                                        <label>
+                                            Nome
+                                        </label>
+                                        <input class="form-control" type="text" name="name_media[]">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>
+                                            Descrição
+                                        </label>
+                                        <textarea class="form-control" name="description_media[]" rows="3"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `);
+                    `);
+                }
             }
             reader.readAsDataURL(file);
         }
