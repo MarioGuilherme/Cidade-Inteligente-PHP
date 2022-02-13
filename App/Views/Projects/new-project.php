@@ -1,6 +1,6 @@
 <?php
-    require __DIR__ . "/../Components/navbar.php";
-    require __DIR__ . "/../Components/jumbotron.php";
+    require __DIR__ . "/../Shared/navbar.php";
+    require __DIR__ . "/../Shared/jumbotron.php";
 ?>
 
 <div class="container-fluid justify-content-center">

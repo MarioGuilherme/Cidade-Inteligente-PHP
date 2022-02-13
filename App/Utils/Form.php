@@ -13,7 +13,7 @@
      */
     class Form {
         /**
-         * Método responsável por verificar se existe algum campo vazio num formulário
+         * Método responsável por verificar se existe algum campo vazio num formulário.
          * @param array $fields Campos a serem verificados
          * @return void
          */
@@ -24,12 +24,22 @@
         }
 
         /**
-         * Método responsável por criptografar a senha
+         * Método responsável por criptografar a senha.
          * @param string $password Senha a ser criptografada
          * @return string Retorna a senha criptografada
          */
         public static function EncryptPassword(string $password) : string {
             return password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        /**
+         * Método responsável por verificar a senha para login.
+         * @param string $password Senha a ser verificada
+         * @param string $hash Hash da senha criptografada do banco de dados
+         * @return void
+         */
+        public static function VerifyPassword(string $password, string $hash) : void {
+            !password_verify($password, $hash) ? Response::Message(WRONG_PASSWORD) : "";
         }
 
         /**
@@ -39,6 +49,15 @@
          */
         public static function ValidateEmail(string $email) : void {
             !filter_var($email, FILTER_VALIDATE_EMAIL) ? Response::Message(INVALID_EMAIL) : "";
+        }
+
+        /**
+         * Método responsável por validar a data e hora.
+         * @param string $date_time Data e hora a ser validada
+         * @return void
+         */
+        public static function ValidateDateTime(string $date_time) : void {
+            !preg_match("/^[0-9]{4}[-][0-9]{2}[-][0-9]{2}[T][0-9]{2}[:][0-9]{2}$/", $date_time, $matches) ? Response::Message(INVALID_DATE_TIME) : "";
         }
 
         /**

@@ -11,7 +11,7 @@
      */
     class Session {
         /**
-         * Método responsável por inicializar a sessão
+         * Método responsável por redirecionar para uma url.
          * @param string $url URL a ser redirecionada
          * @return void
          */
@@ -20,48 +20,35 @@
         }
 
         /**
-         * Método responsável por inicializar a sessão
+         * Método responsável por inicializar a sessão.
          * @return void
          */
         public static function StartSession() : void {
-            session_status() == PHP_SESSION_NONE ? session_start() : "";
+            session_start();
         }
 
         /**
-         * Método responsável por destruir a sessão
+         * Método responsável por destruir a sessão.
          * @return void
          */
         public static function DestroySession() : void {
-            if(session_status() == PHP_SESSION_NONE) {
-                self::StartSession();
-                session_destroy();
-            }else
-                session_destroy();
-            self::Redirect("../../projetos");
+            session_destroy();
+            self::Redirect("/");
         }
 
         /**
-         * Método responsável por verificar se existe uma sessão
-         * @return bool Retorna true se existir uma sessão e false se não existir
+         * Método responsável por verificar se a sessão está vazia.
+         * @return bool Retorna true se estiver vazio false se não estiver
          */
-        public static function VerifySession() : bool {
-            self::StartSession();
-            return empty($_SESSION) ? false : true;
+        public static function IsEmptySession() : bool {
+            return empty($_SESSION) ? true : false;
         }
 
         /**
-         * Método responsável por verificar se há algum
-         * usuário logado e se ele é um professor
-         * @return bool Retorna true se o usuário for um professor e false se não for
+         * Método responsável por verificar se o usuário é Professor.
+         * @return bool Retorna true se o usuário for um Professor e false se não for
          */
-        public static function VerifyAdm() : bool {
-            if(!self::VerifySession())
-                return true;
-            else {
-                if($_SESSION["type"] == "Professor(a)") {
-                    return true;
-                }
-            }
-            return false;
+        public static function IsAdmin() : bool {
+            return $_SESSION["type"] == "Professor(a)" ? true : false;
         }
     }

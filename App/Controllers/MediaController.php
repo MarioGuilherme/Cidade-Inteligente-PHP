@@ -7,7 +7,6 @@
     use PDO;
     use App\Core\Controller;
     use App\Models\Media;
-    use App\Utils\Response;
     use App\Utils\File;
 
     /**
@@ -24,7 +23,6 @@
          * @return void
          */
         private function GetModel() : void {
-            require __DIR__ . "/../Database/Connection.php";
             $this->mediaModel = new Media();
         }
 

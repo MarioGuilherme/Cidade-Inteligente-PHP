@@ -12,8 +12,8 @@
     const EMPTY_FIELDS = ["msg"=>"Preencha o(s) campo(s) vazio(s)","icon"=>"error"];
     const ERRO_CONEXAO = ["msg"=>"Erro interno no servidor!","icon"=>"error"];
     const PROJECT_REGISTERED = ["msg"=>"Projeto cadastrado com sucesso","icon"=>"success"];
-    const INVALID_EXTENSION = ["msg"=>"Extensão inválida!","icon"=>"error"];
     const PROJECT_CREATED = ["msg"=>"Projeto Criado com êxito!","icon"=>"success"];
+    const INVALID_DATE_TIME = ["msg"=>"Data e hora inválida.", "icon"=>"error"];
     const LARGER_SIZE = ["msg"=>"Tamanho do arquivo excede o limite!","icon"=>"error"];
     const CHANGE_PASSWORD_REQUEST_SEND = ["msg"=>"Foi enviado um link de recuperação de senha neste email!","icon"=>"success"];
     const PASSWORD_CHANGED = ["msg"=>"Senha alterada com sucesso!","icon"=>"success"];
@@ -23,4 +23,8 @@
     const INVALID_TOKEN = ["msg"=>"Token inválido!","icon"=>"error"];
     const INVALID_COURSE = ["msg"=>"Curso inválido!","icon"=>"error"];
     const INVALID_AREA = ["msg"=>"Área do projeto inválido!","icon"=>"error"];
+    const FILE_NOT_SEND = ["msg" => "Não há uma imagem anexada!", "icon" => "error"];
+    const FILE_TOO_BIG = ["msg"=>"O tamanho da imagem excede 2.5MB!", "icon"=>"error"];
+    const INVALID_EXTENSION = ["icon"=>"error","msg"=>"Extensão inválida (apenas jpg, jpeg, png e mp4)!"];
+    const ERROR_UPLOAD = ["msg"=>"Erro ao enviar arquivo, tente novamente ou entre em contato!","icon"=>"error"];
     const NOTHING_FOUND = "<h2>Nenhum projeto criado!</h2>";
