@@ -1,3 +1,7 @@
+option {
+    padding: 3px;
+}
+
 textarea {
     resize: none;
 }

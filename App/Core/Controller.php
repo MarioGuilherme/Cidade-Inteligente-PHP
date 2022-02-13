@@ -5,17 +5,16 @@
     namespace App\Core;
 
     use App\Utils\Session;
-    use App\Utils\Response;
 
     /**
-     * Classe encarregada de ser o intermédio entre a View e o Model
+     * Classe encarregada de ser o intermédio entre a View e o Model.
      *
      * @author Mário Guilherme
      */
     class Controller {
         private array $buttons = [
            "<li class='nav-item active'>
-                <a class='nav-link' href='projetos'>
+                <a class='nav-link' href='meus-projetos'>
                     Meus Projetos
                     <span class='sr-only'>(current)</span>
                 </a>
@@ -34,12 +33,12 @@
             </li>",
             "<li class='nav-item active'>
                 <a class='nav-link' href='criar-usuario'>
-                    Cadastrar Professor(a)/Aluno
+                    Cadastrar Professor(a)/Aluno(a)
                     <span class='sr-only'>(current)</span>
                 </a>
             </li>",
             "<li class='nav-item active'>
-                <a class='nav-link' href='criar-usuario'>
+                <a class='nav-link' href='perfil'>
                     Meu Perfil
                     <span class='sr-only'>(current)</span>
                 </a>
@@ -75,13 +74,13 @@
          * @return void
          */
         public function View(string $view, array $data = []) : void {
-            require __DIR__ . "/../Views/Shared/_Layout.php";
+            require __DIR__ . "/../Views/Page/_Layout.php";
         }
 
         /**
          * Método responsável por renderizar os botões de navegação
          * @param int $indexBtn Índice do botão que será apagado (página atual)
-         * @return string
+         * @return string HTML dos botões de navegação
          */
         public function RenderButtons(int $indexBtn = null) : string {
             // SE O USUÁRIO NÃO ESTIVER LOGADO

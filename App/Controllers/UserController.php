@@ -8,10 +8,12 @@
     use App\Core\Controller;
     use App\Controllers\ProjectController;
     use App\Models\User;
-    use App\Utils\Form;
-    use App\Utils\Response;
-    use App\Utils\Email;
-    use App\Utils\Session;
+    use App\Utils\{
+        Form,
+        Response,
+        Email,
+        Session
+    };
 
     /**
      * Classe herdada de Controller responsável por controlar as ações do Usuário
@@ -22,13 +24,20 @@
         private User $userModel;
 
         /**
-         * Método responsável de carregar a configuração do
-         * banco de dados e instanciar o modelo de usuario
+         *  Método responsável de instanciar o modelo de Usuário.
          * @return void
          */
-        private function GetModel() : void {
-            require __DIR__ . "/../Database/Connection.php";
+        private function GetModel() {
             $this->userModel = new User();
+        }
+
+        /**
+         * Método responsável por retornar todos os ID e nomes dos usuários
+         * @return array Array de usuário
+         */
+        public function GetUsers() : array {
+            $this->GetModel();
+            return $this->userModel::Select("", "", "", "", "id_user, name")->fetchAll(PDO::FETCH_ASSOC);
         }
 
         /**
@@ -152,30 +161,28 @@
 
             // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             $this->GetModel();
-            $stmtUser = $this->userModel->Select("INNER JOIN courses ON users.id_course=courses.id_course", "email = ?", "",
+            $stmtUser = $this->userModel::Select("INNER JOIN courses ON users.id_course=courses.id_course", "email = ?", "",
                                                  "", "id_user, courses.id_course, name, email, password, type, course", [$email]);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             if($stmtUser->rowCount()) {
                 $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-                if(password_verify($password, $user["password"])) {
-                    $_SESSION = [
-                        "id_user" => $user["id_user"],
-                        "id_course" => $user["id_course"],
-                        "name" => $user["name"],
-                        "email" => $user["email"],
-                        "type" => $user["type"],
-                        "course" => $user["course"]
-                    ];
-                    Response::Message(LOGGED);
-                } else
-                    Response::Message(WRONG_PASSWORD);
+                Form::VerifyPassword($password, $user["password"]);
+                $_SESSION = [
+                    "id_user" => $user["id_user"],
+                    "id_course" => $user["id_course"],
+                    "name" => $user["name"],
+                    "email" => $user["email"],
+                    "type" => $user["type"],
+                    "course" => $user["course"]
+                ];
+                Response::Message(LOGGED);
             } else
                 Response::Message(USER_NOT_FOUND);
         }
 
         /**
-         * Método responsável por fazer o cadastro de um usuario
+         * Método responsável por fazer o cadastro de um novo usuario.
          * @param array $form Dados do formulário
          * @return void
          */
@@ -188,31 +195,29 @@
             $name = Form::SanatizeField($form["name"], FILTER_SANITIZE_STRING);
             $password = Form::SanatizeField($form["password"], FILTER_SANITIZE_STRING);
             $type = Form::SanatizeField($form["type"], FILTER_SANITIZE_STRING);
-            $course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
- 
-            // VALIDAÇÃO DOS CAMPOS
-            if($type == "Aluno(a)" || $type == "Professor(a)") {
-                if(filter_var($course, FILTER_VALIDATE_INT) && $course > 0 && $course <= 7) {
-                    Form::VerifyEmptyFields([$email, $name, $password]);
-                    Form::ValidateEmail($email);
-                    $password = Form::EncryptPassword($password);
+            $course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_STRING);
 
-                    // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO (PARA EVITAR DUPLICIDADE)
-                    $this->GetModel();
-                    $stmtUser = $this->userModel->Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
-                    if(!$stmtUser) {
-                        $this->userModel->Insert([
-                            "email" => $email,
-                            "name" => $name,
-                            "password" => $password,
-                            "type" => $type,
-                            "id_course" => $course
-                        ]);
-                        Response::Message(USER_REGISTERED);
-                    } else
-                        Response::Message(EMAIL_ALREADY_EXISTS);
+            // VERIFICA SE HÁ CAMPOS VAZIOS, SE O EMAIL É VÁLIDO E O CURSO
+            Form::VerifyEmptyFields([$email, $name, $password, $type, $course]);
+            Form::ValidateEmail($email);
+            Form::ValidateCourse($course);
+
+            // VALIDAÇÃO DO TIPO DO USUÁRIO
+            if($type == "Aluno(a)" || $type == "Professor(a)") {
+                $this->GetModel();
+                $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
+                $password = Form::EncryptPassword($password);
+                if(!$stmtUser) {
+                    $this->userModel::Insert([
+                        "id_course" => $course,
+                        "name" => $name,
+                        "email" => $email,
+                        "password" => $password,
+                        "type" => $type
+                    ]);
+                    Response::Message(USER_REGISTERED);
                 } else
-                    Response::Message(INVALID_COURSE);
+                    Response::Message(EMAIL_ALREADY_EXISTS);
             } else
                 Response::Message(INVALID_TYPE_USER);
         }

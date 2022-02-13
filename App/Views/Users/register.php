@@ -1,6 +1,6 @@
 <?php
-    require __DIR__ . "/../Shared/navbar.php";
-    require __DIR__ . "/../Shared/jumbotron.php";
+    require __DIR__ . "/../Page/Components/_Navbar.php";
+    require __DIR__ . "/../Page/Components/_Jumbotron.php";
 ?>
 
 <div class="container justify-content-center">
@@ -17,13 +17,13 @@
             <div class="row mt-3">
                 <div class="col-12 col-md-6">
                     <div class="inputIcon">
-                        <input type="text" name="name" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o nome">
+                        <input type="text" maxlength="60" name="name" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o nome">
                         <i class="mdi mdi-account"></i>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="inputIcon">
-                        <input type="email" name="email" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o email">
+                        <input type="email" maxlength="60" name="email" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o email">
                         <i class="mdi mdi-email"></i>
                     </div>
                 </div>
@@ -31,13 +31,13 @@
             <div class="row mt-5">
                 <div class="col-12 col-md-6">
                     <div class="inputIcon">
-                        <input type="password" name="password" class="form-inputUser" aria-describedby="emailHelp" placeholder="Crie a senha">
+                        <input type="password" maxlength="60" name="password" class="form-inputUser" aria-describedby="emailHelp" placeholder="Crie a senha">
                         <i class="mdi mdi-key"></i>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="inputIcon">
-                        <input type="password" class="form-inputUser" aria-describedby="emailHelp" placeholder="Confirme a senha">
+                        <input type="password" maxlength="60" class="form-inputUser" aria-describedby="emailHelp" placeholder="Confirme a senha">
                         <i class="mdi mdi-key-change"></i>
                     </div>
                 </div>
@@ -49,6 +49,9 @@
                             Tipo de Usuário
                         </label>
                         <select class="form-control" name="type">
+                            <option value="">
+                                SELECIONE O TIPO DE USUÁRIO
+                            </option>
                             <option value="Professor(a)">
                                 Professor(a)
                             </option>
@@ -64,6 +67,9 @@
                             Curso do usuário
                         </label>
                         <select id="my-select" class="form-control" name="course">
+                            <option value="">
+                                SELECIONE O CURSO
+                            </option>
                             <option value="1">
                                 Análise e Desenvolvimento de Sistemas
                             </option>

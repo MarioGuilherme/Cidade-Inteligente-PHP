@@ -7,7 +7,7 @@ function AjaxFile(url, dataType, data, callback) {
         nimeType: "multipart/form-data",
         cache: false,
         contentType: false,
-        processData: false,
+        processData: false
     }).done(callback);
 }
 
@@ -47,21 +47,21 @@ function VerifyPasswords() {
 function VerifyFields(form) {
     for (let i = 0; i < form.length; i++) {
         if (form[i].value == "") {
-            SweetAlert("error", "Preencha o(s) campo(s) vazio(s)");
+            SweetAlert("error", "Há campo(s) vazio(s) que precisam ser preenchidos");
             throw "exit";
         }
     }
 }
 
 function CleanFields(icon) {
-    icon == "success" ? $("input, textarea, select").val("") : "";
-    icon == "success" ? $("select").prop("selectedIndex", 0) : "";
+    if (icon == "success") {
+        $("input, select, textarea").val("");
+        $("select").prop("selectedIndex", 0);
+    }
 }
 
 function Redirect(icon, url) {
-    if (icon == "success") {
-        setTimeout(function() {
-            $(location).attr("href", url);
-        }, 2000);
-    }
+    icon == "success" ? setTimeout(() => {
+        $(location).attr("href", url);
+    }, 2000) : "";
 }

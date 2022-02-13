@@ -1,10 +1,10 @@
 $(document).ready(() => {
     $(".btn-new-user").click(() => {
-        VerifyFields($("form")[0]);
+        VerifyFields($("form").serializeArray());
         VerifyPasswords();
-        Ajax("src/services/register", "json", $("form").serialize(), (response) => {
+        Ajax("services/register", "json", $("form").serialize(), response => {
             SweetAlert(response.icon, response.msg);
             CleanFields(response.icon);
         });
-    })
-})
+    });
+});

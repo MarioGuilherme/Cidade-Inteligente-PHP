@@ -1,6 +1,6 @@
-<?php
-    require __DIR__ . "/../Shared/navbar.php";
-    require __DIR__ . "/../Shared/jumbotron.php";
+<div class="parallax"><?php
+    require __DIR__ . "/../Page/Components/_Navbar.php";
+    require __DIR__ . "/../Page/Components/_Jumbotron.php";
 ?>
 
 <div class="galeria">
@@ -33,8 +33,9 @@
                     $status = "";
                 }
 
-                require "card.php";
+                require "Components/card.php";
             }
         ?>
     </div>
+</div>
 </div>

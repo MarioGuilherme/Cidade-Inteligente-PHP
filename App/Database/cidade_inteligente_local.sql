@@ -107,10 +107,12 @@ ENGINE = InnoDB;
 -- Table `cidade_inteligente`.`projects_users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`projects_users` (
+  `id_project_user` INT NOT NULL AUTO_INCREMENT,
   `id_project` INT NOT NULL,
   `id_user` INT NOT NULL,
   INDEX `fk_projects_has_users_users1_idx` (`id_user` ASC),
   INDEX `fk_projects_has_users_projects1_idx` (`id_project` ASC),
+  PRIMARY KEY (`id_project_user`),
   CONSTRAINT `fk_projects_has_users_projects1`
     FOREIGN KEY (`id_project`)
     REFERENCES `cidade_inteligente`.`projects` (`id_project`)
@@ -127,6 +129,7 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 -- INSERTS
 INSERT INTO courses (course) VALUES ("Análise e Desenvolvimento de Sistemas");

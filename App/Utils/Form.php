@@ -52,6 +52,15 @@
         }
 
         /**
+         * Método responsável por validar o curso.
+         * @param int $course ID do curso
+         * @return void
+         */
+        public static function ValidateCourse(int $course) : void {
+            !is_numeric($course) || $course < 1 || $course > 7 ? Response::Message(INVALID_COURSE) : "";
+        }
+
+        /**
          * Método responsável por validar a data e hora.
          * @param string $date_time Data e hora a ser validada
          * @return void

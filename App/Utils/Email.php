@@ -14,6 +14,13 @@
      */
     class Email {
         private PHPMailer $mailer;
+        private static string $host = "smtp.gmail.com";
+        private static string $username = "cidadeinteligente2022@gmail.com";
+        private static string $password = "cidadeinteligenteSMTPAdmin";
+        private static string $SMTPSecure = "tls";
+        private static int $port = 587;
+        private static string $from = "cidadeinteligente2022@gmail.com";
+        private static string $CharSet = "UTF-8";
 
         /**
          * Método responsável por inicializar o objeto PHPMailer
@@ -23,17 +30,17 @@
             $this->mailer = new PHPMailer(true);
             $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
             $this->mailer->isSMTP();
-            $this->mailer->Host = "smtp.gmail.com";
+            $this->mailer->Host = self::$host;
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = "cidadeinteligente2022@gmail.com";
-            $this->mailer->Password = "cidadeinteligenteSMTPAdmin";
-            $this->mailer->SMTPSecure = "tls";
-            $this->mailer->Port = 587;
+            $this->mailer->Username = self::$username;
+            $this->mailer->Password = self::$password;
+            $this->mailer->SMTPSecure = self::$SMTPSecure;
+            $this->mailer->Port = self::$port;
             $this->mailer->SMTPDebug = 0;
-            $this->mailer->setFrom("cidadeinteligente2022@gmail.com");
+            $this->mailer->setFrom(self::$from);
             $this->mailer->addAddress($receiver);
             $this->mailer->isHTML(true);
-            $this->mailer->CharSet = "UTF-8";
+            $this->mailer->CharSet = self::$CharSet;
         }
 
         /**

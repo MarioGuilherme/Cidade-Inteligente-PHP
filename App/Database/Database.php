@@ -128,7 +128,7 @@
          * @param string $join Join com outras tabelas
          * @param string $where Condição para o SELECT
          * @param string $order Ordenação dos resultados
-         * @param string $limit Limite da SQL
+         * @param string $limit Limite de resultados
          * @param string $fields Campos da tabela
          * @param array $params Parâmetros da SQL (Array [$value])
          * @return PDOStatement Objeto PDOStatement

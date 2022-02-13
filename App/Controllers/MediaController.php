@@ -10,7 +10,7 @@
     use App\Utils\File;
 
     /**
-     * Classe herdada de Controller responsável por controlar as ações da Mídia
+     * Classe herdada de Controller responsável por controlar as ações da Mídia.
      *
      * @author Mário Guilherme
      */
@@ -18,8 +18,7 @@
         private Media $mediaModel;
 
         /**
-         * Método responsável de carregar a configuração do
-         * banco de dados e instanciar o modelo de mídia
+         *  Método responsável de instanciar o modelo de Mídia.
          * @return void
          */
         private function GetModel() : void {

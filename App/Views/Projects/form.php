@@ -1,6 +1,6 @@
 <?php
-    require __DIR__ . "/../Shared/navbar.php";
-    require __DIR__ . "/../Shared/jumbotron.php";
+    require __DIR__ . "/../Page/Components/_Navbar.php";
+    require __DIR__ . "/../Page/Components/_Jumbotron.php";
 ?>
 
 <div class="container-fluid justify-content-center">
@@ -29,6 +29,9 @@
                             Área do projeto
                         </label>
                         <select class="form-control" name="area">
+                            <option value="">
+                                SELECIONE A ÁREA
+                            </option>
                             <option value="1">
                                 Industrial
                             </option>
@@ -47,6 +50,9 @@
                             Curso do projeto
                         </label>
                         <select id="my-select" class="form-control" name="course">
+                            <option value="">
+                                SELECIONE O CURSO
+                            </option>
                             <option value="1">
                                 Análise e Desenvolvimento de Sistemas
                             </option>
@@ -78,20 +84,29 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-12 col-sm-12 col-lg-6 col-md-6">
+                <div class="col-12 col-sm-12 col-lg-4 col-md-4">
                     <div class="form-group">
                         <label for="my-select">
                             Pessoas Envolvidas
                         </label>
-                        <select id="my-select" class="form-control" name="" multiple=""></select>
+                        <select id="my-select" class="form-control" name="users" multiple>
+                            <?php foreach ($data["users"] as $user): ?>
+                                <option value="<?= $user["id_user"] ?>">
+                                    <?= $user["name"] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <h6 class="text-danger text-center">
+                            Segure Ctrl enquanto seleciona as pessoas
+                        </h6>
                     </div>
                 </div>
-                <div class="col-12 col-sm-12 col-lg-6 col-md-6">
+                <div class="col-12 col-sm-12 col-lg-8 col-md-8">
                     <div class="form-group">
                         <label for="my-textarea">
                             Descrição
                         </label>
-                        <textarea class="form-control" name="description_project" maxlength="300" rows="5"></textarea>
+                        <textarea class="form-control" name="description" maxlength="300" rows="5"></textarea>
                     </div>
                 </div>
             </div>
