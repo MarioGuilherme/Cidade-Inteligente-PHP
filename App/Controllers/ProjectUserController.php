@@ -17,12 +17,10 @@
         private Project_User $projectUserModel;
 
         /**
-         * Método responsável de carregar a configuração do
-         * banco de dados e instanciar o modelo de usuario
+         * Método responsável de instanciar o modelo de Projeto_Usuário.
          * @return void
          */
         private function GetModel() : void {
-            require __DIR__ . "/../Database/Connection.php";
             $this->projectUserModel = new Project_User();
         }
 

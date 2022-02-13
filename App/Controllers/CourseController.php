@@ -16,7 +16,7 @@
         private Course $courseModel;
 
         /**
-         *  Método responsável de instanciar o modelo de Curso.
+         * Método responsável de instanciar o modelo de Curso.
          * @return void
          */
         private function GetModel() {

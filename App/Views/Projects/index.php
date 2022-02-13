@@ -23,9 +23,9 @@
                     $lis .= "<li data-target='#carousel-$project[id_project]' data-slide-to='$project[id_project]' class='$status'></li>";
 
                     if($media["type"] == "video/mp4")
-                        $tagMedia = "<video class='d-block' style='width:inherit;' preload='metadata' controls src='src/medias/$media[path]'></video>";
+                        $tagMedia = "<video class='d-block' style='width:inherit;' preload='metadata' controls src='medias/$media[path]'></video>";
                     else
-                        $tagMedia = "<img class='d-block w-100' src='src/medias/$media[path]'>";
+                        $tagMedia = "<img class='d-block w-100' src='medias/$media[path]'>";
 
                     $divs .= "<div class='carousel-item $status'>
                                 $tagMedia

@@ -45,7 +45,7 @@
         </h3>
         <div class="row bg-info justify-content-center align-items-center m-1 p-1">
             <?php foreach($data["project"]["users"] as $user) : ?>
-                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                     <p>
                         <?= $user["name"] ?>
                     </p>
@@ -56,21 +56,31 @@
             Mídias
         </h3>
         <div class="row bg-info justify-content-center align-items-center m-1 p-1">
-            <?php
-                foreach($data["project"]["medias"] as $media) {
-                    switch ($media["type"]) {
-                        case "video/mp4":
-                            $tagMedia = "<video controls src='src/medias/$media[path]'></video>";
-                        
-                            break;
-
-                        default:
-                            $tagMedia = "<img src='src/medias/$media[path]' alt='$media[name]'>";
-                            break;
-                    }
-                    echo "<div class='col-12 col-sm-12 col-md-2 col-lg-2 mt-1 mb-1'>$tagMedia</div>";
-                }
-            ?>
+            <?php foreach($data["project"]["medias"] as $media): ?>
+                <div class="col-12 col-sm-12 col-lg-3 col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <?php if($media["type"] == "video/mp4") : ?>
+                                <video class="d-block" style="width:inherit;" preload="metadata" controls src="medias/<?= $media["path"] ?>"></video>
+                            <?php else : ?>
+                                <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["path"] ?>">
+                            <?php endif; ?>
+                            <div class="form-group">
+                                <label>
+                                    Nome
+                                </label>
+                                <input class="form-control" type="text" value="<?= $media["name"] ?>" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    Descrição
+                                </label>
+                                <textarea class="form-control" rows="3" disabled><?= $media["description"] ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </div>

@@ -27,7 +27,7 @@
             <p class="card-text">
                 <?= $project["description"] ?>
             </p>
-            <a href="projeto?id=<?= $project["id_project"] ?>" class="btn btn-card btn-block">
+            <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-card btn-block">
                 Ver Mais Sobre
             </a>
         </div>

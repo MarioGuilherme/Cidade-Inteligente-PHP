@@ -16,7 +16,7 @@
         private Area $areaModel;
 
         /**
-         *  Método responsável de instanciar o modelo de Área.
+         * Método responsável de instanciar o modelo de Área.
          * @return void
          */
         private function GetModel() {
