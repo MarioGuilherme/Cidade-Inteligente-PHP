@@ -50,7 +50,7 @@
          * @return void
          */
         public function FormRegister() : void {
-            if(Session::VerifyAdm()) {
+            if(Session::IsAdmin()) {
                 $data = [
                     "title" => "Cadastro de Usuário",
                     "css" => "register",
@@ -89,7 +89,7 @@
          * @return void
          */
         public function FormLogin() : void {
-            if(!Session::VerifySession()) {
+            if(Session::IsEmptySession()) {
                 $data = [
                     "title" => "Login",
                     "css" => "login",
@@ -181,7 +181,7 @@
          */
         public function Register(array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
-            Session::VerifyAdm() ? "" : Response::Message(INVALID_PERMISSION);
+            Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
             $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);

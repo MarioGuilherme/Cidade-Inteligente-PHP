@@ -8,11 +8,6 @@
     use PDOStatement;
     use PDOException;
 
-    /**
-     * Classe encarregada de fazer a conexão e gestão com o banco de dados
-     *
-     * @author Mário Guilherme
-     */
     class Database {
         /**
          * Driver do banco de dados
@@ -45,10 +40,18 @@
         private static string $password;
 
         /**
-         * Codificação de caracteres do banco de dados
+         * Colação de caracteres do banco de dados
          * @var string
          */
         private static string $charset;
+
+        /**
+         * Opções da conexão com o banco de dados
+         * @var string
+         */
+        protected static array $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ];
 
         /**
          * Nome da tabela a ser manipulada
@@ -63,13 +66,14 @@
         private PDO $PDO;
 
         /**
-         * Método responsável por configurar a classe
+         * Método responsável por configurar a classe.
          * @param string $driver Driver do banco de dados
          * @param string $host Host do banco de dados
          * @param string $database Nome do banco de dados
          * @param string $user Usuário do banco de dados
          * @param string $password Senha do banco de dados
-         * @param string $charset Codificação de caracteres do banco de dados
+         * @param string $charset Colação do banco de dados
+         * @return void
          */
         public static function Config(string $driver, string $host, string $database, string $user, string $password, string $charset) : void {
             self::$driver = $driver;
@@ -83,6 +87,7 @@
         /**
          * Define a tabela e instancia e conexão
          * @param string $table
+         * @return void
          */
         public function __construct(string $table = null) {
             $this->table = $table;
@@ -90,7 +95,7 @@
         }
 
         /**
-         * Método responsável por criar uma conexão com o banco de dados
+         * Método responsável por criar uma conexão com o banco de dados.
          * @return void
          */
         private function SetConnection() : void {
@@ -103,10 +108,10 @@
         }
 
         /**
-         * Método responsável por executar queries dentro do banco de dados
+         * Método responsável por executar SQL juntamente com parâmetros no banco de dados.
          * @param string $sql SQL a ser executada
          * @param array $params Parâmetros da SQL (Array [$value])
-         * @return PDOStatement
+         * @return PDOStatement Objeto PDOStatement
          */
         public function Execute(string $sql, array $params = []) : PDOStatement {
             try {
@@ -119,7 +124,24 @@
         }
 
         /**
-         * Método responsável por inserir dados no banco
+         * Método responsável por realizar seleções no banco de dados.
+         * @param string $join Join com outras tabelas
+         * @param string $where Condição para o SELECT
+         * @param string $order Ordenação dos resultados
+         * @param string $limit Limite da SQL
+         * @param string $fields Campos da tabela
+         * @param array $params Parâmetros da SQL (Array [$value])
+         * @return PDOStatement Objeto PDOStatement
+         */
+        public function Select(string $join = "", string $where = "", string $order = "", string $limit = "", string $fields = "*", array $params = []) : PDOStatement {
+            $where = strlen($where) ? "WHERE ".$where : "";
+            $order = strlen($order) ? "ORDER BY ".$order : "";
+            $sql = "SELECT $fields FROM {$this->table} $join $where $order";
+            return $this->Execute($sql, $params);
+        }
+
+        /**
+         * Método responsável por realizar inserções no dados no banco.
          * @param array $values Valores a serem inseridos (Array associativo ["field" => $value])
          * @return int ID inserido
          */
@@ -127,49 +149,32 @@
             $fields = array_keys($values);
             $binds  = array_pad([], count($fields), "?");
             $sql = "INSERT INTO {$this->table} (".implode(", " , $fields).") VALUES (".implode(", ", $binds).")";
-            $this->execute($sql, array_values($values));
+            $this->Execute($sql, array_values($values));
             return (int) $this->PDO->lastInsertId();
         }
 
         /**
-         * Método responsável por executar uma SQL no banco
-         * @param string $join Joins da SQL
-         * @param string $where Condição da SQL
-         * @param string $order Ordenação da SQL
-         * @param string $limit Limite da SQL
-         * @param string $fields Campos da SQL
-         * @param array $params Parâmetros da SQL (Array [$value])
-         * @return PDOStatement
-         */
-        public function Select(string $join = "", string $where = "", string $order = "", string $limit = "", string $fields = "*", array $params = []) : PDOStatement {
-            $where = strlen($where) ? "WHERE ".$where : "";
-            $order = strlen($order) ? "ORDER BY ".$order : "";
-            $limit = strlen($limit) ? "LIMIT ".$limit : "";
-            $sql = "SELECT $fields FROM {$this->table} $join $where $order $limit";
-            return $this->Execute($sql, $params);
-        }
-
-        /**
-         * Método responsável por executar atualizações no banco de dados
+         * Método responsável por realizar atualizações no banco de dados.
          * @param string $where Condição para atualização
          * @param array $values Valores a serem atualizados (Array associativo ["field" => $value])
-         * @return boolean
+         * @return bool Retorna true se a atualização for bem sucedida
          */
         public function Update(string $where, array $values) : bool {
             $fields = array_keys($values);
-            $sql = "UPDATE {$this->table} SET " . implode(" = ?, ", $fields) . " = ? WHERE $where";
-            $this->execute($sql, array_values($values));
+            $sql = "UPDATE {$this->table} SET " . implode(" = ?, ", $fields) . " = ? WHERE $where LIMIT 1";
+            $this->Execute($sql, array_values($values));
             return true;
         }
 
         /**
-         * Método responsável por excluir dados do banco
+         * Método responsável por realizar exclusões no dados do banco.
          * @param string $where Condição para exclusão
-         * @return boolean
+         * @param array $params Parâmetros da SQL (Array [$value])
+         * @return bool Retorna true se a exclusão for bem sucedida
          */
-        public function Delete(string $where) : bool {
-            $sql = "DELETE FROM {$this->table} WHERE $where";
-            $this->execute($sql);
+        public function Delete(string $where, array $params = []) : bool {
+            $sql = "DELETE FROM {$this->table} WHERE $where LIMIT 1";
+            $this->Execute($sql, $params);
             return true;
         }
     }

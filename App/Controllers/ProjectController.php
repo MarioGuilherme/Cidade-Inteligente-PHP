@@ -24,28 +24,13 @@
         private Project_User $projectUserModel;
 
         /**
-         * Método responsável de carregar a configuração do
-         * banco de dados e instanciar o modelo de projeto
+         * Construtor da classe, instancia o modelo de projeto
          * @return void
          */
-        private function GetModel() : void {
+        public function __construct() {
             $this->projectModel = new Project();
             $this->projectUserModel = new Project_User();
         }
-
-        // /**
-        //  * Método responsável por retornar um projeto pelo seu id
-        //  * @param int $id_project ID do projeto
-        //  * @return array Dados do Projeto
-        //  */
-        // private function GetProjectByID(int $id_project) : array {
-        //     $this->GetModel();
-        //     return $this->projectModel->Select("INNER JOIN areas ON projects.id_area = areas.id_area
-        //                                         INNER JOIN courses ON projects.id_course = courses.id_course",
-        //                                        "projects.id_project = ?", "", "",
-        //                                        "projects.id_project, areas.area AS area, courses.course, title, projects.description, date",
-        //                                         [$id_project])->fetch(PDO::FETCH_ASSOC);
-        // }
 
         // /**
         //  * Método responsável por carregar a página principal,
@@ -113,7 +98,6 @@
          * @return void
          */
         public function Index() : void {
-            $this->GetModel();
             $projects = $this->projectModel::Select()->fetchAll(PDO::FETCH_ASSOC);
             foreach ($projects as $key => $project) {
                 $projects[$key]["medias"] = (new MediaController())->GetMedias((int) $projects[$key]["id_project"]);
@@ -128,25 +112,28 @@
             $this->View("Projects/listAll", $data);
         }
 
-        // /**
-        //  * Método responsável de trazer os dados de um projeto de
-        //  * acordo com seu id
-        //  * @param int $id_project ID do projeto
-        //  * @return void
-        //  */
-        // public function ViewProject(int $id_project) : void {
-        //     $project = $this->GetProjectByID($id_project);
-        //     $project["users"] = (new ProjectUserController())->GetUsersByProject((int) $project["id_project"]);
-        //     $project["medias"] = (new MediaController())->GetMedias((int) $project["id_project"]);
-        //     $data = [
-        //         "title" => "Projeto - $project[title]",
-        //         "css" => "view-project",
-        //         "btns" => $this->RenderButtons(),
-        //         "project" => $project,
-        //         "js" => "view-project"
-        //     ];
-        //     $this->View("Projects/view-project", $data);
-        // }
+        /**
+         * Método responsável de trazer os dados de um projeto de acordo com seu id
+         * @param int $id_project ID do projeto
+         * @return void
+         */
+        public function ViewProject(int $id_project) : void {
+            $project = $this->projectModel->Select("INNER JOIN areas ON projects.id_area = areas.id_area
+                                                    INNER JOIN courses ON projects.id_course = courses.id_course",
+                                                    "projects.id_project = ?", "", "",
+                                                    "projects.id_project, areas.area AS area, courses.course, title, projects.description, date",
+                                                    [$id_project])->fetch(PDO::FETCH_ASSOC);
+            $project["users"] = (new ProjectUserController())->GetUsersByProject((int) $project["id_project"]);
+            $project["medias"] = (new MediaController())->GetMedias((int) $project["id_project"]);
+            $data = [
+                "title" => "Projeto - $project[title]",
+                "css" => "view-project",
+                "btns" => $this->RenderButtons(),
+                "project" => $project,
+                "js" => "view-project"
+            ];
+            $this->View("Projects/view-project", $data);
+        }
 
         /**
          * Método responsável por carregar a View do formulário para criar um projeto
