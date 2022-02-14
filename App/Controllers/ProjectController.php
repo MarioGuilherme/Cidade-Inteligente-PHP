@@ -47,60 +47,66 @@
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
-            echo("<pre>");
-            var_dump($form);
-            var_dump($medias);
-            echo("</pre>");
-            exit;
             // LIMPEZA DOS CAMPOS
             $id_area = (int) Form::SanatizeField($form["area"], FILTER_SANITIZE_NUMBER_INT);
             $id_course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
             $title = Form::SanatizeField($form["title"], FILTER_SANITIZE_STRING);
             $date = Form::SanatizeField($form["date"], FILTER_SANITIZE_STRING);
             $description = Form::SanatizeField($form["description"], FILTER_SANITIZE_STRING);
+            !isset($form["users"]) ? Response::Message(EMPTY_FIELDS, "users") : $users = $form["users"];
 
             // VALIDAÇÃO DOS CAMPOS
             Form::VerifyEmptyFields([$id_area, $id_course, $title, $date, $description]);
+            Form::ValidateArea($id_area);
+            Form::ValidateCourse($id_course);
 
-            if(filter_var($id_area, FILTER_VALIDATE_INT) && $id_area > 0 && $id_area <= 3) {
-                if(filter_var($id_course, FILTER_VALIDATE_INT) && $id_course > 0 && $id_course <= 7) {
-                    // OBTENÇÃO DO MODEL
-                    $this->GetModel();
-                    $id_project = $this->projectModel->Insert([
-                        "id_area" => $id_area,
-                        "id_course" => $id_course,
-                        "title" => $title,
-                        "date" => $date,
-                        "description" => $description
-                    ]);
-                    if($id_project > 0) {
-                        for($i = 0; $i < count($medias["name"]); $i++) {
-                            $media = [
-                                "id_project" => $id_project,
-                                "name" => $form["medias"][$i]["name"],
-                                "type" => $medias["type"][$i],
-                                "size" => $medias["size"][$i],
-                                "name_file" => $medias["name"][$i],
-                                "tmp_name" => $medias["tmp_name"][$i],
-                                "error" => $medias["error"][$i],
-                                "description" => $form["medias"][$i]["description"]
-                            ];
-                            (new MediaController())->NewMedia($media);
-                        }
-                        foreach($form["users"] as $user) {
-                            $this->projectUserModel->Insert([
-                                "id_project" => $id_project,
-                                "id_user" => $user
-                            ]);
-                        }
-                         Response::Message(PROJECT_REGISTERED);
-                    } else {
-                        Response::Message(GENERAL_ERROR);
+            // OBTENÇÃO DO MODEL
+            $this->GetModel();
+            $id_project = $this->projectModel::Insert([
+                "id_area" => $id_area,
+                "id_course" => $id_course,
+                "title" => $title,
+                "date" => $date,
+                "description" => $description
+            ]);
+            if($id_project > 0) {
+                for($i = 0; $i < count($medias["name"]); $i++) {
+                    $type = explode("/", $medias["type"][$i])[0];
+                    if($type != "image" && $type != "video") {
+                        unset($medias["name"][$i]);
+                        unset($medias["type"][$i]);
+                        unset($medias["size"][$i]);
+                        unset($medias["tmp_name"][$i]);
+                        unset($medias["error"][$i]);
                     }
-                } else
-                    Response::Message(INVALID_COURSE);
+                }
+                $medias["name"] = array_values($medias["name"]);
+                $medias["type"] = array_values($medias["type"]);
+                $medias["size"] = array_values($medias["size"]);
+                $medias["tmp_name"] = array_values($medias["tmp_name"]);
+                $medias["error"] = array_values($medias["error"]);
+                for($i = 0; $i < count($medias["name"]); $i++) {
+                    $media = [
+                        "id_project" => $id_project,
+                        "name" => $medias["name"][$i],
+                        "type" => $medias["type"][$i],
+                        "size" => $medias["size"][$i],
+                        "name_file" => $form["name_media"][$i],
+                        "tmp_name" => $medias["tmp_name"][$i],
+                        "error" => $medias["error"][$i],
+                        "description" => $form["description_media"][$i]
+                    ];
+                    (new MediaController())->NewMedia($media);
+                }
+                foreach($users as $user) {
+                    $this->projectUserModel::Insert([
+                        "id_project" => $id_project,
+                        "id_user" => $user
+                    ]);
+                }
+                Response::Message(PROJECT_REGISTERED);
             } else
-                Response::Message(INVALID_AREA);
+                Response::Message(GENERAL_ERROR);
         }
 
         /**

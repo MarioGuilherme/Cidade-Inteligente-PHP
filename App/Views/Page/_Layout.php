@@ -8,6 +8,7 @@
     <title>
         <?= $data["title"] ?>
     </title>
+    <link rel="icon" type="imagem/png" href="assets/img/logo3.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700&display=swap">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -16,7 +17,6 @@
     <link rel="stylesheet" href="assets/css/font.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/<?= $data["css"] ?>.css">
-    <link rel="icon" type="imagem/png" href="assets\img\logo3.png" />
 </head>
 
 <body>

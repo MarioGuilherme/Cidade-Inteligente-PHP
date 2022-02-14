@@ -7,7 +7,10 @@
     use PDO;
     use App\Core\Controller;
     use App\Models\Media;
-    use App\Utils\File;
+    use App\Utils\{
+        File,
+        Response
+    };
 
     /**
      * Classe herdada de Controller responsável por controlar as ações da Mídia.
@@ -32,11 +35,12 @@
          */
         public function NewMedia(array $media) : void {
             $this->GetModel();
-            $newMedia = $this->mediaModel->Insert([
+            File::SetFile($media);
+            $this->mediaModel::Insert([
                 "id_project" => $media["id_project"],
-                "name" => $media["name"],
+                "name" => $media["name_file"],
                 "type" => $media["type"],
-                "path" => File::UploadFile($media),
+                "path" => File::MoveFile(),
                 "description" => $media["description"]
             ]);
         }

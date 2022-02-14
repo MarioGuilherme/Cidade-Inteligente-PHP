@@ -88,8 +88,6 @@
                 Response::Message(FILE_NOT_SEND);
             if(self::$error != UPLOAD_ERR_OK)
                 Response::Message(ERROR_UPLOAD);
-            if(!in_array(self::$extension, self::$extensionsAllowed))
-                Response::Message(INVALID_EXTENSION);
             if(self::$size > 2.5 * (1024 * 1024))
                 Response::Message(FILE_TOO_BIG);
         }
@@ -109,10 +107,13 @@
         public static function MoveFile() : string {
             self::VerifyFile();
             self::RenameFile();
-            if(move_uploaded_file(self::$tmpName, self::$directory.self::$name))
-                return self::$name;
-            else
-                Response::Message(ERROR_UPLOAD);
+            if(!file_exists(self::$directory))
+                mkdir(self::$directory, 0777, true);
+            if(in_array(self::$extension, self::$extensionsAllowed))
+                if(move_uploaded_file(self::$tmpName, self::$directory.self::$name))
+                    return self::$name;
+                else
+                    Response::Message(ERROR_UPLOAD);
         }
 
         /**

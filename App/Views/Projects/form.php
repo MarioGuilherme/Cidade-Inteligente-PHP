@@ -91,14 +91,14 @@
                                 <label for="my-select">
                                     Pessoas Envolvidas
                                 </label>
-                                <select id="my-select" class="form-control" name="users" multiple>
+                                <select id="my-select" class="form-control" name="users[]" multiple>
                                     <?php foreach ($data["users"] as $user): ?>
                                         <option value="<?= $user["id_user"] ?>">
                                             <?= $user["name"] ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                                <h6 class="text-danger text-center">
+                                <h6 class="text-dark text-center">
                                     Segure Ctrl enquanto seleciona as pessoas
                                 </h6>
                             </div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="row medias-uploaded"></div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-12 col-md-12">
                             <button class="btn btn-new-project btn-block" type="button">
                                 Criar Projeto

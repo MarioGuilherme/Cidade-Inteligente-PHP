@@ -7,7 +7,7 @@ $(document).ready(() => {
             $(".medias-uploaded").empty();
         });
     });
-    $("input").on("change", () => {
+    $("input[type=file]").on("change", () => {
         $(".medias-uploaded").empty();
         var files = $("input[type=file]")[0].files;
         for (let i = 0; i < files.length; i++) {
@@ -28,16 +28,16 @@ $(document).ready(() => {
                                 <div class="card-body">
                                     ${media}
                                     <div class="form-group">
-                                        <label>
+                                        <label class="text-dark">
                                             Nome
                                         </label>
-                                        <input class="form-control" type="text" name="name_media[]">
+                                        <input maxlenght="60" class="form-control" type="text" name="name_media[]">
                                     </div>
                                     <div class="form-group">
-                                        <label>
+                                        <label class="text-dark">
                                             Descrição
                                         </label>
-                                        <textarea class="form-control" name="description_media[]" rows="3"></textarea>
+                                        <textarea maxlenght="300" class="form-control" name="description_media[]" rows="3"></textarea>
                                     </div>
                                 </div>
                             </div>

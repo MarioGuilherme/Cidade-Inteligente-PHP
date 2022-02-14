@@ -25,6 +25,6 @@
     const INVALID_AREA = ["msg"=>"Área do projeto inválido!","icon"=>"error"];
     const FILE_NOT_SEND = ["msg" => "Não há uma imagem anexada!", "icon" => "error"];
     const FILE_TOO_BIG = ["msg"=>"O tamanho da imagem excede 2.5MB!", "icon"=>"error"];
-    const INVALID_EXTENSION = ["icon"=>"error","msg"=>"Extensão inválida (apenas jpg, jpeg, png e mp4)!"];
+    // const INVALID_EXTENSION = ["icon"=>"error","msg"=>"Extensão inválida (apenas jpg, jpeg, png e mp4)!"];
     const ERROR_UPLOAD = ["msg"=>"Erro ao enviar arquivo, tente novamente ou entre em contato!","icon"=>"error"];
     const NOTHING_FOUND = "<h2>Nenhum projeto criado!</h2>";

@@ -52,6 +52,15 @@
         }
 
         /**
+         * Método responsável por validar a área.
+         * @param int $course ID da área
+         * @return void
+         */
+        public static function ValidateArea(int $area) : void {
+            !is_numeric($area) || $area < 1 || $area > 3 ? Response::Message(INVALID_AREA) : "";
+        }
+
+        /**
          * Método responsável por validar o curso.
          * @param int $course ID do curso
          * @return void
