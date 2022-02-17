@@ -1,0 +1,7 @@
+GOOGLE
+EMAIL: cidadeinteligente2022@gmail.com
+SENHA: cidadeinteligenteSMTPAdmin
+
+HOSPEDAGEM
+EMAIL: cidadeinteligente2022@gmail.com
+SENHA: cidadeinteligenteFTP

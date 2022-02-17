@@ -11,6 +11,7 @@
     const INVALID_EMAIL = ["msg"=>"Email inválido!", "icon"=>"error"];
     const EMPTY_FIELDS = ["msg"=>"Preencha o(s) campo(s) vazio(s)","icon"=>"error"];
     const ERRO_CONEXAO = ["msg"=>"Erro interno no servidor!","icon"=>"error"];
+    const AREA_REGISTERED = ["msg"=>"Área cadastrada com sucesso","icon"=>"success"];
     const PROJECT_REGISTERED = ["msg"=>"Projeto cadastrado com sucesso","icon"=>"success"];
     const PROJECT_CREATED = ["msg"=>"Projeto Criado com êxito!","icon"=>"success"];
     const INVALID_DATE_TIME = ["msg"=>"Data e hora inválida.", "icon"=>"error"];

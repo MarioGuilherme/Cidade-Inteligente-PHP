@@ -89,7 +89,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`medias` (
   `id_media` INT NOT NULL AUTO_INCREMENT,
   `id_project` INT NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(60) NOT NULL,
   `type` VARCHAR(15) NOT NULL,
   `path` CHAR(28) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
@@ -110,15 +110,15 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`projects_users` (
   `id_project_user` INT NOT NULL AUTO_INCREMENT,
   `id_project` INT NOT NULL,
   `id_user` INT NOT NULL,
-  INDEX `fk_projects_has_users_users1_idx` (`id_user` ASC),
-  INDEX `fk_projects_has_users_projects1_idx` (`id_project` ASC),
   PRIMARY KEY (`id_project_user`),
-  CONSTRAINT `fk_projects_has_users_projects1`
+  INDEX `fk_projects_users_projects1_idx` (`id_project` ASC),
+  INDEX `fk_projects_users_users1_idx` (`id_user` ASC),
+  CONSTRAINT `fk_projects_users_projects1`
     FOREIGN KEY (`id_project`)
     REFERENCES `cidade_inteligente`.`projects` (`id_project`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_projects_has_users_users1`
+  CONSTRAINT `fk_projects_users_users1`
     FOREIGN KEY (`id_user`)
     REFERENCES `cidade_inteligente`.`users` (`id_user`)
     ON DELETE NO ACTION

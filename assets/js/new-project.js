@@ -1,10 +1,12 @@
 $(document).ready(() => {
     $(".btn-new-project").click(() => {
         VerifyFields($("form").serializeArray());
+        $(".btn-new-project").text("Criando...");
         AjaxFile("services/new-project", "json", $("form")[0], response => {
             SweetAlert(response.icon, response.msg);
             CleanFields(response.icon);
             $(".medias-uploaded").empty();
+            $(".btn-new-project").text("Criar Projeto");
         });
     });
     $("input[type=file]").on("change", () => {
