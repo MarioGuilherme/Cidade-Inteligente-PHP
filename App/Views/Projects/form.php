@@ -16,16 +16,14 @@
                             <hr>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-12 col-sm-12 col-lg-5 col-md-5">
-                            <div class="form-group">
-                                <label for="my-textarea">
-                                    Título
-                                </label>
-                                <input class="form-control" maxlength="60" type="text" name="title">
+                    <div class="row mt-3">
+                        <div class="col-12 col-md-6 input-form-title">
+                            <div class="inputIcon">
+                                <input type="text" maxlength="60" name="title" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o titulo">
+                                <i class="mdi mdi-clipboard-edit-outline"></i>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-lg-2 col-md-2">
+                        <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>
                                     Área do projeto
@@ -46,7 +44,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-lg-3 col-md-3">
+                     </div>
+                    <div class="row mt-2">
+
+                        <div class="col-12 col-sm-12 col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label for="my-select">
                                     Curso do projeto
@@ -76,7 +77,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-lg-2 col-md-2">
+                        <div class="col-12 col-sm-12 col-lg-6 col-md-6">
                             <div class="form-group">
                                 <label>
                                     Data
@@ -133,6 +134,9 @@
                 </form>
             </div>
         </div>
+        <?php
+                require __DIR__ . "/../Page/Components/_Footer.php";
+            ?>
     </div>
 </div>
         

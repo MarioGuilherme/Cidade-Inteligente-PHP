@@ -5,3 +5,31 @@ option {
 textarea {
     resize: none;
 }
+
+.form-inputUser {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-inputUser:focus {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+
+.input-form-title {
+    padding-top: 1.7em;
+}

@@ -41,9 +41,9 @@
     </div>
     <div class="row text-center">
         <div class="col-12 col-sm-12 col-lg-12 col-md-12">
-            <p>
+            <small>
                 &copy; Copyright 2022 - DIREITOS RESERVADOS FATEC LINS
-            </p>
+            </small>
         </div>
     </div>
 </div>
