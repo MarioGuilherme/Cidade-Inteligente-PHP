@@ -256,3 +256,8 @@
         left: 0;
         background-color: rgba(255, 255, 255, 0.9);
     }
+    
+    .card-projeto {
+        padding: 10px;
+        box-shadow: 0 0 1em rgb(114, 114, 114);
+    }
