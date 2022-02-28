@@ -5,6 +5,8 @@
     const LOGGED = ["msg"=>"Login efetuado, redirecionando...", "icon"=>"success"];
     const USER_REGISTERED = ["msg"=>"Usuário cadastrado!", "icon"=>"success"];
     const WRONG_PASSWORD = ["msg"=>"Senha incorreta", "icon"=>"error"];
+    const USER_UPDATED = ["msg"=>"Usuário atualizado com sucesso!", "icon"=>"success"];
+    const USER_DELETED = ["msg"=>"Usuário deletado com sucesso!", "icon"=>"success"];
     const USER_NOT_FOUND = ["msg"=>"Usuário não cadastrado", "icon"=>"error"];
     const EMAIL_NOT_REGISTERED = ["msg"=>"Email não cadastrado", "icon"=>"error"];
     const EMAIL_ALREADY_EXISTS = ["msg"=>"Email já cadastrado!", "icon"=>"error"];
@@ -12,6 +14,12 @@
     const EMPTY_FIELDS = ["msg"=>"Preencha o(s) campo(s) vazio(s)","icon"=>"error"];
     const ERRO_CONEXAO = ["msg"=>"Erro interno no servidor!","icon"=>"error"];
     const AREA_REGISTERED = ["msg"=>"Área cadastrada com sucesso","icon"=>"success"];
+    const AREA_DELETED = ["msg"=>"Área deletada com sucesso","icon"=>"success"];
+    const AREA_UPDATED = ["msg"=>"Área atualizada com sucesso","icon"=>"success"];
+    const INVALID_ID_AREA = ["msg"=>"Área atualizada com sucesso","icon"=>"success"];
+    const USER_FK_ERROR = ["msg"=>"Este usuário está relacionado à um ou mais projetos!","icon"=>"error"];
+    const AREA_FK_ERROR = ["msg"=>"Este tipo de área está sendo usado em um ou mais projetos!","icon"=>"error"];
+    const COURSE_FK_ERROR = ["msg"=>"Este curso está sendo usado em um ou mais projetos/usuários!","icon"=>"error"];
     const PROJECT_REGISTERED = ["msg"=>"Projeto cadastrado com sucesso","icon"=>"success"];
     const PROJECT_CREATED = ["msg"=>"Projeto Criado com êxito!","icon"=>"success"];
     const INVALID_DATE_TIME = ["msg"=>"Data e hora inválida.", "icon"=>"error"];
@@ -23,6 +31,9 @@
     const INVALID_TYPE_USER = ["msg"=>"Tipo de usuário inválido!","icon"=>"error"];
     const INVALID_TOKEN = ["msg"=>"Token inválido!","icon"=>"error"];
     const INVALID_COURSE = ["msg"=>"Curso inválido!","icon"=>"error"];
+    const COURSE_REGISTERED = ["msg"=>"Curso cadastrado!","icon"=>"success"];
+    const COURSE_UPDATED = ["msg"=>"Curso atualizado!","icon"=>"success"];
+    const COURSE_DELETED = ["msg"=>"Curso deletado com sucesso!","icon"=>"success"];
     const INVALID_AREA = ["msg"=>"Área do projeto inválido!","icon"=>"error"];
     const FILE_NOT_SEND = ["msg" => "Não há uma imagem anexada!", "icon" => "error"];
     const FILE_TOO_BIG = ["msg"=>"O tamanho da imagem excede 2.5MB!", "icon"=>"error"];

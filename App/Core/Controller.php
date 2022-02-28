@@ -54,6 +54,24 @@
                     Sair
                     <span class='sr-only'>(current)</span>
                 </a>
+            </li>",
+            "<li class='nav-item active'>
+                <a class='nav-link' href='areas'>
+                    Áreas
+                    <span class='sr-only'>(current)</span>
+                </a>
+            </li>",
+            "<li class='nav-item active'>
+                <a class='nav-link' href='cursos'>
+                    Cursos
+                    <span class='sr-only'>(current)</span>
+                </a>
+            </li>",
+            "<li class='nav-item active'>
+                <a class='nav-link' href='usuarios'>
+                    Usuários
+                    <span class='sr-only'>(current)</span>
+                </a>
             </li>"
         ];
 

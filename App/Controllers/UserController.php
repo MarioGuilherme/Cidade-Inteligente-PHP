@@ -6,7 +6,7 @@
 
     use PDO;
     use App\Core\Controller;
-    use App\Controllers\ProjectController;
+    use App\Controllers\ProjectUserController;
     use App\Models\User;
     use App\Utils\{
         Form,
@@ -31,6 +31,24 @@
             $this->userModel = new User();
         }
 
+        public function Index() : void {
+            $this->GetModel();
+            $data = [
+                "title" => "Usuários",
+                "css" => "users",
+                "btns" => $this->RenderButtons(),
+                "courses" => (new CourseController)->GetAllCourses(),
+                "js" => "users"
+            ];
+            $this->View("Users/index", $data);
+        }
+
+        public function ViewByID(int $id_user) : void {
+            $this->GetModel();
+            $user = $this->userModel::Select("", "id_user = ?", "", "", "id_user, id_course, name, email", [$id_user])->fetch(PDO::FETCH_ASSOC);
+            Response::Message($user);
+        }
+
         /**
          * Método responsável por retornar todos os ID e nomes dos usuários
          * @return array Array de usuário
@@ -47,11 +65,49 @@
          */
         public function GetUserByToken(string $token) : array {
             $this->GetModel();
-            $data = $this->userModel->Select("", "token = ?", "", "", "name, token, token_expiration", [$token])->fetch(PDO::FETCH_ASSOC);
+            $data = $this->userModel::Select("", "token = ?", "", "", "name, token, token_expiration", [$token])->fetch(PDO::FETCH_ASSOC);
             if(!$data)
                 Session::Redirect("projetos");
             else
                 return $data;
+        }
+
+        public function Delete(int $id_user) : void {
+            $this->GetModel();
+            $projects = count((new ProjectUserController)->GetProjectByUser($id_user));
+            if($projects)
+                Response::Message(USER_FK_ERROR);
+            else
+                $this->userModel::Delete("id_user = ?", [$id_user]) ? Response::Message(USER_DELETED) : Response::Message(GENERAL_ERROR);
+        }
+
+        public function List() : void {
+            $this->GetModel();
+            $users = $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course")->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($users as $user) {
+                echo "<tr role='row'>
+                    <td class='text-center'>
+                        $user[id_user]
+                    </td>
+                    <td class='text-center'>
+                        $user[course]
+                    </td>
+                    <td class='text-center'>
+                        $user[name]
+                    </td>
+                    <td class='text-center'>
+                        $user[email]
+                    </td>
+                    <td class='text-center'>
+                        <button id='$user[id_user]' class='btn btn-warning btn-edit-user'>
+                            Editar
+                        </button>
+                        <button id='$user[id_user]' class='btn btn-danger btn-delete-user'>
+                            Apagar
+                        </button>
+                    </td>
+                </tr>";
+            }
         }
 
         /**
@@ -76,16 +132,16 @@
          * @return void
          */
         public function MyProjects() : void {
-            if(Session::VerifySession()) {
-                $projects = (new ProjectController)->GetProjects();
-                foreach ($projects as $key => $project) {
-                    $projects[$key]["medias"] = (new MediaController())->GetMedias((int) $projects[$key]["id_project"]);
+            if(!Session::IsEmptySession()) {
+                $projects = (new ProjectUserController)->GetProjectByUser($_SESSION["id_user"]);
+                for($i = 0; $i < count($projects); $i++) {
+                    $projects[$i]["media"] = (new MediaController)->GetMedias((int) $projects[$i]["id_project"])[0];
                 }
                 $data = [
                     "title" => "Meus Projetos",
                     "css" => "my-projects",
                     "projects" => $projects,
-                    "btns" => $this->RenderButtons(),
+                    "btns" => $this->RenderButtons(0),
                     "js" => "my-projects"
                 ];
                 $this->View("Users/my-projects", $data);
@@ -107,6 +163,40 @@
                 $this->View("Users/login", $data);
             } else
                 Session::Redirect("projetos");
+        }
+
+        public function Update(array $form) : void {
+            // VERIFICA SE O USUÁRIO É PROFESSOR
+            Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
+
+            // LIMPEZA DOS CAMPOS
+            $id_user = (int) Form::SanatizeField($form["id_user"], FILTER_SANITIZE_STRING);
+            $id_course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_STRING);
+            $name = Form::SanatizeField($form["name"], FILTER_SANITIZE_STRING);
+            $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
+
+            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA
+            Form::VerifyEmptyFields([$name, $email, $id_course]);
+            Form::ValidateCourse($id_course);
+            Form::ValidateEmail($email);
+
+            // OBTÉM O MODELO E ATUALIZA A ÁREA
+            $this->GetModel();
+            $this->userModel::Update("id_user = $id_user", [
+                "id_course" => $id_course,
+                "name" => $name,
+                "email" => $email
+            ]) > 0 ? Response::Message(USER_UPDATED) : Response::Message(GENERAL_ERROR);
+        }
+
+        /**
+         * Método responsável por retornar a quantidade de usuários de um determinado curso.
+         * @param int $id_course ID do curso
+         * @return int Quantidade de usuários
+         */
+        public function GetUserByCourse(int $id_course) : int {
+            $this->GetModel();
+            return $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course", "c.id_course = ?", "", "", "c.id_course", [$id_course])->rowCount();
         }
 
         /**
@@ -134,7 +224,7 @@
          * @return void
          */
         public function FormRecoverPassword() : void {
-            if(!Session::VerifySession()) {
+            if(Session::IsEmptySession()) {
                 $data = [
                     "title" => "Recuperar Senha",
                     "css" => "recover-password",
@@ -236,18 +326,18 @@
 
             // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             $this->GetModel();
-            $stmtUser = $this->userModel->Select("", "email = ?", "", "", "id_user, email", [$email]);
+            $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user, email", [$email]);
             $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             if($stmtUser->rowCount()) {
                 $idUser = $user["id_user"];
                 $emailUser = $user["email"];
-                $this->userModel->Update("id_user = $idUser", [
+                $this->userModel::Update("id_user = $idUser", [
                     "token" => bin2hex(random_bytes(78)),
                     "token_expiration" => date("Y-m-d H:i:s", strtotime("+1 hour"))
                 ]);
-                $token = $this->userModel->Select("", "id_user = ?", "", "", "token, email", [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
+                $token = $this->userModel::Select("", "id_user = ?", "", "", "token, email", [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
                 $objEmail = new Email($emailUser);
                 $bodyEmail =
                 "<h1>
@@ -283,12 +373,12 @@
             
             // OBTENÇÃO DO MODEL E ALTERAÇÃO DE SENHA
             $this->GetModel();
-            if($this->userModel->Select("", "token = ?", "", "", "id_user", [$token])->rowCount()) {
+            if($this->userModel::Select("", "token = ?", "", "", "id_user", [$token])->rowCount()) {
                 // CRIPTOGRAFIA DA SENHA
                 $password = Form::EncryptPassword($password);
     
                 // OBTENÇÃO DO MODEL E ALTERAÇÃO DE SENHA
-                $this->userModel->Update("token = '$token'", [
+                $this->userModel::Update("token = '$token'", [
                     "token" => null,
                     "token_expiration" => null,
                     "password" => $password

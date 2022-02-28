@@ -5,10 +5,14 @@
                 Contato
             </h5>
             <p>
-                fateclins@fatec.com
+                <a href="mailto:joao.lcmoraes@fatec.sp.gov.br">
+                    joao.lcmoraes@fatec.sp.gov.br
+                </a>
             </p>
             <p>
-                gisele@fatec.com
+                <a href="mailto:gisele.becari@fatec.sp.gov.br">
+                    gisele.becari@fatec.sp.gov.br
+                </a>
             </p>
             <p></p>
         </div>
@@ -42,7 +46,7 @@
     <div class="row text-center">
         <div class="col-12 col-sm-12 col-lg-12 col-md-12">
             <small>
-                &copy; Copyright 2022 - DIREITOS RESERVADOS FATEC LINS
+                &copy; <?= date("Y") ?> - DIREITOS RESERVADOS FATEC LINS
             </small>
         </div>
     </div>

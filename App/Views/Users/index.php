@@ -5,10 +5,6 @@
     ?>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <button class="btn btn-primary btn-form-area">
-                <i class="mdi mdi-plus mdi-22px"></i>
-                Cadastrar Área
-            </button>
             <div class="table-responsive">
                 <table class="table table-hover display compact cell-border w-100">
                     <thead class="thead-dark text-center">
@@ -16,10 +12,16 @@
                             #
                         </th>
                         <th scope="col">
-                            Área
+                            Curso
                         </th>
                         <th scope="col">
-                            Ações
+                            Nome
+                        </th>
+                        <th scope="col">
+                            Email
+                        </th>
+                        <th scope="col">
+                            Tipo
                         </th>
                     </thead>
                     <tbody></tbody>

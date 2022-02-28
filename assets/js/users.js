@@ -1,55 +1,54 @@
 $(document).ready(() => {
-    function ListAreas() {
-        Ajax("services/list-areas", "html", null, response => {
+    function ListUsers() {
+        Ajax("services/list-users", "html", null, response => {
             $("tbody").html(response);
         });
     }
     setTimeout(() => {
-        ListAreas();
+        ListUsers();
     }, 550);
     $("table").DataTable({
         "language": {
             "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
         }
     });
-    $(".btn-new-area").click(() => {
+    $(".btn-new-user").click(() => {
         VerifyFields($("form").serializeArray());
-        Ajax("services/new-area", "json", $("form").serialize(), response => {
-            $("input[name=id_area]").val("0");
+        Ajax("services/new-user", "json", $("form").serialize(), response => {
+            $("input[name=id_user]").val("0");
             SweetAlert(response.icon, response.msg);
             CleanFields(response.icon);
             response.icon == "success" ? $("#modal").modal("hide") : null;
-            ListAreas();
+            ListUsers();
         });
     });
-    $(".btn-form-area").click(() => {
-        $("input[name=id_area]").val("0");
-        $("input[name=area]").val("");
+    $(".btn-form-user").click(() => {
+        $("input[name=id_user]").val("0");
+        $("input[name=user]").val("");
         $(".modal-title").html("Cadastrar Área");
-        $(".btn-update-area").hide();
-        $(".btn-new-area").show();
+        $(".btn-update-user").hide();
+        $(".btn-new-user").show();
         $("#modal").modal("show");
     });
-    $("tbody").on("click", ".btn-edit-area", function() {
-        Ajax("services/view-area", "json", { id_area: $(this).attr("id") }, area => {
-            $("input[name=id_area]").val(area.id_area);
-            $("input[name=area]").val(area.area);
-            $(".modal-title").html("Editar Área");
-            $(".btn-update-area").show();
-            $(".btn-new-area").hide();
+    $("tbody").on("click", ".btn-edit-user", function() {
+        Ajax("services/view-user", "json", { id_user: $(this).attr("id") }, user => {
+            $("input[name=id_user]").val(user.id_user);
+            $("select[name=course]").val(user.id_course);
+            $("input[name=name]").val(user.name);
+            $("input[name=email]").val(user.email);
             $("#modal").modal("show");
         });
     });
-    $(".btn-update-area").click(function() {
-        Ajax("services/update-area", "json", $("form").serialize(), response => {
+    $(".btn-update-user").click(function() {
+        Ajax("services/update-user", "json", $("form").serialize(), response => {
             SweetAlert(response.icon, response.msg);
             response.icon == "success" ? $("#modal").modal("hide") : null;
-            ListAreas();
+            ListUsers();
         });
     });
-    $("tbody").on("click", ".btn-delete-area", function() {
+    $("tbody").on("click", ".btn-delete-user", function() {
         Swal.fire({
-            html: `<h2 style="color: white;">Deseja mesmo excluir esta área?</h2>`,
+            html: `<h2 style="color: white;">Deseja mesmo excluir este usuário?</h2>`,
             background: "rgb(39, 39, 61)",
             icon: "question",
             showCancelButton: true,
@@ -60,7 +59,7 @@ $(document).ready(() => {
             cancelButtonColor: "#f0ad4e"
         }).then(result => {
             if (result.value) {
-                Ajax("services/delete-area", "json", { id_area: $(this).attr("id") }, response => {
+                Ajax("services/delete-user", "json", { id_user: $(this).attr("id") }, response => {
                     SweetAlert(response.icon, response.msg);
                     response.icon == "success" ? $(this).parents("tr").hide(500) : null;
                 });

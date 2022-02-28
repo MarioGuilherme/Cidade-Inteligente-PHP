@@ -39,6 +39,26 @@
         }
 
         /**
+         * Método responsável por retornar quantos projetos existem de uma determinada área.
+         * @param int $id_area ID da área
+         * @return int Quantidade de projetos
+         */
+        public function GetProjectByArea(int $id_area) : int {
+            $this->GetModel();
+            return $this->projectModel::Select("p INNER JOIN areas a ON p.id_area = a.id_area", "a.id_area = ?", "", "", "a.id_area", [$id_area])->rowCount();
+        }
+
+        /**
+         * Método responsável por retornar quantos projetos existem de um determinad curso.
+         * @param int $id_course ID do curso
+         * @return int Quantidade de projetos
+         */
+        public function GetProjectByCourse(int $id_course) : int {
+            $this->GetModel();
+            return $this->projectModel::Select("p INNER JOIN courses c ON p.id_course = c.id_course", "c.id_course = ?", "", "", "c.id_course", [$id_course])->rowCount();
+        }
+
+        /**
          * Método responsável por carregar a página principal,
          * listando todos os projetos e suas mídias
          * @return void
@@ -118,7 +138,7 @@
             $this->GetModel();
             $projects = $this->projectModel::Select()->fetchAll(PDO::FETCH_ASSOC);
             foreach ($projects as $key => $project) {
-                $projects[$key]["medias"] = (new MediaController())->GetMedias((int) $projects[$key]["id_project"]);
+                $projects[$key]["medias"] = (new MediaController)->GetMedias((int) $projects[$key]["id_project"]);
             }
             $data = [
                 "title" => "Projetos",

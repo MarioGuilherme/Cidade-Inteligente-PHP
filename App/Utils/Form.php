@@ -57,7 +57,7 @@
          * @return void
          */
         public static function ValidateArea(int $area) : void {
-            !is_numeric($area) || $area < 1 || $area > 3 ? Response::Message(INVALID_AREA) : "";
+            !is_numeric($area) || $area < 1 ? Response::Message(INVALID_AREA) : "";
         }
 
         /**
@@ -66,7 +66,7 @@
          * @return void
          */
         public static function ValidateCourse(int $course) : void {
-            !is_numeric($course) || $course < 1 || $course > 7 ? Response::Message(INVALID_COURSE) : "";
+            !is_numeric($course) || $course < 1 ? Response::Message(INVALID_COURSE) : "";
         }
 
         /**

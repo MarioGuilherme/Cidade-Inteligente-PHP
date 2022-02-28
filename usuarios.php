@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->MyProjects();
+    (new UserController())->Index();

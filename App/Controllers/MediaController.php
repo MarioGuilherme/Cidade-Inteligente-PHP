@@ -52,6 +52,6 @@
          */
         public function GetMedias(int $id_project) : array {
             $this->GetModel();
-            return $this->mediaModel->Select("", "id_project = ?", "", "", "id_media, name, type, path, description", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+            return $this->mediaModel::Select("", "id_project = ?", "", "", "id_media, name, type, path, description", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
         }
     }
