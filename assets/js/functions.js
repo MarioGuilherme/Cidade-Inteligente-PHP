@@ -3,7 +3,7 @@ function AjaxFile(url, dataType, data, callback) {
         type: "POST",
         url: url,
         dataType: dataType,
-        data: new FormData(data),
+        data: data,
         nimeType: "multipart/form-data",
         cache: false,
         contentType: false,
@@ -55,6 +55,8 @@ function VerifyFields(form) {
 
 function CleanFields(icon) {
     if (icon == "success") {
+        $(".user").attr("involved", false);
+        $(".medias-uploaded").empty();
         $("input, select, textarea").val("");
         $("select").prop("selectedIndex", 0);
     }

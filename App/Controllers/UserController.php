@@ -133,9 +133,9 @@
          */
         public function MyProjects() : void {
             if(!Session::IsEmptySession()) {
-                $projects = (new ProjectUserController)->GetProjectByUser($_SESSION["id_user"]);
+                $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
                 for($i = 0; $i < count($projects); $i++) {
-                    $projects[$i]["media"] = (new MediaController)->GetMedias((int) $projects[$i]["id_project"])[0];
+                    $projects[$i]["media"] = (new MediaController)->GetMedias((Int) $projects[$i]["id_project"])[0];
                 }
                 $data = [
                     "title" => "Meus Projetos",

@@ -10,10 +10,10 @@
             </p>
         </div>
         <?php if(\App\Utils\Session::IsAdmin()): ?>
-            <button class="btn btn-warning">
+            <a href="editar-projeto?id=<?= $project["id_project"] ?>" class="btn btn-warning btn-edit-project">
                 Editar
-            </button>
-            <button class="btn btn-danger mt-2">
+            </a>
+            <button id="<?= $project["id_project"] ?>" class="btn btn-danger mt-2 btn-delete-project">
                 Excluir
             </button>
         <?php endif; ?>

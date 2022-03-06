@@ -108,6 +108,9 @@
                 unset($this->buttons[3]);
                 unset($this->buttons[4]);
                 unset($this->buttons[6]);
+                unset($this->buttons[7]);
+                unset($this->buttons[8]);
+                unset($this->buttons[9]);
             } else {
                 // SE O USUÁRIO ESTIVER LOGADO
                 unset($this->buttons[5]);
@@ -115,6 +118,9 @@
                     // SE O USUÁRIO NÃO FOR ADMINISTRADOR
                     unset($this->buttons[2]);
                     unset($this->buttons[3]);
+                    unset($this->buttons[7]);
+                    unset($this->buttons[8]);
+                    unset($this->buttons[9]);
                 }
             }
             unset($this->buttons[$indexBtn]);

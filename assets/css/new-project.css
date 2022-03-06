@@ -33,3 +33,26 @@ textarea {
 .input-form-title {
     padding-top: 1.7em;
 }
+
+.users {
+    background-color: white;
+    border-radius: 0.25rem;
+    padding: 10px;
+    overflow-y: scroll;
+    height: 175px;
+    resize: vertical;
+}
+
+.user {
+    margin: 6px;
+    padding: 5px 10px;
+    background-color: powderblue;
+    cursor: pointer;
+    filter: opacity(0.75);
+}
+
+.user[involved="true"] {
+    background-color: aquamarine;
+    -moz-box-sizing: border-box;
+    filter: drop-shadow(0px 0px 2px black);
+}

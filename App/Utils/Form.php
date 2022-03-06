@@ -23,6 +23,18 @@
             }
         }
 
+        // FUTURISTICO
+        /**
+         * Método responsável por validar o ID de alguma entidade.
+         * @param int $id ID da entidade
+         * @return void
+         */
+        public static function ValidateID(array $form) : void {
+            foreach($form as $id) {
+                !is_numeric($id) || $id < 1 ? Response::Message(INVALID_ID) : "";
+            }
+        }
+
         /**
          * Método responsável por criptografar a senha.
          * @param string $password Senha a ser criptografada
@@ -30,6 +42,20 @@
          */
         public static function EncryptPassword(string $password) : string {
             return password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        /**
+         * Método responsável por reorganizar o array de arquivos.
+         * @param array $medias Superglobal com os dados dos arquivos
+         * @return array Array reorganizado com os dados dos arquivos
+         */
+        public static function RearrangeFiles(array $medias) : array {
+            foreach($medias as $key => $all) {
+                foreach($all as $i => $val) {
+                    $new_array[$i][$key] = $val;    
+                }    
+            }
+            return $new_array;
         }
 
         /**
@@ -78,13 +104,25 @@
             !preg_match("/^[0-9]{4}[-][0-9]{2}[-][0-9]{2}[T][0-9]{2}[:][0-9]{2}$/", $date_time, $matches) ? Response::Message(INVALID_DATE_TIME) : "";
         }
 
+        public static function ConvertToDate(string $date) : string {
+            $date = explode("-", $date);
+            $year = substr($date[0], 0, 4);
+            $month = $date[1];
+            $day = $date[2];
+            return "$year-$month-$day";
+        }
+
+        public static function ConvertToDateTime(string $date_time) : string {
+            return date("Y-m-d H:i:s", strtotime($date_time));
+        }
+
         /**
          * Método responsável por sanatizar um campo
          * @param string $field Campo a ser sanatizado
          * @param int $filter Tipo de filtro a ser aplicado
          * @return string Retorna o campo sanatizado
          */
-        public static function SanatizeField(string $field, int $filter) : string {
+        public static function SanatizeField(string|int $field, int $filter) : string|int {
             return filter_var(htmlspecialchars(trim($field)), $filter);
         }
     }

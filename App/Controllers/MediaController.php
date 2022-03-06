@@ -45,6 +45,26 @@
             ]);
         }
 
+        public function UpdateDataMedia(array $form) : void {
+            $this->GetModel();
+            $this->mediaModel::Update("id_media = $form[id_media]", [
+                "name" => $form["name_file"],
+                "description" => $form["description"]
+            ]);
+        }
+
+        public function Update(int $id_media, array $media) : void {
+            $this->GetModel();
+            $path = $this->mediaModel::Select("", "id_media = ?", "", "", "path", [$id_media])->fetch(PDO::FETCH_ASSOC)["path"];
+            File::DeleteFile($path);
+            File::SetFile($media);
+            $this->mediaModel::Update("id_media = $id_media", [
+                "type" => $media["type"],
+                "path" => File::MoveFile()
+            ]);
+            Response::Message(MEDIA_UPDATED);
+        }
+
         /**
          * Método responsável 
          * @param array $projects Dados dos projetos
@@ -53,5 +73,19 @@
         public function GetMedias(int $id_project) : array {
             $this->GetModel();
             return $this->mediaModel::Select("", "id_project = ?", "", "", "id_media, name, type, path, description", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function Delete(int $id_media) : void {
+            $this->GetModel();
+            $path = $this->mediaModel::Select("", "id_media = ?", "", "", "path", [$id_media])->fetch(PDO::FETCH_ASSOC)["path"];
+            (bool) $deletedMedia = $this->mediaModel::Delete("id_media = ?", [$id_media]);
+            File::DeleteFile($path);
+            Response::Message(MEDIA_DELETED);
+        }
+
+        public function DeleteProjectMedias(array $medias) : void {
+            for($i = 0; $i < count($medias); $i++) {
+                File::DeleteFile($medias[$i]["path"]);
+            }
         }
     }

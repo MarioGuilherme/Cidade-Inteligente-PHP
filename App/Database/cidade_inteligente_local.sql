@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`medias` (
   CONSTRAINT `fk_medias_projects`
     FOREIGN KEY (`id_project`)
     REFERENCES `cidade_inteligente`.`projects` (`id_project`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`projects_users` (
   CONSTRAINT `fk_projects_users_projects1`
     FOREIGN KEY (`id_project`)
     REFERENCES `cidade_inteligente`.`projects` (`id_project`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_projects_users_users1`
     FOREIGN KEY (`id_user`)

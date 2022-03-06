@@ -7,7 +7,7 @@
         "id_user" => 48,
         "name" => "Mário Guilherme",
         "email" => "marioguifatec2021@gmail.com",
-       //"type" => "Aluno(a)",
+        // "type" => "Aluno(a)",
         "type" => "Professor(a)",
         "course" => "Análise e Desenvolvimento de Sistemas"
     ];

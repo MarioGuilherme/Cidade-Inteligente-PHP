@@ -30,13 +30,16 @@
     const MEDIA_DELETED = ["msg"=>"Mídia Deletada!","icon"=>"success"];
     const INVALID_TYPE_USER = ["msg"=>"Tipo de usuário inválido!","icon"=>"error"];
     const INVALID_TOKEN = ["msg"=>"Token inválido!","icon"=>"error"];
+    const MEDIA_UPDATED = ["msg"=>"Mídia alterada com sucesso!","icon"=>"success"];
     const INVALID_COURSE = ["msg"=>"Curso inválido!","icon"=>"error"];
+    const INVALID_ID = ["msg"=>"ID inválido, recarregue a página, e tente novamente!","icon"=>"error"];
+    const PROJECT_UPDATED = ["msg"=>"Projeto atualizado com sucesso!","icon"=>"success"];
     const COURSE_REGISTERED = ["msg"=>"Curso cadastrado!","icon"=>"success"];
     const COURSE_UPDATED = ["msg"=>"Curso atualizado!","icon"=>"success"];
     const COURSE_DELETED = ["msg"=>"Curso deletado com sucesso!","icon"=>"success"];
+    const PROJECT_DELETED = ["msg"=>"Projeto deletado com sucesso!","icon"=>"success"];
     const INVALID_AREA = ["msg"=>"Área do projeto inválido!","icon"=>"error"];
     const FILE_NOT_SEND = ["msg" => "Não há uma imagem anexada!", "icon" => "error"];
     const FILE_TOO_BIG = ["msg"=>"O tamanho da imagem excede 2.5MB!", "icon"=>"error"];
-    // const INVALID_EXTENSION = ["icon"=>"error","msg"=>"Extensão inválida (apenas jpg, jpeg, png e mp4)!"];
     const ERROR_UPLOAD = ["msg"=>"Erro ao enviar arquivo, tente novamente ou entre em contato!","icon"=>"error"];
     const NOTHING_FOUND = "<h2>Nenhum projeto criado!</h2>";
