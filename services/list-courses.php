@@ -4,4 +4,4 @@
 
     use App\Controllers\CourseController;
 
-    (new CourseController())->List();
+    (new CourseController)->List();

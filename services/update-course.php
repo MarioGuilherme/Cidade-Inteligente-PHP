@@ -4,4 +4,4 @@
 
     use App\Controllers\CourseController;
 
-    (new CourseController())->Update($_POST);
+    (new CourseController)->Update($_POST);

@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->ViewByID($_POST["id_user"]);
+    (new UserController)->ViewByID($_POST["id_user"]);

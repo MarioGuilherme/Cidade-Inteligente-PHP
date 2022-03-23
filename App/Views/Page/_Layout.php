@@ -23,7 +23,7 @@
 <body>
 
     <?php
-        $file = __DIR__ . "/../$view.php";
+        (String) $file = __DIR__ . "/../$view.php";
         if(file_exists($file))
             require $file;
         else

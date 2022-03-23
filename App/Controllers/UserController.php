@@ -33,7 +33,7 @@
 
         public function Index() : void {
             $this->GetModel();
-            $data = [
+            (Array) $data = [
                 "title" => "Usuários",
                 "css" => "users",
                 "btns" => $this->RenderButtons(),
@@ -43,38 +43,38 @@
             $this->View("Users/index", $data);
         }
 
-        public function ViewByID(int $id_user) : void {
+        public function ViewByID(Int $id_user) : void {
             $this->GetModel();
-            $user = $this->userModel::Select("", "id_user = ?", "", "", "id_user, id_course, name, email", [$id_user])->fetch(PDO::FETCH_ASSOC);
+            (Array) $user = $this->userModel::Select("", "id_user = ?", "", "", "id_user, id_course, name, email", [$id_user])->fetch(PDO::FETCH_ASSOC);
             Response::Message($user);
         }
 
         /**
-         * Método responsável por retornar todos os ID e nomes dos usuários
-         * @return array Array de usuário
+         * Método responsável por retornar todos o ID e nome dos usuários
+         * @return Array Array de usuário
          */
-        public function GetUsers() : array {
+        public function GetUsers() : Array {
             $this->GetModel();
             return $this->userModel::Select("", "", "", "", "id_user, name")->fetchAll(PDO::FETCH_ASSOC);
         }
 
         /**
          * Método responsável por retornar o email, token e a expiração do token
-         * @param int $id_user
-         * @return array Array de dados do usuário
+         * @param Int $id_user
+         * @return Array Array de dados do usuário
          */
-        public function GetUserByToken(string $token) : array {
+        public function GetUserByToken(String $token) : Array {
             $this->GetModel();
-            $data = $this->userModel::Select("", "token = ?", "", "", "name, token, token_expiration", [$token])->fetch(PDO::FETCH_ASSOC);
+            (Array) $data = $this->userModel::Select("", "token = ?", "", "", "name, token, token_expiration", [$token])->fetch(PDO::FETCH_ASSOC);
             if(!$data)
                 Session::Redirect("projetos");
             else
                 return $data;
         }
 
-        public function Delete(int $id_user) : void {
+        public function Delete(Int $id_user) : void {
             $this->GetModel();
-            $projects = count((new ProjectUserController)->GetProjectByUser($id_user));
+            (Array) $projects = count((new ProjectUserController)->GetProjectByUser($id_user));
             if($projects)
                 Response::Message(USER_FK_ERROR);
             else
@@ -83,7 +83,7 @@
 
         public function List() : void {
             $this->GetModel();
-            $users = $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course")->fetchAll(PDO::FETCH_ASSOC);
+            (Array) $users = $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course")->fetchAll(PDO::FETCH_ASSOC);
             foreach ($users as $user) {
                 echo "<tr role='row'>
                     <td class='text-center'>
@@ -116,7 +116,7 @@
          */
         public function FormRegister() : void {
             if(Session::IsAdmin()) {
-                $data = [
+                (Array) $data = [
                     "title" => "Cadastro de Usuário",
                     "css" => "register",
                     "btns" => $this->RenderButtons(3),
@@ -133,11 +133,11 @@
          */
         public function MyProjects() : void {
             if(!Session::IsEmptySession()) {
-                $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
+                (Array) $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
                 for($i = 0; $i < count($projects); $i++) {
                     $projects[$i]["media"] = (new MediaController)->GetMedias((Int) $projects[$i]["id_project"])[0];
                 }
-                $data = [
+                (Array) $data = [
                     "title" => "Meus Projetos",
                     "css" => "my-projects",
                     "projects" => $projects,
@@ -155,7 +155,7 @@
          */
         public function FormLogin() : void {
             if(Session::IsEmptySession()) {
-                $data = [
+                (Array) $data = [
                     "title" => "Login",
                     "css" => "login",
                     "js" => "login"
@@ -165,15 +165,15 @@
                 Session::Redirect("projetos");
         }
 
-        public function Update(array $form) : void {
+        public function Update(Array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            $id_user = (int) Form::SanatizeField($form["id_user"], FILTER_SANITIZE_STRING);
-            $id_course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_STRING);
-            $name = Form::SanatizeField($form["name"], FILTER_SANITIZE_STRING);
-            $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
+            (Int) $id_user = Form::SanatizeField($form["id_user"], FILTER_SANITIZE_NUMBER_INT);
+            (Int) $id_course = Form::SanatizeField($form["id_course"], FILTER_SANITIZE_NUMBER_INT);
+            (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
+            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA
             Form::VerifyEmptyFields([$name, $email, $id_course]);
@@ -191,23 +191,23 @@
 
         /**
          * Método responsável por retornar a quantidade de usuários de um determinado curso.
-         * @param int $id_course ID do curso
-         * @return int Quantidade de usuários
+         * @param Int $id_course ID do curso
+         * @return Int Quantidade de usuários
          */
-        public function GetUserByCourse(int $id_course) : int {
+        public function GetUserByCourse(Int $id_course) : Int {
             $this->GetModel();
             return $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course", "c.id_course = ?", "", "", "c.id_course", [$id_course])->rowCount();
         }
 
         /**
          * Método responsável por carregar a View de alterar senha
-         * @param string $token Token de recuperação de senha
+         * @param String $token Token de recuperação de senha
          * @return void
          */
-        public function FormChangePassword(string $token) : void {
-            $user = (new UserController())->GetUserByToken($token);
+        public function FormChangePassword(String $token) : void {
+            (Array) $user = (new UserController())->GetUserByToken($token);
             if($user["token_expiration"] > date("Y-m-d H:i:s")) {
-                $data = [
+                (Array) $data = [
                     "title" => "Alterar Senha",
                     "css" => "change-password",
                     "name" => $user["name"],
@@ -225,7 +225,7 @@
          */
         public function FormRecoverPassword() : void {
             if(Session::IsEmptySession()) {
-                $data = [
+                (Array) $data = [
                     "title" => "Recuperar Senha",
                     "css" => "recover-password",
                     "js" => "recover-password"
@@ -237,13 +237,13 @@
 
         /**
          * Método responsável por fazer o login do usuario
-         * @param array $form Dados do formulário
+         * @param Array $form Dados do formulário
          * @return void
          */
-        public function Login(array $form) : void {
+        public function Login(Array $form) : void {
             // LIMPEZA DOS CAMPOS
-            $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
-            $password = Form::SanatizeField($form["password"], FILTER_SANITIZE_STRING);
+            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
+            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
 
             // VALIDAÇÃO DOS CAMPOS
             Form::VerifyEmptyFields([$email, $password]);
@@ -251,12 +251,12 @@
 
             // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             $this->GetModel();
-            $stmtUser = $this->userModel::Select("INNER JOIN courses ON users.id_course=courses.id_course", "email = ?", "",
+            (Object) $stmtUser = $this->userModel::Select("INNER JOIN courses ON users.id_course=courses.id_course", "email = ?", "",
                                                  "", "id_user, courses.id_course, name, email, password, type, course", [$email]);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             if($stmtUser->rowCount()) {
-                $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                (Array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
                 Form::VerifyPassword($password, $user["password"]);
                 $_SESSION = [
                     "id_user" => $user["id_user"],
@@ -273,19 +273,19 @@
 
         /**
          * Método responsável por fazer o cadastro de um novo usuario.
-         * @param array $form Dados do formulário
+         * @param Array $form Dados do formulário
          * @return void
          */
-        public function Register(array $form) : void {
+        public function Register(Array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
-            $name = Form::SanatizeField($form["name"], FILTER_SANITIZE_STRING);
-            $password = Form::SanatizeField($form["password"], FILTER_SANITIZE_STRING);
-            $type = Form::SanatizeField($form["type"], FILTER_SANITIZE_STRING);
-            $course = (int) Form::SanatizeField($form["course"], FILTER_SANITIZE_STRING);
+            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
+            (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
+            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
+            (String) $type = Form::SanatizeField($form["type"], FILTER_UNSAFE_RAW);
+            (Int) $course = Form::SanatizeField($form["course"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS, SE O EMAIL É VÁLIDO E O CURSO
             Form::VerifyEmptyFields([$email, $name, $password, $type, $course]);
@@ -295,8 +295,8 @@
             // VALIDAÇÃO DO TIPO DO USUÁRIO
             if($type == "Aluno(a)" || $type == "Professor(a)") {
                 $this->GetModel();
-                $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
-                $password = Form::EncryptPassword($password);
+                (Int) $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
+                (String) $password = Form::EncryptPassword($password);
                 if(!$stmtUser) {
                     $this->userModel::Insert([
                         "id_course" => $course,
@@ -314,44 +314,44 @@
 
         /**
          * Método responsável por fazer a recuperação de senha
-         * @param string $email Email do usuário
+         * @param String $email Email do usuário
          * @return void
          */
-        public function RecoverPassword(string $email) : void {
+        public function RecoverPassword(String $email) : void {
             // LIMPEZA DOS CAMPOS
-            $email = Form::SanatizeField($email, FILTER_SANITIZE_EMAIL);
+            (String) $email = Form::SanatizeField($email, FILTER_SANITIZE_EMAIL);
  
             // VALIDAÇÃO DOS CAMPOS
             Form::ValidateEmail($email);
 
             // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             $this->GetModel();
-            $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user, email", [$email]);
-            $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            (Object) $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user, email", [$email]);
+            (Array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             if($stmtUser->rowCount()) {
-                $idUser = $user["id_user"];
-                $emailUser = $user["email"];
+                (Int) $idUser = $user["id_user"];
+                (String) $emailUser = $user["email"];
                 $this->userModel::Update("id_user = $idUser", [
                     "token" => bin2hex(random_bytes(78)),
                     "token_expiration" => date("Y-m-d H:i:s", strtotime("+1 hour"))
                 ]);
-                $token = $this->userModel::Select("", "id_user = ?", "", "", "token, email", [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
-                $objEmail = new Email($emailUser);
-                $bodyEmail =
-                "<h1>
-                    Olá, você solicitou a recuperação de sua senha.
-                </h1>
-                <p>
-                    Segue abaixo um link para altera sua senha:
-                </p>
-                <p>
-                    <a href='".getenv("URL")."alterar-senha?token=$token'>".getenv("URL")."alterar-senha?token=$token</a>
-                </p>
-                <p style='color:red;'>
-                    Não compartilhe esse link com ninguém!
-                </p>";
+                (String) $token = $this->userModel::Select("", "id_user = ?", "", "", "token, email", [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
+                (Object) $objEmail = new Email($emailUser);
+                (String) $bodyEmail =
+                    "<h1>
+                        Olá, você solicitou a recuperação de sua senha.
+                    </h1>
+                    <p>
+                        Segue abaixo um link para altera sua senha:
+                    </p>
+                    <p>
+                        <a href='".getenv("URL")."alterar-senha?token=$token'>".getenv("URL")."alterar-senha?token=$token</a>
+                    </p>
+                    <p style='color:red;'>
+                        Não compartilhe esse link com ninguém!
+                    </p>";
                 $objEmail->SendEmail("Recuperação de Senha", $bodyEmail);
                 Response::Message(CHANGE_PASSWORD_REQUEST_SEND);
             } else
@@ -360,13 +360,13 @@
 
         /**
          * Método responsável por fazer a alteração da senha
-         * @param string $password Nova senha do usuário
+         * @param String $password Nova senha do usuário
          * @return void
          */
-        public function ChangePassword(array $form) : void {
+        public function ChangePassword(Array $form) : void {
             // LIMPEZA DOS CAMPOS
-            $token = Form::SanatizeField($form["token"], FILTER_SANITIZE_STRING);
-            $password = Form::SanatizeField($form["password"], FILTER_SANITIZE_STRING);
+            (String) $token = Form::SanatizeField($form["token"], FILTER_UNSAFE_RAW);
+            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
  
             // VALIDAÇÃO DOS CAMPOS
             Form::VerifyEmptyFields([$token, $password]);
@@ -375,7 +375,7 @@
             $this->GetModel();
             if($this->userModel::Select("", "token = ?", "", "", "id_user", [$token])->rowCount()) {
                 // CRIPTOGRAFIA DA SENHA
-                $password = Form::EncryptPassword($password);
+                (String) $password = Form::EncryptPassword($password);
     
                 // OBTENÇÃO DO MODEL E ALTERAÇÃO DE SENHA
                 $this->userModel::Update("token = '$token'", [

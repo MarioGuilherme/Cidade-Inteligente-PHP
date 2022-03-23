@@ -4,4 +4,4 @@
 
     use App\Controllers\MediaController;
 
-    (new MediaController())->Update($_POST["id_media"], $_FILES["media"]);
+    (new MediaController)->Update($_POST["id_media"], $_FILES["media"]);

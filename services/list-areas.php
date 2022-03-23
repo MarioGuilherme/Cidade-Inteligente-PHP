@@ -4,4 +4,4 @@
 
     use App\Controllers\AreaController;
 
-    (new AreaController())->List();
+    (new AreaController)->List();

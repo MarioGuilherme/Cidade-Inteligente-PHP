@@ -4,4 +4,4 @@
 
     use App\Controllers\AreaController;
 
-    (new AreaController())->Delete($_POST["id_area"]);
+    (new AreaController)->Delete($_POST["id_area"]);

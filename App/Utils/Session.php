@@ -12,10 +12,10 @@
     class Session {
         /**
          * Método responsável por redirecionar para uma url.
-         * @param string $url URL a ser redirecionada
+         * @param String $url URL a ser redirecionada
          * @return void
          */
-        public static function Redirect(string $url) : void {
+        public static function Redirect(String $url) : void {
             header("Location: $url");
         }
 
@@ -38,17 +38,17 @@
 
         /**
          * Método responsável por verificar se a sessão está vazia.
-         * @return bool Retorna true se estiver vazio false se não estiver
+         * @return Bool Retorna true se estiver vazio false se não estiver
          */
-        public static function IsEmptySession() : bool {
+        public static function IsEmptySession() : Bool {
             return empty($_SESSION) ? true : false;
         }
 
         /**
          * Método responsável por verificar se o usuário é Professor.
-         * @return bool Retorna true se o usuário for um Professor e false se não for
+         * @return Bool Retorna true se o usuário for um Professor e false se não for
          */
-        public static function IsAdmin() : bool {
+        public static function IsAdmin() : Bool {
             return $_SESSION["type"] == "Professor(a)" ? true : false;
         }
     }

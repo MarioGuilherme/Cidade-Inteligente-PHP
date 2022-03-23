@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->Login($_POST);
+    (new UserController)->Login($_POST);

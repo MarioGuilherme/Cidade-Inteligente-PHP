@@ -4,7 +4,6 @@
             require __DIR__ . "/../Page/Components/_Navbar.php";
             require __DIR__ . "/../Page/Components/_Jumbotron.php";
         ?>
-
         <div class="container justify-content-center">
             <div class="conteudo">
                 <form class="form">
@@ -103,7 +102,7 @@
             </div>
         </div>
         <?php
-                require __DIR__ . "/../Page/Components/_Footer.php";
-            ?>
+            require __DIR__ . "/../Page/Components/_Footer.php";
+        ?>
     </div>
 </div>

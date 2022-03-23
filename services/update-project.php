@@ -4,4 +4,4 @@
 
     use App\Controllers\ProjectController;
 
-    (new ProjectController())->Update($_POST, $_FILES["medias"]);
+    (new ProjectController)->Update($_POST, $_FILES["medias"] ?? null);

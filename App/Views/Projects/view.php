@@ -44,7 +44,7 @@
             Pessoas envolvidas
         </h3>
         <div class="row bg-info justify-content-center align-items-center m-1 p-1">
-            <?php foreach($data["project"]["users"] as $user) : ?>
+            <?php foreach ($data["project"]["users"] as $user) : ?>
                 <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                     <p>
                         <?= $user["name"] ?>
@@ -56,7 +56,7 @@
             Mídias
         </h3>
         <div class="row bg-info justify-content-center align-items-center m-1 p-1">
-            <?php foreach($data["project"]["medias"] as $media): ?>
+            <?php foreach ($data["project"]["medias"] as $media): ?>
                 <div class="col-12 col-sm-12 col-lg-3 col-md-3">
                     <div class="card">
                         <div class="card-body">

@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->Update($_POST);
+    (new UserController)->Update($_POST);

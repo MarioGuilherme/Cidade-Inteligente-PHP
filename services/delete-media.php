@@ -4,4 +4,4 @@
 
     use App\Controllers\MediaController;
 
-    (new MediaController())->Delete($_POST["id_media"]);
+    (new MediaController)->Delete($_POST["id_media"]);

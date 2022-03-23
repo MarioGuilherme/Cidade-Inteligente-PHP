@@ -4,4 +4,4 @@
 
     use App\Controllers\ProjectController;
 
-    (new ProjectController())->Delete($_POST["id_project"]);
+    (new ProjectController)->Delete($_POST["id_project"]);

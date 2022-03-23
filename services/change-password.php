@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->ChangePassword($_POST);
+    (new UserController)->ChangePassword($_POST);

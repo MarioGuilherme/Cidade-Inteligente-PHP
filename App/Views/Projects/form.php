@@ -1,10 +1,9 @@
 <div class="fundo-form">
     <div class="container-fluid">
-    <?php
+        <?php
             require __DIR__ . "/../Page/Components/_Navbar.php";
             require __DIR__ . "/../Page/Components/_Jumbotron.php";
         ?>
-
         <div class="container-fluid">
             <div class="conteudo">
                 <form class="form">
@@ -142,4 +141,3 @@
             ?>
     </div>
 </div>
-        

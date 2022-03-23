@@ -31,7 +31,7 @@
 
         public function Index() : void {
             $this->GetModel();
-            $data = [
+            (Array) $data = [
                 "title" => "Áreas",
                 "css" => "areas",
                 "btns" => $this->RenderButtons(),
@@ -40,12 +40,12 @@
             $this->View("Areas/index", $data);
         }
 
-        public function New(array $form) : void {
+        public function New(Array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            $area = Form::SanatizeField($form["area"], FILTER_SANITIZE_STRING);
+            (String) $area = Form::SanatizeField($form["area"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS
             Form::VerifyEmptyFields([$area]);
@@ -57,38 +57,38 @@
             ]) > 0 ? Response::Message(AREA_REGISTERED) : Response::Message(GENERAL_ERROR);
         }
 
-        public function ViewByID(int $id_area) : void {
+        public function ViewByID(Int $id_area) : void {
             $this->GetModel();
-            $area = $this->areaModel::Select("", "id_area = ?", "", "", "*", [$id_area])->fetch(PDO::FETCH_ASSOC);
+            (Array) $area = $this->areaModel::Select("", "id_area = ?", "", "", "*", [$id_area])->fetch(PDO::FETCH_ASSOC);
             Response::Message($area);
         }
 
         public function List() : void {
             $this->GetModel();
-            $areas = $this->areaModel::Select()->fetchAll(PDO::FETCH_ASSOC);
+            (Array) $areas = $this->areaModel::Select()->fetchAll(PDO::FETCH_ASSOC);
             foreach ($areas as $area) {
                 echo "<tr role='row'>
-                    <td class='text-center'>$area[id_area]</td>
-                    <td class='text-center'>$area[area]</td>
-                    <td class='text-center'>
-                        <button id='$area[id_area]' class='btn btn-warning btn-edit-area'>
-                            Editar
-                        </button>
-                        <button id='$area[id_area]' class='btn btn-danger btn-delete-area'>
-                            Apagar
-                        </button>
-                    </td>
-                </tr>";
+                         <td class='text-center'>$area[id_area]</td>
+                         <td class='text-center'>$area[area]</td>
+                         <td class='text-center'>
+                             <button id='$area[id_area]' class='btn btn-warning btn-edit-area'>
+                                 Editar
+                             </button>
+                             <button id='$area[id_area]' class='btn btn-danger btn-delete-area'>
+                                 Apagar
+                             </button>
+                         </td>
+                     </tr>";
             }
         }
 
-        public function Update(array $form) : void {
+        public function Update(Array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            $id_area = (int) Form::SanatizeField($form["id_area"], FILTER_SANITIZE_STRING);
-            $area = Form::SanatizeField($form["area"], FILTER_SANITIZE_STRING);
+            (Int) $id_area = Form::SanatizeField($form["id_area"], FILTER_SANITIZE_NUMBER_INT);
+            (String) $area = Form::SanatizeField($form["area"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA
             Form::VerifyEmptyFields([$area]);
@@ -101,9 +101,9 @@
             ]) > 0 ? Response::Message(AREA_UPDATED) : Response::Message(GENERAL_ERROR);
         }
 
-        public function Delete(int $id_area) : void {
+        public function Delete(Int $id_area) : void {
             $this->GetModel();
-            $projects = (new ProjectController)->GetProjectByArea($id_area);
+            (Int) $projects = (new ProjectController)->GetProjectByArea($id_area);
             if($projects)
                 Response::Message(AREA_FK_ERROR);
             else

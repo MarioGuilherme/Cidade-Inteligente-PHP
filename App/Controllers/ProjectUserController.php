@@ -26,21 +26,26 @@
 
         /**
          * Método responsável por retornar os usuários de um projeto
-         * @param int $id_project
-         * @return array Usuários
+         * @param Int $id_project
+         * @return Array Usuários
          */
-        public function GetUsersByProject(int $id_project) : array {
+        public function GetUsersByProject(Int $id_project) : Array {
             $this->GetModel();
-            return $this->projectUserModel::Select("INNER JOIN users ON projects_users.id_user = users.id_user", "id_project = ?", "", "", "name", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+            return $this->projectUserModel::Select("INNER JOIN users ON projects_users.id_user = users.id_user", "id_project = ?", "", "", "users.id_user, name", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
         }
 
         /**
          * Método responsável por retornar os projetos de um usuário
-         * @param int $id_user
-         * @return array Projetos
+         * @param Int $id_user
+         * @return Array Projetos
          */
-        public function GetProjectByUser(int $id_user) : array {
+        public function GetProjectByUser(Int $id_user) : Array {
             $this->GetModel();
             return $this->projectUserModel::Select("pu INNER JOIN projects p ON pu.id_project = p.id_project", "pu.id_user = ?", "", "", "*", [$id_user])->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        public function Delete(Int $id_project) : void {
+            $this->GetModel();
+            $this->projectUserModel::Delete("id_project = ?", [$id_project]);
         }
     }

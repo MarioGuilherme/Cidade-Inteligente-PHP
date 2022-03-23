@@ -4,4 +4,4 @@
 
     use App\Controllers\CourseController;
 
-    (new CourseController())->ViewByID($_POST["id_course"]);
+    (new CourseController)->ViewByID($_POST["id_course"]);

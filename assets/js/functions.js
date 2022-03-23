@@ -67,3 +67,10 @@ function Redirect(icon, url) {
         $(location).attr("href", url);
     }, 2000) : "";
 }
+
+function RemoveEmptyInputsFile() {
+    for (var i = 0; i < $("input[type=file]").length; i++) {
+        if ($("input[type=file]")[i].files.length == 0)
+            $("input[type=file]")[i].remove();
+    }
+}

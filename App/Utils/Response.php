@@ -21,11 +21,10 @@
         /**
          * Método responsável retornar uma resposta para
          * o SweetAlert e em seguida encerrar o script
-         * @param array $response
+         * @param Array $response
          * @return void
          */
-        public static function Message(array $response) : void {
-            echo json_encode($response);
-            exit;
+        public static function Message(Array $response) : void {
+            die(json_encode($response));
         }
     }

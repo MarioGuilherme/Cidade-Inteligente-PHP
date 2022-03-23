@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->List();
+    (new UserController)->List();

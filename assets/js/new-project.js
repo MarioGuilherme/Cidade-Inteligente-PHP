@@ -2,13 +2,6 @@ $(document).ready(() => {
     var users = [];
     var index = 0;
 
-    function CheckEmptyInputFile() {
-        for (var i = 0; i < $("input[type=file]").length; i++) {
-            if ($("input[type=file]")[i].files.length == 0)
-                $("input[type=file]")[i].remove();
-        }
-    }
-
     $(".user").click(function() {
         if ($(this).attr("involved") == "true") {
             $(this).attr("involved", false);
@@ -20,7 +13,7 @@ $(document).ready(() => {
     });
 
     $(".btn-add-media").click(() => {
-        CheckEmptyInputFile();
+        RemoveEmptyInputsFile();
         $(".inputs-medias").append(`<input type="file" hidden name="medias[${index}]" index="${index}">`);
         $("input[type=file]").last().click();
     });
@@ -40,23 +33,26 @@ $(document).ready(() => {
             value: users
         });
         VerifyFields(form);
-        $(".btn-new-project").text("Criando Projeto...");
-        $(".btn-new-project").attr("disabled", true);
+        RemoveEmptyInputsFile();
 
         var data = new FormData($("form")[0]);
         for (var i = 0; i < users.length; i++) {
             data.append("users[]", users[i]);
         }
 
-        CheckEmptyInputFile();
-
-        AjaxFile("services/new-project", "json", data, response => {
-            SweetAlert(response.icon, response.msg);
-            CleanFields(response.icon);
-            $(".btn-new-project").text("Criar Projeto");
-            $(".btn-new-project").attr("disabled", false);
-            response.icon == "success" ? users = [] : null;
-        });
+        if ($("input[type=file]").length == 0)
+            SweetAlert("warning", "Você precisa enviar pelo menos uma mídia para o projeto");
+        else {
+            $(".btn-new-project").text("Criando Projeto...");
+            $(".btn-new-project").attr("disabled", true);
+            AjaxFile("services/new-project", "json", data, response => {
+                SweetAlert(response.icon, response.msg);
+                CleanFields(response.icon);
+                $(".btn-new-project").text("Criar Projeto");
+                $(".btn-new-project").attr("disabled", false);
+                response.icon == "success" ? users = [] : null;
+            });
+        }
     });
 
     $(".inputs-medias").on("change", "input[type=file]", function() {

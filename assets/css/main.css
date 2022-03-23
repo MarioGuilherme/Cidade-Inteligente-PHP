@@ -58,12 +58,14 @@
     }
     
     .btn-new-project,
+    .btn-update-project,
     .btn-new-user {
         background: #515A2D;
         color: white;
     }
     
     .btn-new-project,
+    .btn-update-project,
     .btn-new-user:hover {
         background: #515A2D;
         color: white;

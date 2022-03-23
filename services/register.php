@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->Register($_POST);
+    (new UserController)->Register($_POST);

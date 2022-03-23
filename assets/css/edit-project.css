@@ -2,3 +2,62 @@ img,
 video {
     width: inherit;
 }
+
+option {
+    padding: 3px;
+}
+
+textarea {
+    resize: none;
+}
+
+.form-inputUser {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-inputUser:focus {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+
+.input-form-title {
+    padding-top: 1.7em;
+}
+
+.users {
+    background-color: white;
+    border-radius: 0.25rem;
+    padding: 10px;
+    overflow-y: scroll;
+    height: 175px;
+    resize: vertical;
+}
+
+.user {
+    margin: 6px;
+    padding: 5px 10px;
+    background-color: powderblue;
+    cursor: pointer;
+    filter: opacity(0.75);
+}
+
+.user[involved="true"] {
+    background-color: aquamarine;
+    -moz-box-sizing: border-box;
+    filter: drop-shadow(0px 0px 2px black);
+}

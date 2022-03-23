@@ -14,19 +14,19 @@
      */
     class Email {
         private PHPMailer $mailer;
-        private static string $host = "smtp.gmail.com";
-        private static string $username = "cidadeinteligente2022@gmail.com";
-        private static string $password = "cidadeinteligenteSMTPAdmin";
-        private static string $SMTPSecure = "tls";
-        private static int $port = 587;
-        private static string $from = "cidadeinteligente2022@gmail.com";
-        private static string $CharSet = "UTF-8";
+        private static String $host = "smtp.gmail.com";
+        private static String $username = "cidadeinteligente2022@gmail.com";
+        private static String $password = "cidadeinteligenteSMTPAdmin";
+        private static String $SMTPSecure = "tls";
+        private static Int $port = 587;
+        private static String $from = "cidadeinteligente2022@gmail.com";
+        private static String $CharSet = "UTF-8";
 
         /**
          * Método responsável por inicializar o objeto PHPMailer
-         * @param string $receiver E-mail do destinatário
+         * @param String $receiver E-mail do destinatário
          */
-        public function __construct(string $receiver) {
+        public function __construct(String $receiver) {
             $this->mailer = new PHPMailer(true);
             $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
             $this->mailer->isSMTP();
@@ -45,11 +45,11 @@
 
         /**
          * Método responsável por enviar um e-mail
-         * @param string $subject E-mail do destinatário
-         * @param string $body Corpo do e-mail
+         * @param String $subject E-mail do destinatário
+         * @param String $body Corpo do e-mail
          * @return void
          */
-        public function SendEmail(string $subject, string $body) : void {
+        public function SendEmail(String $subject, String $body) : void {
             $this->mailer->Subject = $subject;
             $this->mailer->Body = $body;
             $this->mailer->send();

@@ -4,4 +4,4 @@
 
     use App\Controllers\AreaController;
 
-    (new AreaController())->ViewByID($_POST["id_area"]);
+    (new AreaController)->ViewByID($_POST["id_area"]);

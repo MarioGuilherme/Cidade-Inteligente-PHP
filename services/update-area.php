@@ -4,4 +4,4 @@
 
     use App\Controllers\AreaController;
 
-    (new AreaController())->Update($_POST);
+    (new AreaController)->Update($_POST);

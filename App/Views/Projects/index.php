@@ -30,22 +30,22 @@
                         if(empty($data["projects"])) {
                             echo "<h3 class='text-center'>Nenhum projeto cadastrado</h3>";
                         } else {
-                            foreach($data["projects"] as $project) {
-                                $status = "active";
-                                $lis = "";
-                                $divs = "";
+                            foreach ($data["projects"] as $project) {
+                                (String) $status = "active";
+                                (String) $lis = "";
+                                (String) $divs = "";
 
-                                foreach($project["medias"] as $media) {
+                                foreach ($project["medias"] as $media) {
                                     $lis .= "<li data-target='#carousel-$project[id_project]' data-slide-to='$project[id_project]' class='$status'></li>";
 
                                     if($media["type"] == "video/mp4")
-                                        $tagMedia = "<video class='d-block' style='width:inherit;' preload='metadata' controls src='medias/$media[path]'></video>";
+                                        (String) $tagMedia = "<video class='d-block' style='width:inherit;' preload='metadata' controls src='medias/$media[path]'></video>";
                                     else
-                                        $tagMedia = "<img class='d-block w-100' src='medias/$media[path]'>";
+                                        (String) $tagMedia = "<img class='d-block w-100' src='medias/$media[path]'>";
 
                                     $divs .= "<div class='carousel-item $status'>
-                                                $tagMedia
-                                            </div>";
+                                                  $tagMedia
+                                              </div>";
                                     $status = "";
                                 }
                                 require "Components/card.php";

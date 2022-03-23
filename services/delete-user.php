@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->Delete($_POST["id_user"]);
+    (new UserController)->Delete($_POST["id_user"]);

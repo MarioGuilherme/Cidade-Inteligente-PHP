@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->RecoverPassword($_POST["email"]);
+    (new UserController)->RecoverPassword($_POST["email"]);

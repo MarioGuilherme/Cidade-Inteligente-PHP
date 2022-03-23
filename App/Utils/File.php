@@ -12,9 +12,9 @@
     class File {
         /**
          * Extensões permitidas
-         * @var array
+         * @var Array
          */
-        public static array $extensionsAllowed = [
+        public static Array $extensionsAllowed = [
             "png",
             "jpg",
             "jpeg",
@@ -23,46 +23,46 @@
 
         /**
          * Diretório onde serão armazenados os arquivos
-         * @var string
+         * @var String
          */
-        public static string $directory = __DIR__ . "/../../medias/";
+        public static String $directory = __DIR__ . "/../../medias/";
 
         /**
          * Nome do arquivo
-         * @var string
+         * @var String
          */
-        public static string $name;
+        public static String $name;
 
         /**
          * Diretório temporário do arquivo
-         * @var string
+         * @var String
          */
-        public static string $tmpName;
+        public static String $tmpName;
 
         /**
          * Extensão do arquivo
-         * @var string
+         * @var String
          */
-        public static string $extension;   
+        public static String $extension;   
 
         /**
          * Código de erro durante o upload do arquivo
-         * @var int
+         * @var Int
          */
-        public static int $error;
+        public static Int $error;
 
         /**
          * Tamanho do arquivo
-         * @var int
+         * @var Int
          */
-        public static int $size;
+        public static Int $size;
 
         /**
          * Método responsável por setar os atributos da classe.
-         * @param array $file Dados do arquivo
+         * @param Array $file Dados do arquivo
          * @return void
          */
-        public static function SetFile(array $file) : void {
+        public static function SetFile(Array $file) : void {
             self::$name = $file["name"];
             self::$tmpName = $file["tmp_name"];
             self::$extension = self::GetExtension($file["name"]);
@@ -72,10 +72,10 @@
 
         /**
          * Método responsável por retornar a extensão do arquivo.
-         * @param string $name Nome do arquivo
-         * @return string Extensão do arquivo
+         * @param String $name Nome do arquivo
+         * @return String Extensão do arquivo
          */
-        private static function GetExtension(string $name) : string {
+        private static function GetExtension(String $name) : String {
             return strtolower(pathinfo($name, PATHINFO_EXTENSION));
         }
 
@@ -97,14 +97,14 @@
          * @return void
          */
         private static function RenameFile() : void {
-            self::$name = uniqid((string) time()) . "." . self::$extension;
+            self::$name = uniqid((String) time()) . "." . self::$extension;
         }
 
         /**
          * Método responsável por mover o arquivo já verificado e renomeado para a pasta de destino.
-         * @return string Nome do arquivo
+         * @return String Nome do arquivo
          */
-        public static function MoveFile() : string {
+        public static function MoveFile() : String {
             self::VerifyFile();
             self::RenameFile();
             if(!file_exists(self::$directory))
@@ -118,10 +118,10 @@
 
         /**
          * Método responsável por deletar o arquivo da pasta de destino.
-         * @param string $file Nome do arquivo
+         * @param String $file Nome do arquivo
          * @return void
          */
-        public static function DeleteFile(string $file) : void {
+        public static function DeleteFile(String $file) : void {
             unlink(self::$directory . $file);
         }
     }

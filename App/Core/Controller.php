@@ -7,12 +7,12 @@
     use App\Utils\Session;
 
     /**
-     * Classe encarregada de ser o intermédio entre a View e o Model.
+     * Classe encarregada de ser o Intermédio entre a View e o Model.
      *
      * @author Mário Guilherme
      */
     class Controller {
-        private array $buttons = [
+        private Array $buttons = [
            "<li class='nav-item active'>
                 <a class='nav-link' href='meus-projetos'>
                     Meus Projetos
@@ -77,30 +77,30 @@
 
         /**
          * Método responsável por retornar o objeto Model
-         * @param string $model Caminho do Model
-         * @return object Objeto Model
+         * @param String $model Caminho do Model
+         * @return Object Objeto Model
          */
-        public function Model(string $model) : object {
-            $model = "App\Models\\$model";
+        public function Model(String $model) : Object {
+            (Object) $model = "App\Models\\$model";
             return new $model;
         }
 
         /**
          * Método responsável por retornar o View e passar os dados
-         * @param string $view Caminho do View
-         * @param array $data Dados que serão passados para o View
+         * @param String $view Caminho do View
+         * @param Array $data Dados que serão passados para o View
          * @return void
          */
-        public function View(string $view, array $data = []) : void {
+        public function View(String $view, Array $data = []) : void {
             require __DIR__ . "/../Views/Page/_Layout.php";
         }
 
         /**
          * Método responsável por renderizar os botões de navegação
-         * @param int $indexBtn Índice do botão que será apagado (página atual)
-         * @return string HTML dos botões de navegação
+         * @param Int $indexBtn Índice do botão que será apagado (página atual)
+         * @return String HTML dos botões de navegação
          */
-        public function RenderButtons(int $indexBtn = null) : string {
+        public function RenderButtons(Int $indexBtn = null) : String {
             // SE O USUÁRIO NÃO ESTIVER LOGADO
             if(Session::IsEmptySession()) {
                 unset($this->buttons[0]);
