@@ -54,9 +54,9 @@
                     ?>
                 </div>
             </div>
-            <?php
+        </div>
+           <?php
                 require __DIR__ . "/../Page/Components/_Footer.php";
             ?>
-        </div>
     </div>
 </div>

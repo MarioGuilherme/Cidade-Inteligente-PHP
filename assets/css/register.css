@@ -1,8 +1,51 @@
-.form-inputUser {
+.conteudo-register {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 0 1em rgb(204, 204, 204);
+    padding: 25px;
+    border-radius: 16px;
+    margin-top: 2em;
+    margin-bottom: 4em;
+    width: 60%;
+}
+
+.form-control {
+    color: rgb(57, 87, 88);
+}
+
+.form-control option {
+    background: rgb(228, 228, 228);
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user {
+    background: #9ecc81;
+    color: white;
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user:hover {
+    background: #515A2D;
+    color: white;
+}
+
+.title_criar {
+    color: #9ecc81;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.title_criar hr {
+    background: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.form-input {
     padding-left: 40px;
     width: 100%;
     line-height: 1.2;
-    height: 40px;
+    height: 60px;
     outline: none;
     border: none;
     background: none;
@@ -10,7 +53,7 @@
     color: rgb(57, 87, 88);
 }
 
-.form-inputUser:focus {
+.form-input:focus {
     padding-left: 40px;
     width: 100%;
     line-height: 1.2;
@@ -18,11 +61,11 @@
     outline: none;
     border: none;
     background: none;
-    border-bottom: solid 1px rgb(105, 105, 105);
-    color: rgb(59, 59, 59);
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
 }
 
-.form-inputUser::placeholder {
+.form-input::placeholder {
     color: rgb(57, 87, 88);
 }
 
@@ -35,12 +78,12 @@
     left: 0;
     top: 0px;
     padding: 9px 8px;
-    color: rgb(105, 105, 105);
+    color: rgb(57, 87, 88);
     transition: .3s;
 }
 
 .inputIcon input:focus+i {
-    color: rgb(39, 41, 61);
+    color: rgb(255, 255, 255);
 }
 
 .inputIcon.inputIconBg i {
@@ -50,7 +93,57 @@
     border-radius: 4px 0 0 0 4px;
 }
 
-.fundo-form-register {
+.lado-a {
+    font-family: "Poppins", sans-serif;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.img-conteudo {
+    height: 50%;
+    width: 100%;
+}
+
+.btn-site {
+    padding: 10px;
+    color: white;
+    background: #515A2D;
+    text-transform: uppercase;
+}
+
+.btn-site:hover {
+    padding: 10px;
+    color: white;
+    background: #73A553;
+    text-transform: uppercase;
+}
+
+.btn-insta {
+    padding: 10px;
+    color: white;
+    background: #515A2D;
+    text-transform: uppercase;
+}
+
+.btn-insta:hover {
+    padding: 10px;
+    color: white;
+    background: #73A553;
+    text-transform: uppercase;
+}
+
+.btn-entrar {
+    background: #515A2D;
+    color: #fff !important;
+}
+
+.title-galeria {
+    padding: 10px;
+    text-align: center;
+}
+
+.fundo {
     background-image: url(../img/fundo.jpg);
     width: 100%;
     min-height: 100vh;
@@ -61,6 +154,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    padding: 15px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -68,7 +163,7 @@
     z-index: 1;
 }
 
-.fundo-form-register::before {
+.fundo::before {
     content: "";
     display: block;
     position: absolute;

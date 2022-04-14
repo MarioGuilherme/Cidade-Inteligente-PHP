@@ -5,13 +5,13 @@
             require __DIR__ . "/../Page/Components/_Jumbotron.php";
         ?>
         <div class="container justify-content-center">
-            <div class="conteudo">
+            <div class="conteudo-register">
                 <form class="form">
                     <div class="row">
                         <div class="col-12 col-md-12 title_criar mt-2">
-                            <h3>
+                            <h5>
                                 Criar Usuário/Professor
-                            </h3>
+                            </h5>
                             <hr class="hr-user">
                         </div>
                     </div>
@@ -94,10 +94,12 @@
                         </div>
                     </div>
                 </form>
-                <div class="col-12 col-md-12">
-                    <button class="btn btn-new-user btn-block" type="button">
-                        Cadastrar
-                    </button>
+                <div class="row">
+                    <div class="col-12 col-md-12">
+                        <button class="btn btn-new-user btn-block" type="button">
+                            Cadastrar
+                        </button>
+                    </div>   
                 </div>
             </div>
         </div>

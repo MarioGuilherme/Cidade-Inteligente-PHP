@@ -217,15 +217,25 @@
     }
     
     .rodape {
-        background: #858585af;
-        padding: 20px;
+        background: #62834d;
         color: #fff;
-        font-family: "Poppins", sans-serif;
+        padding-top: 25px;
     }
     
     .rodape a {
         text-decoration: none;
         color: #fff
+    }
+    
+    .rodape p {
+        font-size: 12px;
+    }
+    
+    .devs {
+        background: #3a4e2e;
+        padding: 10px;
+        padding-bottom: 0;
+        margin: 0;
     }
     
     .fundo-form {
