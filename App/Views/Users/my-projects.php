@@ -2,12 +2,12 @@
     require __DIR__ . "/../Page/Components/_Navbar.php";
     require __DIR__ . "/../Page/Components/_Jumbotron.php";
 ?>
-<div class="container-fluid mb-3">
-    <h3>
+<div class="container-fluid ">
+    <h3 class="title-my-projetos mt-5">
         Meus Projetos
     </h3>
     <hr>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
         <?php
             if(empty($data["projects"])) {
                 echo "<h3 class='text-center'>Você não está participando de nenhum projeto ainda.</h3>";

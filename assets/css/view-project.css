@@ -2,3 +2,18 @@ img,
 video {
     width: inherit;
 }
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: rgb(66, 66, 66) !important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.title-projeto {
+    color: #b11116;
+}

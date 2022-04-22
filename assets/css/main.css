@@ -1,13 +1,13 @@
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: "Poppins", sans-serif;
-    }
-    
-    * {
-        box-sizing: border-box;
-    }
-    /*
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/*
 .parallax {
 
     background-image: url(../img/fundo.jpg);
@@ -18,258 +18,293 @@
     background-size: cover;
 }
 */
-    
-    nav.navbar.navbar-expand-lg.navCity {
-        background: transparent !important;
-        color: #515A2D !important;
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: transparent!important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.img-teste {
+    background-image: url(../img/cidade.jpg) !important;
+    background-size: cover;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-right: solid 1px rgba(255, 255, 255, 0.644);
+    color: rgb(243, 243, 243);
+}
+
+label {
+    color: #fff;
+}
+
+.conteudo {
+    background: rgba(81, 90, 45, 0.336);
+    background: linear-gradient(356deg, rgba(81, 90, 45, 1) 0%, rgba(115, 165, 83, 1) 33%, rgba(183, 226, 156, 1) 99%);
+    margin: 1em;
+    padding: 25px;
+}
+
+.form-control {
+    color: rgb(57, 87, 88);
+}
+
+.form-control option {
+    background: rgb(228, 228, 228);
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user {
+    background: #515A2D;
+    color: white;
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user:hover {
+    background: #515A2D;
+    color: white;
+}
+
+.title_criar {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.title_criar hr {
+    background: rgb(255, 255, 255);
+    text-align: center;
+}
+
+.form-input {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 60px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(57, 87, 88);
+    color: rgb(57, 87, 88);
+}
+
+.form-input:focus {
+    padding-left: 40px;
+    width: 100%;
+    line-height: 1.2;
+    height: 40px;
+    outline: none;
+    border: none;
+    background: none;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+}
+
+.form-input::placeholder {
+    color: rgb(57, 87, 88);
+}
+
+.inputIcon {
+    position: relative;
+}
+
+.inputIcon i {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    padding: 9px 8px;
+    color: rgb(57, 87, 88);
+    transition: .3s;
+}
+
+.inputIcon input:focus+i {
+    color: rgb(255, 255, 255);
+}
+
+.inputIcon.inputIconBg i {
+    background-color: #aaa;
+    color: #fff;
+    padding: 9px 4px;
+    border-radius: 4px 0 0 0 4px;
+}
+
+.lado-a {
+    font-family: "Poppins", sans-serif;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.img-conteudo {
+    height: 50%;
+    width: 100%;
+}
+
+.btn-site {
+    padding: 10px;
+    color: white;
+    background: #515A2D;
+    text-transform: uppercase;
+}
+
+.btn-site:hover {
+    padding: 10px;
+    color: white;
+    background: #73A553;
+    text-transform: uppercase;
+}
+
+.btn-insta {
+    padding: 10px;
+    color: white;
+    background: #515A2D;
+    text-transform: uppercase;
+}
+
+.btn-insta:hover {
+    padding: 10px;
+    color: white;
+    background: #73A553;
+    text-transform: uppercase;
+}
+
+.btn-entrar {
+    background: #515A2D;
+    color: #fff !important;
+}
+
+.title-galeria {
+    padding: 10px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.galeria-projetos {
+    font-weight: 900;
+}
+
+.rodape {
+    background: #212529;
+    color: #fff;
+    padding-top: 25px;
+}
+
+.rodape a {
+    text-decoration: none;
+    color: #fff
+}
+
+.rodape p {
+    font-size: 12px;
+}
+
+.rod {
+    padding: 10px;
+    padding-bottom: 0;
+    margin: 0;
+}
+
+.devs {
+    background: #1c2024;
+    padding: 10px;
+    padding-bottom: 0;
+    margin: 0;
+    color: #777777;
+}
+
+.fundo-form {
+    background-image: url(../img/fundo.jpg);
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+}
+
+.fundo-form::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.card-projeto {
+    padding: 10px;
+    box-shadow: 0 0 1em rgb(114, 114, 114);
+}
+
+.nav-fundo {
+    background-size: cover;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 350px;
+    transform: translate3d(0px, -20.2857px, 0px);
+    background-position-x: 50%;
+    background: linear-gradient( rgba(59, 59, 59, 0.932), rgba(59, 59, 59, 0.932)), url(../img/fundo.jpg) no-repeat center center;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.titulo-principal {
+    text-align: center;
+    margin: 60px auto;
+    font-weight: 800;
+    width: 100%;
+    font-size: 40px;
+    color: #fff;
+}
+
+.titulo-principal:after {
+    content: '_';
+    margin-left: 5px;
+    opacity: 1;
+    animation: pisca .7s infinite;
+}
+
+.sub-titulo {
+    background: #b11116;
+    color: white;
+    width: 60%;
+    padding: 50px;
+    position: relative;
+    margin-top: -100px;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
+}
+
+
+/* Animação aplicada ao content referente a classe *.titulo-principal* resultando num efeito de cursor piscando. */
+
+@keyframes pisca {
+    0%,
+    100% {
+        opacity: 1;
     }
-    
-    nav.navbar.navbar-expand-lg.navCity a {
-        text-decoration: none !important;
-        color: #515A2D;
+    50% {
+        opacity: 0;
     }
-    
-    .img-teste {
-        background-image: url(../img/cidade.jpg) !important;
-        background-size: cover;
-        border-top-left-radius: 6px;
-        border-bottom-left-radius: 6px;
-        border-right: solid 1px rgba(255, 255, 255, 0.644);
-        color: rgb(243, 243, 243);
-    }
-    
-    label {
-        color: #fff;
-    }
-    
-    .conteudo {
-        background: rgba(81, 90, 45, 0.336);
-        background: linear-gradient(356deg, rgba(81, 90, 45, 1) 0%, rgba(115, 165, 83, 1) 33%, rgba(183, 226, 156, 1) 99%);
-        margin: 1em;
-        padding: 25px;
-    }
-    
-    .form-control {
-        color: rgb(57, 87, 88);
-    }
-    
-    .form-control option {
-        background: rgb(228, 228, 228);
-    }
-    
-    .btn-new-project,
-    .btn-update-project,
-    .btn-new-user {
-        background: #515A2D;
-        color: white;
-    }
-    
-    .btn-new-project,
-    .btn-update-project,
-    .btn-new-user:hover {
-        background: #515A2D;
-        color: white;
-    }
-    
-    .title_criar {
-        color: rgb(255, 255, 255);
-        text-align: center;
-        margin-bottom: 2em;
-    }
-    
-    .title_criar hr {
-        background: rgb(255, 255, 255);
-        text-align: center;
-    }
-    
-    .form-input {
-        padding-left: 40px;
-        width: 100%;
-        line-height: 1.2;
-        height: 60px;
-        outline: none;
-        border: none;
-        background: none;
-        border-bottom: solid 1px rgb(57, 87, 88);
-        color: rgb(57, 87, 88);
-    }
-    
-    .form-input:focus {
-        padding-left: 40px;
-        width: 100%;
-        line-height: 1.2;
-        height: 40px;
-        outline: none;
-        border: none;
-        background: none;
-        border-bottom: solid 1px rgb(255, 255, 255);
-        color: rgb(255, 255, 255);
-    }
-    
-    .form-input::placeholder {
-        color: rgb(57, 87, 88);
-    }
-    
-    .inputIcon {
-        position: relative;
-    }
-    
-    .inputIcon i {
-        position: absolute;
-        left: 0;
-        top: 0px;
-        padding: 9px 8px;
-        color: rgb(57, 87, 88);
-        transition: .3s;
-    }
-    
-    .inputIcon input:focus+i {
-        color: rgb(255, 255, 255);
-    }
-    
-    .inputIcon.inputIconBg i {
-        background-color: #aaa;
-        color: #fff;
-        padding: 9px 4px;
-        border-radius: 4px 0 0 0 4px;
-    }
-    
-    .lado-a {
-        font-family: "Poppins", sans-serif;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .img-conteudo {
-        height: 50%;
-        width: 100%;
-    }
-    
-    .btn-site {
-        padding: 10px;
-        color: white;
-        background: #515A2D;
-        text-transform: uppercase;
-    }
-    
-    .btn-site:hover {
-        padding: 10px;
-        color: white;
-        background: #73A553;
-        text-transform: uppercase;
-    }
-    
-    .btn-insta {
-        padding: 10px;
-        color: white;
-        background: #515A2D;
-        text-transform: uppercase;
-    }
-    
-    .btn-insta:hover {
-        padding: 10px;
-        color: white;
-        background: #73A553;
-        text-transform: uppercase;
-    }
-    
-    .btn-entrar {
-        background: #515A2D;
-        color: #fff !important;
-    }
-    
-    .title-galeria {
-        padding: 10px;
-        text-align: center;
-    }
-    
-    .fundo {
-        background-image: url(../img/fundo.jpg);
-        width: 100%;
-        min-height: 100vh;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        padding: 15px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .fundo::before {
-        content: "";
-        display: block;
-        position: absolute;
-        z-index: -1;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .rodape {
-        background: #62834d;
-        color: #fff;
-        padding-top: 25px;
-    }
-    
-    .rodape a {
-        text-decoration: none;
-        color: #fff
-    }
-    
-    .rodape p {
-        font-size: 12px;
-    }
-    
-    .devs {
-        background: #3a4e2e;
-        padding: 10px;
-        padding-bottom: 0;
-        margin: 0;
-    }
-    
-    .fundo-form {
-        background-image: url(../img/fundo.jpg);
-        width: 100%;
-        min-height: 100vh;
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        position: relative;
-        z-index: 1;
-    }
-    
-    .fundo-form::before {
-        content: "";
-        display: block;
-        position: absolute;
-        z-index: -1;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-    
-    .card-projeto {
-        padding: 10px;
-        box-shadow: 0 0 1em rgb(114, 114, 114);
-    }
+}

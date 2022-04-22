@@ -4,58 +4,58 @@
         require __DIR__ . "/../Page/Components/_Jumbotron.php";
     ?>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h2 class="font-weight-bold">
-                    Título
-                </h2>
-                <p>
+        <div class="row mt-5">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <h4 class="font-weight-bold text-center title-projeto">
                     <?= $data["project"]["title"] ?>
-                </p>
-            </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h2 class="font-weight-bold">
-                    Descrição
-                </h2>
-                <p>
-                    <?= $data["project"]["description"] ?>
-                </p>
+                </h4>
+                <hr>
             </div>
         </div>
         <div class="row">
+            <div class="col-12 col-md-12 col-lg-12">
+                <div class="row justify-content-center align-items-center text-center  title-projeto m-1 p-1">
+                    <?php foreach ($data["project"]["users"] as $user) : ?>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                            <p>
+                                <?= $user["name"] ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 text-center">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h2 class="font-weight-bold">
+                <h5 class="font-weight-bold title-projeto">
                     Área
-                </h2>
+                </h5>
                 <p>
                     <?= $data["project"]["area"] ?>
                 </p>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h2 class="font-weight-bold">
+                <h5 class="font-weight-bold title-projeto">
                     Curso
-                </h2>
+                </h5>
                 <p>
                     <?= $data["project"]["course"] ?>
                 </p>
             </div>
         </div>
-        <h3 class="display-4">
-            Pessoas envolvidas
-        </h3>
-        <div class="row bg-info justify-content-center align-items-center m-1 p-1">
-            <?php foreach ($data["project"]["users"] as $user) : ?>
-                <div class="col-12 col-sm-12 col-md-3 col-lg-3">
-                    <p>
-                        <?= $user["name"] ?>
-                    </p>
-                </div>
-            <?php endforeach; ?>
+        <hr>
+        <div class="row mt-4">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                <h5 class="font-weight-bold text-center title-projeto">
+                    Descrição
+                </h5>
+                <p>
+                    <?= $data["project"]["description"] ?>
+                </p>
+            </div>
         </div>
-        <h3 class="display-4">
-            Mídias
-        </h3>
-        <div class="row bg-info justify-content-center align-items-center m-1 p-1">
+        <hr>
+        <div class="row justify-content-center align-items-center m-1 p-1">
             <?php foreach ($data["project"]["medias"] as $media): ?>
                 <div class="col-12 col-sm-12 col-lg-3 col-md-3">
                     <div class="card">
@@ -65,16 +65,10 @@
                             <?php else : ?>
                                 <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["path"] ?>">
                             <?php endif; ?>
-                            <div class="form-group">
-                                <label class="text-dark">
-                                    Nome
-                                </label>
+                            <div class="form-group mt-2">
                                 <input maxlength="60" class="form-control" type="text" value="<?= $media["name"] ?>" disabled>
                             </div>
                             <div class="form-group">
-                                <label class="text-dark">
-                                    Descrição
-                                </label>
                                 <textarea maxlength="300" class="form-control" rows="3" disabled><?= $media["description"] ?></textarea>
                             </div>
                         </div>
@@ -82,5 +76,8 @@
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
 </div>
+<?php
+                require __DIR__ . "/../Page/Components/_Footer.php";
+            ?>
+    </div>

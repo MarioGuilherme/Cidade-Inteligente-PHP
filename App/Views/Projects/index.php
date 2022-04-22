@@ -1,31 +1,28 @@
-<div class="fundo">
     <div class="conteudo-projeto">
-        <?php
-            require __DIR__ . "/../Page/Components/_Navbar.php";
-            require __DIR__ . "/../Page/Components/_Jumbotron.php";
-        ?>
-        <div class="container-fluid">
-            <div class="row mt-3 align-items-center justify-content-center">
-                <div class="col-12 col-md-12 lado-a">
-                    <h3>
-                        Bem vindo ao Projeto Cidade Inteligente
+        <div class="nav-fundo">
+            <?php
+                require __DIR__ . "/../Page/Components/_Navbar.php";
+            ?>
+
+                    <h3 class="titulo-principal">
+                        Projeto Cidade Inteligente
                     </h3>
-                    <hr>
-                    <h5 class="text-center">
-                        O projeto Cidade Inteligente consiste na representação em minuatura funcional, de um circuito de ambientes dividos em URBANO, RURAL e INDUSTRIAL.
-                    </h5>
-                </div>
+        </div>
+            <div class="sub-titulo">
+                <p class="text-center">
+                            O projeto Cidade Inteligente consiste na representação em minuatura funcional, de um circuito de ambientes dividos em URBANO, RURAL e INDUSTRIAL.
+                </p>
             </div>
+
             <div class="galeria mt-5">
                 <div class="row">
                     <div class="col-12 col-md-12">
-                        <h2 class="title-galeria">
-                            Galeria de Projetos
-                        </h2>
-                        <hr class="my-4">
+                        <h3 class="title-galeria mt-3 mb-3">
+                            Galeria de <b class="galeria-projetos">Projetos</b>
+                        </h3>
                     </div>
                 </div>
-                <div class="row justify-content-center">
+                <div class="row justify-content-center mt-3">
                     <?php
                         if(empty($data["projects"])) {
                             echo "<h3 class='text-center'>Nenhum projeto cadastrado</h3>";
@@ -59,4 +56,3 @@
                 require __DIR__ . "/../Page/Components/_Footer.php";
             ?>
     </div>
-</div>

@@ -1,10 +1,10 @@
-<div class="col-12 col-sm-12 col-lg-3 col-md-3">
-    <div class="card">
+<div class="col-12 col-sm-12 col-lg-3 col-md-3 mb-2">
+    <div class="card" style="width: 18rem;">
         <div id="carousel-<?= $project["id_project"] ?>" data-interval="0" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <?= $lis ?>
             </ol>
-            <div class="carousel-inner" style="height: 400px;">
+            <div class="carousel-inner" style="height: 150px;">
                 <?= $divs ?>
             </div>
             <a class="carousel-control-prev" href="#carousel-<?= $project["id_project"] ?>" role="button" data-slide="prev">
@@ -21,9 +21,9 @@
             </a>
         </div>
         <div class="card-body">
-            <h4 class="card-title font-weight-bold">
+            <h5 class="card-title">
                 <?= $project["title"] ?>
-            </h4>
+            </h6>
             <p class="card-text">
                 <?= $project["description"] ?>
             </p>
