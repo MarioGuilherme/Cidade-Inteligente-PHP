@@ -1,31 +1,20 @@
-.btn-card {
-    background: #b11116;
-    color: white;
-}
-
-.btn-card:hover {
-    background: #7d0c0f;
-    color: white;
-}
-
-.carousel-inner>div>img,
-video {
-    height: 400px !important;
-}
-
-.galeria {
-    background: #c5c5c55e !important;
-    padding: 1em;
-    margin-bottom: 1em;
-}
-
-nav.navbar.navbar-expand-lg.navCity {
-    background: rgb(66, 66, 66) !important;
-    color: #ffffff !important;
-    padding: 40px;
-}
-
-nav.navbar.navbar-expand-lg.navCity a {
-    text-decoration: none !important;
-    color: #ffffff;
-}
+    .btn-card {
+        background: #b11116;
+        color: white;
+    }
+    
+    .btn-card:hover {
+        background: #7d0c0f;
+        color: white;
+    }
+    
+    .carousel-inner>div>img,
+    video {
+        height: 400px !important;
+    }
+    
+    .galeria {
+        background: #c5c5c55e !important;
+        padding: 1em;
+        margin-bottom: 1em;
+    }

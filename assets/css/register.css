@@ -1,11 +1,35 @@
-.conteudo-register {
-    background: rgb(255, 255, 255);
-    box-shadow: 0 0 1em rgb(204, 204, 204);
-    padding: 25px;
-    border-radius: 16px;
-    margin-top: 2em;
-    margin-bottom: 4em;
-    width: 60%;
+.user {
+    margin: 6px;
+    padding: 5px 10px;
+    background-color: rgb(214, 214, 214);
+    cursor: pointer;
+    filter: opacity(0.75);
+}
+
+.user[involved="true"] {
+    background-color: #b11116;
+    -moz-box-sizing: border-box;
+    color: #fff;
+    filter: drop-shadow(0px 0px 2px black);
+}
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: rgb(66, 66, 66) !important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.conteudo {
+    background: #c5c5c55e !important;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
 }
 
 .form-control {
@@ -19,21 +43,27 @@
 .btn-new-project,
 .btn-update-project,
 .btn-new-user {
-    background: #9ecc81;
+    background: #b11116;
     color: white;
 }
 
 .btn-new-project,
 .btn-update-project,
 .btn-new-user:hover {
-    background: #515A2D;
-    color: white;
+    background: #7d0c0f;
+    color: white !important;
 }
 
 .title_criar {
-    color: #9ecc81;
-    text-align: center;
-    margin-bottom: 2em;
+    background: #b11116;
+    color: white;
+    width: 70%;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: 5em;
+    box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
 }
 
 .title_criar hr {
@@ -93,84 +123,6 @@
     border-radius: 4px 0 0 0 4px;
 }
 
-.lado-a {
-    font-family: "Poppins", sans-serif;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-}
-
-.img-conteudo {
-    height: 50%;
-    width: 100%;
-}
-
-.btn-site {
-    padding: 10px;
-    color: white;
-    background: #515A2D;
-    text-transform: uppercase;
-}
-
-.btn-site:hover {
-    padding: 10px;
-    color: white;
-    background: #73A553;
-    text-transform: uppercase;
-}
-
-.btn-insta {
-    padding: 10px;
-    color: white;
-    background: #515A2D;
-    text-transform: uppercase;
-}
-
-.btn-insta:hover {
-    padding: 10px;
-    color: white;
-    background: #73A553;
-    text-transform: uppercase;
-}
-
-.btn-entrar {
-    background: #515A2D;
-    color: #fff !important;
-}
-
-.title-galeria {
-    padding: 10px;
-    text-align: center;
-}
-
-.fundo {
-    background-image: url(../img/fundo.jpg);
-    width: 100%;
-    min-height: 100vh;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    z-index: 1;
-}
-
-.fundo::before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(255, 255, 255, 0.9);
+label {
+    color: #b11116;
 }

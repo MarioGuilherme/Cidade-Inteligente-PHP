@@ -1,49 +1,50 @@
-<div class="fundo-form-register">
-    <div class="container-fluid" id="container-register">
-        <?php
+<?php
             require __DIR__ . "/../Page/Components/_Navbar.php";
-            require __DIR__ . "/../Page/Components/_Jumbotron.php";
-        ?>
-        <div class="container justify-content-center">
-            <div class="conteudo-register">
-                <form class="form">
-                    <div class="row">
-                        <div class="col-12 col-md-12 title_criar mt-2">
-                            <h5>
-                                Criar Usuário/Professor
-                            </h5>
-                            <hr class="hr-user">
+        ?>    
+<div class="container-fluid">
+        <div class="row">
+            <div class=" title_criar">
+                <h3>
+                Criar Usuário/Professor
+                </h3>
+            </div>
+        </div>
+        <div class="conteudo">
+            <form class="form">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6 input-form-title">
+                        <div class="form-group">
+                            <label>Título</label>
+                            <input type="text" maxlength="60" name="name" class="form-control" aria-describedby="emailHelp" placeholder="Digite o nome">
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-6">
-                            <div class="inputIcon">
-                                <input type="text" maxlength="60" name="name" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o nome">
-                                <i class="mdi mdi-account"></i>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="inputIcon">
-                                <input type="email" maxlength="60" name="email" class="form-inputUser" aria-describedby="emailHelp" placeholder="Digite o email">
-                                <i class="mdi mdi-email"></i>
-                            </div>
+                    <div class="col-12 col-sm-6 col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>
+                                Email
+                            </label>
+                            <input type="email" maxlength="60" name="email" class="form-control" aria-describedby="emailHelp" placeholder="Digite o email">
                         </div>
                     </div>
-                    <div class="row mt-5">
-                        <div class="col-12 col-md-6">
-                            <div class="inputIcon">
-                                <input type="password" maxlength="60" name="password" class="form-inputUser" aria-describedby="emailHelp" placeholder="Crie a senha">
-                                <i class="mdi mdi-key"></i>
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <div class="inputIcon">
-                                <input type="password" maxlength="60" class="form-inputUser" aria-describedby="emailHelp" placeholder="Confirme a senha">
-                                <i class="mdi mdi-key-change"></i>
-                            </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6 input-form-title">
+                        <div class="form-group">
+                            <label>Senha</label>
+                            <input type="password" maxlength="60" name="password" class="form-control" aria-describedby="emailHelp" placeholder="Crie a senha">
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="col-12 col-sm-6 col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>
+                                Confirmar Senha:
+                            </label>
+                            <input type="password" maxlength="60" class="form-control" aria-describedby="emailHelp" placeholder="Confirme a senha">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label>
@@ -93,18 +94,17 @@
                             </div>
                         </div>
                     </div>
-                </form>
-                <div class="row">
+                <div class="inputs-medias"></div>
+                <div class="row mt-3">
                     <div class="col-12 col-md-12">
-                        <button class="btn btn-new-user btn-block" type="button">
-                            Cadastrar
+                    <button class="btn btn-update-project btn-block" type="button">
+                            Salvar alterações
                         </button>
-                    </div>   
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-        <?php
+    </div>
+    <?php
             require __DIR__ . "/../Page/Components/_Footer.php";
         ?>
-    </div>
-</div>
