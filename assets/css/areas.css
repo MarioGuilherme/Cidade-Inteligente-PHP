@@ -1,3 +1,24 @@
 td {
     vertical-align: middle !important;
 }
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: rgb(66, 66, 66) !important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.table-areas {
+    margin: 2em;
+}
+
+.thead-area {
+    background: #b11116;
+    color: white;
+    border-radius: 20px;
+}

@@ -1,6 +1,6 @@
 <?php
-            require __DIR__ . "/../Page/Components/_Navbar.php";
-        ?>    
+require __DIR__ . "/../Page/Components/_Navbar.php";
+ ?>    
 <div class="container-fluid">
         <div class="row">
             <div class=" title_criar">
@@ -14,7 +14,7 @@
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-6 input-form-title">
                         <div class="form-group">
-                            <label>Título</label>
+                            <label>Nome</label>
                             <input type="text" maxlength="60" name="name" class="form-control" aria-describedby="emailHelp" placeholder="Digite o nome">
                         </div>
                     </div>

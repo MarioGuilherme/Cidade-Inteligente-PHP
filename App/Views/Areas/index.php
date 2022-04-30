@@ -1,17 +1,16 @@
-<div class="fundo">
     <?php
         require __DIR__ . "/../Page/Components/_Navbar.php";
         require __DIR__ . "/../Page/Components/_Jumbotron.php";
     ?>
     <div class="container-fluid">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-3">
             <button class="btn btn-primary btn-form-area">
                 <i class="mdi mdi-plus mdi-22px"></i>
                 Cadastrar Área
             </button>
-            <div class="table-responsive">
-                <table class="table table-hover display compact cell-border w-100">
-                    <thead class="thead-dark text-center">
+            <div class="table-responsive table-areas">
+                <table class="table">
+                    <thead class="thead-area text-center">
                         <th scope="col">
                             #
                         </th>
@@ -26,11 +25,10 @@
                 </table>
             </div>
         </div>
-        <?php
+    </div>
+    <?php
             require __DIR__ . "/../Page/Components/_Footer.php";
         ?>
-    </div>
-</div>
 <?php
     require __DIR__ . "/Components/modal.php";
 ?>

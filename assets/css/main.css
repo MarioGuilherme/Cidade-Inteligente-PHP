@@ -72,6 +72,18 @@ label {
     color: white;
 }
 
+.btn-entrar {
+    background: #b11116;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn-entrar:hover {
+    background: #7d0c0f;
+    color: white;
+}
+
 .title_criar {
     color: rgb(255, 255, 255);
     text-align: center;
@@ -173,11 +185,6 @@ label {
     color: white;
     background: #73A553;
     text-transform: uppercase;
-}
-
-.btn-entrar {
-    background: #515A2D;
-    color: #fff !important;
 }
 
 .title-galeria {

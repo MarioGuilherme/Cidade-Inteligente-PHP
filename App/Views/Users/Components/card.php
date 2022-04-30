@@ -17,7 +17,7 @@
                 Excluir
             </button>
         <?php endif; ?>
-        <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-primary btn-block mt-2">
+        <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-primary btn-block mt-2 btn-view-project">
             Ver Projeto
         </a>
     </div>

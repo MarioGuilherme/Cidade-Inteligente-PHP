@@ -37,13 +37,14 @@ body {
 }
 
 .btn-login {
-    background: #515A2D;
+    background: #b11116;
     color: white;
     font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
 }
 
 .btn-login:hover {
-    background: rgb(31, 47, 48);
+    background: #7d0c0f;
     color: white;
 }
 
