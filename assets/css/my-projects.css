@@ -56,3 +56,8 @@ nav.navbar.navbar-expand-lg.navCity a {
     color: white;
     border: none;
 }
+
+.navbar-toggler {
+    color: #ffffff;
+    background: #b11116;
+}
