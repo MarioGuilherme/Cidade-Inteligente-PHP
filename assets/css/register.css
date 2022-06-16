@@ -126,3 +126,25 @@ nav.navbar.navbar-expand-lg.navCity a {
 label {
     color: #b11116;
 }
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
+}
+
+@media screen and (max-width: 600px) {
+    .title_criar {
+        width: 97%;
+        margin-top: 2em;
+    }
+    .conteudo {
+        width: 100%;
+    }
+    h3 {
+        font-size: 1.5em;
+    }
+}

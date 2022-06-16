@@ -119,7 +119,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-12 col-md-12 text-right">
-                        <button type="button" class="btn btn-danger btn-add-media">
+                        <button type="button" class="btn btn-add-media">
                             <i class="mdi mdi-plus"></i>
                             Adicionar mídia
                         </button>
@@ -137,22 +137,22 @@
                                     <?php else : ?>
                                         <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["path"] ?>">
                                     <?php endif; ?>
-                                    <button type="button" class="btn btn-block btn-warning btn-change-media mt-1" id="<?= $media["id_media"] ?>">
+                                    <button type="button" class="btn btn-block btn-change-media mt-1" id="<?= $media["id_media"] ?>">
                                         <i class="mdi mdi-sync"></i>
                                         Trocar mídia
                                     </button>
-                                    <button type="button" class="btn btn-block btn-danger btn-delete-media mt-1" id="<?= $media["id_media"] ?>">
+                                    <button type="button" class="btn btn-block btn-delete-media mt-1" id="<?= $media["id_media"] ?>">
                                         <i class="mdi mdi-trash-can-outline"></i>
                                         Apagar
                                     </button>
-                                    <div class="form-group mt-2">
-                                        <label class="text-dark">
+                                    <div class="form-group mt-4">
+                                        <label>
                                             Nome
                                         </label>
                                         <input maxlength="60" class="form-control" type="text" name="name_media[<?= $media["id_media"] ?>]" value="<?= $media["name"] ?>">
                                     </div>
                                     <div class="form-group">
-                                        <label class="text-dark">
+                                        <label>
                                             Descrição
                                         </label>
                                         <textarea maxlength="300" class="form-control" name="description_media[<?= $media["id_media"] ?>]"  rows="3"><?= $media["description"] ?></textarea>

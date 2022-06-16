@@ -3,7 +3,7 @@ require __DIR__ . "/../Page/Components/_Navbar.php";
  ?>    
 <div class="container-fluid">
         <div class="row">
-            <div class=" title_criar">
+            <div class="title_criar">
                 <h3>
                 Criar Novo Projeto
                 </h3>

@@ -9,7 +9,6 @@ body {
     height: 90vh;
     border-top-left-radius: 6px;
     border-bottom-left-radius: 6px;
-    border-right: solid 1px rgba(255, 255, 255, 0.644);
 }
 
 .main {
@@ -30,10 +29,10 @@ body {
 }
 
 .painel {
-    background: rgb(81, 90, 45);
-    background: linear-gradient(356deg, rgba(81, 90, 45, 1) 0%, rgba(115, 165, 83, 1) 33%, rgba(183, 226, 156, 1) 99%);
+    background: rgb(231, 231, 231);
     margin: 1em;
     padding: 25px;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.315);
 }
 
 .btn-login {
@@ -54,22 +53,23 @@ body {
 
 .icon {
     font-size: 100px;
-    color: white;
+    color: #7d0c0f;
 }
 
 .titulo-projeto {
-    color: white;
+    color: #7d0c0f;
     font-family: 'Montserrat', sans-serif;
 }
 
 .form-check-label {
     font-family: 'Montserrat', sans-serif;
-    color: white;
+    color: rgb(61, 61, 61);
+    ;
 }
 
 .esqueceu-senha {
     font-family: 'Montserrat', sans-serif;
-    color: white;
+    color: rgb(61, 61, 61);
 }
 
 .esqueceu-senha:hover {
@@ -85,8 +85,8 @@ body {
     outline: none;
     border: none;
     background: none;
-    border-bottom: solid 1px white;
-    color: white;
+    border-bottom: solid 1px rgb(61, 61, 61);
+    color: rgb(61, 61, 61);
 }
 
 .form-input:focus {
@@ -97,12 +97,13 @@ body {
     outline: none;
     border: none;
     background: none;
-    border-bottom: solid 1px #6C6B6C;
-    color: #6C6B6C;
+    border-bottom: solid 1px #7d0c0f;
+    color: #7d0c0f;
 }
 
 .form-input::placeholder {
-    color: white;
+    color: rgb(61, 61, 61);
+    ;
 }
 
 .inputIcon {
@@ -114,17 +115,19 @@ body {
     left: 0;
     top: 0px;
     padding: 9px 8px;
-    color: white;
+    color: rgb(61, 61, 61);
+    ;
     transition: .3s;
 }
 
 .inputIcon input:focus+i {
-    color: rgb(255, 255, 255);
+    color: #7d0c0f;
+    ;
 }
 
 .inputIcon.inputIconBg i {
     background-color: #aaa;
-    color: #fff;
+    color: rgb(61, 61, 61);
     padding: 9px 4px;
     border-radius: 4px 0 0 0 4px;
 }
@@ -165,7 +168,7 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.795);
 }
 
 @media screen and (max-width: 600px) {

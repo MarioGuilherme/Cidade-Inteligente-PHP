@@ -71,10 +71,10 @@
                          <td class='text-center'>$area[id_area]</td>
                          <td class='text-center'>$area[area]</td>
                          <td class='text-center'>
-                             <button id='$area[id_area]' class='btn btn-warning btn-edit-area'>
+                             <button id='$area[id_area]' class='btn btn-edit-area'>
                                  Editar
                              </button>
-                             <button id='$area[id_area]' class='btn btn-danger btn-delete-area'>
+                             <button id='$area[id_area]' class='btn btn-delete-area'>
                                  Apagar
                              </button>
                          </td>

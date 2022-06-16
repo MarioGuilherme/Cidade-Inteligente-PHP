@@ -13,6 +13,75 @@ nav.navbar.navbar-expand-lg.navCity a {
     color: #ffffff;
 }
 
-.title-projeto {
-    color: #b11116;
+td {
+    vertical-align: middle !important;
+}
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: rgb(66, 66, 66) !important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.table-user {
+    margin: 2em;
+}
+
+.thead-user {
+    background: #b11116;
+    color: white;
+    border-radius: 20px;
+}
+
+.btn-form-user {
+    background: #b11116;
+    color: white;
+}
+
+.btn-form-user:hover {
+    background: #b11116;
+    color: white;
+}
+
+label {
+    color: #545454;
+}
+
+.btn-edit-user {
+    background: #494949;
+    color: white;
+}
+
+.btn-edit-user:hover {
+    background: #252525;
+    color: white;
+}
+
+.btn-delete-user {
+    background: #720909;
+    color: white;
+}
+
+.btn-delete-user:hover {
+    background: #410606;
+    color: white;
+}
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+}
+
+.btn-update-user {
+    background: #b11116;
+    color: rgb(255, 255, 255);
 }

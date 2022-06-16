@@ -5,7 +5,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-12 col-md-5 painel">
                         <div class="img-logo-cidade">
-                            <img src="assets/img/logo3.png" alt="">
+                            <img src="assets/img/cidade-inteligente.png" alt="">
                         </div>
                         <h3 class="text-center titulo-projeto mb-3">
                             Login

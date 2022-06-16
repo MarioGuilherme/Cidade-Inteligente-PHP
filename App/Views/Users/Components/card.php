@@ -10,15 +10,15 @@
             </p>
         </div>
         <?php if(\App\Utils\Session::IsAdmin()): ?>
-            <a href="editar-projeto?id=<?= $project["id_project"] ?>" class="btn btn-warning btn-edit-project">
+            <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-block mt-2 btn-view-project">
+            Ver Projeto
+            </a>
+            <a href="editar-projeto?id=<?= $project["id_project"] ?>" class="btn mt-2 btn-edit-project">
                 Editar
             </a>
-            <button id="<?= $project["id_project"] ?>" class="btn btn-danger mt-2 btn-delete-project">
+            <button id="<?= $project["id_project"] ?>" class="btn  mt-2 btn-delete-project">
                 Excluir
             </button>
         <?php endif; ?>
-        <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-primary btn-block mt-2 btn-view-project">
-            Ver Projeto
-        </a>
     </div>
 </div>

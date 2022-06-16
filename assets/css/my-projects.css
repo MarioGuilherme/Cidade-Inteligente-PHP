@@ -46,7 +46,7 @@ nav.navbar.navbar-expand-lg.navCity a {
 }
 
 .btn-view-project {
-    background: rgb(80, 80, 80);
+    background: rgb(53, 83, 100);
     color: white;
     border: none;
 }
@@ -58,6 +58,10 @@ nav.navbar.navbar-expand-lg.navCity a {
 }
 
 .navbar-toggler {
-    color: #ffffff;
     background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
 }

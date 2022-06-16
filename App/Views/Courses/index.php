@@ -4,14 +4,18 @@
         require __DIR__ . "/../Page/Components/_Jumbotron.php";
     ?>
     <div class="container-fluid">
-        <div class="row justify-content-center">
-            <button class="btn btn-primary btn-form-course">
-                <i class="mdi mdi-plus mdi-22px"></i>
-                Cadastrar Curso
-            </button>
-            <div class="table-responsive">
-                <table class="table table-hover display compact cell-border w-100">
-                    <thead class="thead-dark text-center">
+        <div class="row text-right mt-2">
+            <div class="col-12 col-md-12">
+                <button class="btn btn-form-course">
+                    <i class="mdi mdi-plus mdi-22px"></i>
+                    Cadastrar Curso
+                </button>
+            </div>
+        </div>
+            <div class="row justify-content-center">
+            <div class="table-responsive table-course">
+                <table class="table">
+                    <thead class="thead-course text-center">
                         <th scope="col">
                             #
                         </th>

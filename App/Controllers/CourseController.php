@@ -93,10 +93,10 @@
                             $course[course]
                         </td>
                         <td class='text-center'>
-                            <button id='$course[id_course]' class='btn btn-warning btn-edit-course'>
+                            <button id='$course[id_course]' class='btn btn-edit-course'>
                                 Editar
                             </button>
-                            <button id='$course[id_course]' class='btn btn-danger btn-delete-course'>
+                            <button id='$course[id_course]' class='btn btn-delete-course'>
                                 Apagar
                             </button>
                         </td>

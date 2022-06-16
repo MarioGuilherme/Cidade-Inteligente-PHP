@@ -99,10 +99,10 @@
                         $user[email]
                     </td>
                     <td class='text-center'>
-                        <button id='$user[id_user]' class='btn btn-warning btn-edit-user'>
+                        <button id='$user[id_user]' class='btn btn-edit-user'>
                             Editar
                         </button>
-                        <button id='$user[id_user]' class='btn btn-danger btn-delete-user'>
+                        <button id='$user[id_user]' class='btn btn-delete-user'>
                             Apagar
                         </button>
                     </td>

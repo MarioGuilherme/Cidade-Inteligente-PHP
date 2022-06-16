@@ -17,3 +17,12 @@ nav.navbar.navbar-expand-lg.navCity a {
 .title-projeto {
     color: #b11116;
 }
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
+}

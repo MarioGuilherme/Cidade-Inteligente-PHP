@@ -44,7 +44,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-update-user">
+                <button type="button" class="btn btn-block btn-update-user">
                     Salvar
                 </button>
             </div>

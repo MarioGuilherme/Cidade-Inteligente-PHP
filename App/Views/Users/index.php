@@ -5,9 +5,9 @@
     ?>
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="table-responsive">
+            <div class=" table-responsive table-user">
                 <table class="table table-hover display compact cell-border w-100">
-                    <thead class="thead-dark text-center">
+                    <thead class="thead-user">
                         <th scope="col">
                             #
                         </th>

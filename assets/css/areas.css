@@ -22,3 +22,46 @@ nav.navbar.navbar-expand-lg.navCity a {
     color: white;
     border-radius: 20px;
 }
+
+.btn-form-area {
+    background: #b11116;
+    color: white;
+}
+
+.btn-form-area:hover {
+    background: #b11116;
+    color: white;
+}
+
+label {
+    color: #545454;
+}
+
+.btn-edit-area {
+    background: #494949;
+    color: white;
+}
+
+.btn-edit-area:hover {
+    background: #252525;
+    color: white;
+}
+
+.btn-delete-area {
+    background: #720909;
+    color: white;
+}
+
+.btn-delete-area:hover {
+    background: #410606;
+    color: white;
+}
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
+}

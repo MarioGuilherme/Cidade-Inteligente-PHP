@@ -24,7 +24,7 @@
                 <button type="button" class="btn btn-success btn-new-course">
                     Cadastrar
                 </button>
-                <button type="button" class="btn btn-primary btn-update-course">
+                <button type="button" class="btn btn-block btn-update-course">
                     Salvar
                 </button>
             </div>
