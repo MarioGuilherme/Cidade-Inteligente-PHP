@@ -29,6 +29,10 @@
             $this->areaModel = new Area();
         }
 
+        /**
+         * Método responsável por renderizar a view raíz de listagem de Áreas.
+         * @return void
+         */
         public function Index() : void {
             $this->GetModel();
             (Array) $data = [
@@ -40,6 +44,11 @@
             $this->View("Areas/index", $data);
         }
 
+        /**
+         * Método responsável por cadastrar uma Área.
+         * @param Array $data Dados do formulário.
+         * @return void
+         */
         public function New(Array $form) : void {
             // VERIFICA SE O USUÁRIO É PROFESSOR
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
@@ -57,16 +66,25 @@
             ]) > 0 ? Response::Message(AREA_REGISTERED) : Response::Message(GENERAL_ERROR);
         }
 
+        /**
+         * Método responsável por retornar os dados de uma Área a partir de seu ID.
+         * @param Int $id ID da Área.
+         * @return void
+         */
         public function ViewByID(Int $id_area) : void {
             $this->GetModel();
             (Array) $area = $this->areaModel::Select("", "id_area = ?", "", "", "*", [$id_area])->fetch(PDO::FETCH_ASSOC);
             Response::Message($area);
         }
 
+        public function GetAllAreas() : Array {
+            $this->GetModel();
+            return $this->areaModel::Select()->fetchAll(PDO::FETCH_ASSOC);
+        }
+
         public function List() : void {
             $this->GetModel();
-            (Array) $areas = $this->areaModel::Select()->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($areas as $area) {
+            foreach ($this->GetAllAreas() as $area) {
                 echo "<tr role='row'>
                          <td class='text-center'>$area[id_area]</td>
                          <td class='text-center'>$area[area]</td>
@@ -87,7 +105,7 @@
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            (Int) $id_area = Form::SanatizeField($form["id_area"], FILTER_SANITIZE_NUMBER_INT);
+            (Int) $id_area = (Int) Form::SanatizeField($form["id_area"], FILTER_SANITIZE_NUMBER_INT);
             (String) $area = Form::SanatizeField($form["area"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA

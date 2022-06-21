@@ -11,7 +11,7 @@
                             Cidade Inteligente
                         </h1>
                         <form id="formulario" class="form">
-                            <label>
+                            <label class="text-dark">
                                 Olá <?= $data["name"] ?>, digite sua nova senha:
                             </label>
                             <div class="inputIcon">

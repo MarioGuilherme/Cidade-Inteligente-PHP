@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->ChangePassword($_GET["token"]);
+    (new UserController)->FormChangePassword($_GET["token"]);

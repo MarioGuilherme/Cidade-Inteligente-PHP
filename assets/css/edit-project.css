@@ -1,145 +1,145 @@
-    img,
-    video {
-        width: inherit;
-    }
-    
-    option {
-        padding: 3px;
-    }
-    
-    textarea {
-        resize: none;
-    }
-    
-    .users {
-        background-color: white;
-        border-radius: 0.25rem;
-        padding: 10px;
-        overflow-y: scroll;
-        height: 175px;
-        resize: vertical;
-    }
-    
-    .user {
-        margin: 6px;
-        padding: 5px 10px;
-        background-color: rgb(214, 214, 214);
-        cursor: pointer;
-        filter: opacity(0.75);
-    }
-    
-    .user[involved="true"] {
-        background-color: #b11116;
-        -moz-box-sizing: border-box;
-        color: #fff;
-        filter: drop-shadow(0px 0px 2px black);
-    }
-    
-    nav.navbar.navbar-expand-lg.navCity {
-        background: rgb(66, 66, 66) !important;
-        color: #ffffff !important;
-        padding: 40px;
-    }
-    
-    nav.navbar.navbar-expand-lg.navCity a {
-        text-decoration: none !important;
-        color: #ffffff;
-    }
-    
-    .conteudo {
-        background: #c5c5c55e !important;
-        width: 70%;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0;
-    }
-    
-    .form-control {
-        color: rgb(57, 87, 88);
-    }
-    
-    .form-control option {
-        background: rgb(228, 228, 228);
-    }
-    
-    .btn-new-project,
-    .btn-update-project,
-    .btn-new-user {
-        background: #b11116;
-        color: white;
-    }
-    
-    .btn-new-project,
-    .btn-update-project,
-    .btn-new-user:hover {
-        background: #7d0c0f;
-        color: white !important;
-    }
-    
+img,
+video {
+    width: inherit;
+}
+
+option {
+    padding: 3px;
+}
+
+textarea {
+    resize: none;
+}
+
+.users {
+    background-color: white;
+    border-radius: 0.25rem;
+    padding: 10px;
+    overflow-y: scroll;
+    height: 175px;
+    resize: vertical;
+}
+
+.user {
+    margin: 6px;
+    padding: 5px 10px;
+    background-color: rgb(214, 214, 214);
+    cursor: pointer;
+    filter: opacity(0.75);
+}
+
+.user[involved="true"] {
+    background-color: #b11116;
+    -moz-box-sizing: border-box;
+    color: #fff;
+    filter: drop-shadow(0px 0px 2px black);
+}
+
+nav.navbar.navbar-expand-lg.navCity {
+    background: rgb(66, 66, 66) !important;
+    color: #ffffff !important;
+    padding: 40px;
+}
+
+nav.navbar.navbar-expand-lg.navCity a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+.conteudo {
+    background: #c5c5c55e !important;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+}
+
+.form-control {
+    color: rgb(57, 87, 88);
+}
+
+.form-control option {
+    background: rgb(228, 228, 228);
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user {
+    background: #b11116;
+    color: white;
+}
+
+.btn-new-project,
+.btn-update-project,
+.btn-new-user:hover {
+    background: #7d0c0f;
+    color: white !important;
+}
+
+.title_criar {
+    background: #b11116;
+    color: white;
+    width: 95%;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: 5em;
+    box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
+}
+
+.title_criar hr {
+    background: rgb(255, 255, 255);
+    text-align: center;
+}
+
+label {
+    color: #b11116;
+}
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
+}
+
+.btn-add-media {
+    background: #b11116;
+    color: #fff;
+}
+
+.btn-change-media {
+    background: rgb(80, 80, 80);
+    color: white;
+}
+
+.btn-change-media:hover {
+    background: rgb(51, 51, 51);
+    color: white;
+}
+
+.btn-delete-media {
+    background: #b11116;
+    color: white;
+}
+
+.btn-delete-media:hover {
+    background: #b11116;
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
     .title_criar {
-        background: #b11116;
-        color: white;
-        width: 70%;
-        margin-bottom: 0;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 20px;
-        margin-top: 5em;
-        box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
+        width: 97%;
+        margin-top: 2em;
     }
-    
-    .title_criar hr {
-        background: rgb(255, 255, 255);
-        text-align: center;
+    .conteudo {
+        width: 100%;
     }
-    
-    label {
-        color: #b11116;
+    h3 {
+        font-size: 1.5em;
     }
-    
-    .navbar-toggler {
-        background: #b11116;
-    }
-    
-    .mdi-menu {
-        color: aliceblue;
-        font-size: 24px;
-    }
-    
-    .btn-add-media {
-        background: #b11116;
-        color: #fff;
-    }
-    
-    .btn-change-media {
-        background: rgb(80, 80, 80);
-        color: white;
-    }
-    
-    .btn-change-media:hover {
-        background: rgb(51, 51, 51);
-        color: white;
-    }
-    
-    .btn-delete-media {
-        background: #b11116;
-        color: white;
-    }
-    
-    .btn-delete-media:hover {
-        background: #b11116;
-        color: white;
-    }
-    
-    @media screen and (max-width: 600px) {
-        .title_criar {
-            width: 97%;
-            margin-top: 2em;
-        }
-        .conteudo {
-            width: 100%;
-        }
-        h3 {
-            font-size: 1.5em;
-        }
-    }
+}

@@ -92,7 +92,7 @@
          * @return void
          */
         public function View(String $view, Array $data = []) : void {
-            require __DIR__ . "/../Views/Page/_Layout.php";
+            require __DIR__ . "/../Views/_Layout.php";
         }
 
         /**
@@ -102,28 +102,28 @@
          */
         public function RenderButtons(Int $indexBtn = null) : String {
             // SE O USUÁRIO NÃO ESTIVER LOGADO
-            if(Session::IsEmptySession()) {
-                unset($this->buttons[0]);
-                unset($this->buttons[2]);
-                unset($this->buttons[3]);
-                unset($this->buttons[4]);
-                unset($this->buttons[6]);
-                unset($this->buttons[7]);
-                unset($this->buttons[8]);
-                unset($this->buttons[9]);
-            } else {
-                // SE O USUÁRIO ESTIVER LOGADO
-                unset($this->buttons[5]);
-                if(!Session::IsAdmin()) {
-                    // SE O USUÁRIO NÃO FOR ADMINISTRADOR
-                    unset($this->buttons[2]);
-                    unset($this->buttons[3]);
-                    unset($this->buttons[7]);
-                    unset($this->buttons[8]);
-                    unset($this->buttons[9]);
-                }
-            }
-            unset($this->buttons[$indexBtn]);
+            // if(Session::IsEmptySession()) {
+            //     unset($this->buttons[0]);
+            //     unset($this->buttons[2]);
+            //     unset($this->buttons[3]);
+            //     unset($this->buttons[4]);
+            //     unset($this->buttons[6]);
+            //     unset($this->buttons[7]);
+            //     unset($this->buttons[8]);
+            //     unset($this->buttons[9]);
+            // } else {
+            //     // SE O USUÁRIO ESTIVER LOGADO
+            //     unset($this->buttons[5]);
+            //     if(!Session::IsAdmin()) {
+            //         // SE O USUÁRIO NÃO FOR ADMINISTRADOR
+            //         unset($this->buttons[2]);
+            //         unset($this->buttons[3]);
+            //         unset($this->buttons[7]);
+            //         unset($this->buttons[8]);
+            //         unset($this->buttons[9]);
+            //     }
+            // }
+            // unset($this->buttons[$indexBtn]);
             return implode("", $this->buttons);
         }
     }

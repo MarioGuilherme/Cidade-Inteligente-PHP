@@ -1,16 +1,11 @@
 $(document).ready(() => {
-    function ListCourses() {
-        Ajax("services/list-courses", "html", null, response => {
-            $("tbody").html(response);
+    Ajax("services/list-courses", "html", null, response => {
+        $("tbody").html(response);
+        $("table").DataTable({
+            "language": {
+                "url": "assets/pt_br.json"
+            }
         });
-    }
-    setTimeout(() => {
-        ListCourses();
-    }, 550);
-    $("table").DataTable({
-        "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
-        }
     });
     $(".btn-new-course").click(() => {
         VerifyFields($("form").serializeArray());
@@ -20,7 +15,7 @@ $(document).ready(() => {
             CleanFields(response.icon);
             if (response.icon == "success") {
                 $("#modal").modal("hide");
-                ListCourses();
+                Ajax("services/list-courses", "html", null, response => $("tbody").html(response));
             }
         });
     });
@@ -47,14 +42,14 @@ $(document).ready(() => {
             SweetAlert(response.icon, response.msg);
             if (response.icon == "success") {
                 $("#modal").modal("hide");
-                ListCourses();
+                Ajax("services/list-courses", "html", null, response => $("tbody").html(response));
             }
         });
     });
     $("tbody").on("click", ".btn-delete-course", function() {
         Swal.fire({
             html: `<h2 style="color: white;">Deseja mesmo excluir este curso?</h2>`,
-            background: "rgb(39, 39, 61)",
+            background: "rgb(51, 51, 51)",
             icon: "question",
             showCancelButton: true,
             allowOutsideClick: false,

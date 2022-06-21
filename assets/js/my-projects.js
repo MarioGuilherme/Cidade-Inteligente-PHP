@@ -2,7 +2,7 @@ $(document).ready(() => {
     $(".btn-delete-project").click(function() {
         Swal.fire({
             html: `<h2 style="color: white;">Deseja mesmo excluir este projeto?</h2>`,
-            background: "rgb(39, 39, 61)",
+            background: "rgb(51, 51, 51)",
             icon: "question",
             showCancelButton: true,
             allowOutsideClick: false,

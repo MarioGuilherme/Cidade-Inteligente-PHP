@@ -20,15 +20,7 @@
                                 <i class="mdi mdi-key"></i>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-6 col-md-6">
-                                    <div class="form-check mt-2">
-                                        <input type="checkbox" maxlength="55" name="remember" class="form-check-input" id="checkbox">
-                                        <label class="form-check-label" for="checkbox">
-                                            Lembrar de mim?
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-6 mt-2 text-right">
+                                <div class="col-12 col-md-12 mt-2 text-center">
                                     <p class="esqueceu-senha">
                                         Esqueceu a senha?
                                     </p>

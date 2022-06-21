@@ -135,7 +135,7 @@
             $this->GetModel();
             (Array) $projects = $this->projectModel::Select()->fetchAll(PDO::FETCH_ASSOC);
             foreach ($projects as $key => $project) {
-                $projects[$key]["medias"] = (new MediaController)->GetMedias((Int) $projects[$key]["id_project"]);
+                $projects[$key]["medias"] = (new MediaController)->GetAllMedias((Int) $projects[$key]["id_project"]);
             }
             (Array) $data = [
                 "title" => "Projetos",
@@ -162,14 +162,14 @@
             if(empty($project)) {
                 (Array) $data = [
                     "title" => "Projeto não encontrado",
-                    "css" => "project-not-found",
+                    "css" => "view-project",
                     "btns" => $this->RenderButtons(),
                     "js" => "project-not-found",
                 ];
                 $this->View("Projects/notFound", $data);
             } else {
                 $project["users"] = (new ProjectUserController())->GetUsersByProject((Int) $project["id_project"]);
-                $project["medias"] = (new MediaController())->GetMedias((Int) $project["id_project"]);
+                $project["medias"] = (new MediaController())->GetAllMedias((Int) $project["id_project"]);
                 (Array) $data = [
                     "title" => "Projeto - $project[title]",
                     "css" => "view-project",
@@ -196,7 +196,7 @@
             if(empty($project)) {
                 (Array) $data = [
                     "title" => "Projeto não encontrado",
-                    "css" => "project-not-found",
+                    "css" => "view-project",
                     "btns" => $this->RenderButtons(),
                     "js" => "project-not-found",
                 ];
@@ -215,11 +215,13 @@
                 }
 
                 $project["users"] = $usersOfSystem;
-                $project["medias"] = (new MediaController())->GetMedias((Int) $project["id_project"]);
+                $project["medias"] = (new MediaController())->GetAllMedias((Int) $project["id_project"]);
                 (Array) $data = [
                     "title" => "Editar Projeto - $project[title]",
                     "css" => "edit-project",
                     "btns" => $this->RenderButtons(),
+                    "areas" => (new AreaController())->GetAllAreas(),
+                    "courses" => (new CourseController())->GetAllCourses(),
                     "project" => $project,
                     "js" => "edit-project"
                 ];
@@ -238,6 +240,8 @@
                     "css" => "new-project",
                     "btns" => $this->RenderButtons(2),
                     "users" => (new UserController())->GetUsers(),
+                    "areas" => (new AreaController())->GetAllAreas(),
+                    "courses" => (new CourseController())->GetAllCourses(),
                     "js" => "new-project"
                 ];
                 $this->View("Projects/form", $data);
@@ -247,7 +251,7 @@
 
         public function Delete(Int $id_project) : void {
             $this->GetModel();
-            (Array) $medias = (new MediaController)->GetMedias($id_project);
+            (Array) $medias = (new MediaController)->GetAllMedias($id_project);
             (Bool) $deleteMedia = $this->projectModel::Delete("id_project = ?", [$id_project]);
             if($deleteMedia) {
                 (new MediaController)->DeleteProjectMedias($medias);
@@ -268,17 +272,18 @@
                 (Array) $users = [];
 
                 // REORDENANDO OS IDS DOS USUÁRIOS ENVOLVIDOS
-                foreach ($form["users"] as $id_user) {
+                foreach ($form["users"] as $id_user)
                     $users[] = Form::SanatizeField($id_user, FILTER_SANITIZE_NUMBER_INT);
-                }
 
                 // VALIDAÇÃO DOS CAMPOS
                 Form::VerifyEmptyFields([$id_area, $id_course, $title, $date, $description]);
                 Form::ValidateID([$id_area, $id_course, $id_project]);
 
                 // REORDENANDO O ARRAY DE MÍDIAS
-                (Array) $medias = array_values(Form::RearrangeFiles($medias));
-                $form["medias"] = array_values($form["medias"]);
+                if ($medias != null) {
+                    (Array) $medias = array_values(Form::RearrangeFiles($medias));
+                    $form["medias"] = array_values($form["medias"]);
+                }
 
                 // OBTENÇÃO DO MODEL E CADASTRO DO PROJETO
                 $this->GetModel();
@@ -301,21 +306,21 @@
                         ]);
                     }
 
-                    // UPLOAD DAS MÍDIAS E INSERT TABELA DE MÍDIAS
-                    for ($i = 0; $i < count($medias); $i++) {
-                        (new MediaController)->Update($medias[$i], $id_project);
-                        (new MediaController)->NewMedia([
-                            "id_project" => $id_project,
-                            "name" => $medias[$i]["name"],
-                            "type" => $medias[$i]["type"],
-                            "tmp_name" => $medias[$i]["tmp_name"],
-                            "error" => $medias[$i]["error"],
-                            "size" => $medias[$i]["size"],
-                            "name_file" => Form::SanatizeField($form["medias"][$i]["name"], FILTER_UNSAFE_RAW),
-                            "description" => Form::SanatizeField($form["medias"][$i]["description"], FILTER_UNSAFE_RAW)
-                        ]);
+                    if ($medias != null) {
+                        // UPLOAD DAS MÍDIAS E INSERT TABELA DE MÍDIAS
+                        for ($i = 0; $i < count($medias); $i++)
+                            (new MediaController)->NewMedia([
+                                "id_project" => $id_project,
+                                "name" => $medias[$i]["name"],
+                                "type" => $medias[$i]["type"],
+                                "tmp_name" => $medias[$i]["tmp_name"],
+                                "error" => $medias[$i]["error"],
+                                "size" => $medias[$i]["size"],
+                                "name_file" => Form::SanatizeField($form["medias"][$i]["name"], FILTER_UNSAFE_RAW),
+                                "description" => Form::SanatizeField($form["medias"][$i]["description"], FILTER_UNSAFE_RAW)
+                            ]);
                     }
-                    Response::Message(PROJECT_REGISTERED);
+                    Response::Message(PROJECT_UPDATED);
                 } else
                     Response::Message(GENERAL_ERROR);
             } else

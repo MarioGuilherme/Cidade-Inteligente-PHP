@@ -120,6 +120,7 @@
                     "title" => "Cadastro de Usuário",
                     "css" => "register",
                     "btns" => $this->RenderButtons(3),
+                    "courses" => (new CourseController)->GetAllCourses(),
                     "js" => "register"
                 ];
                 $this->View("Users/register", $data);
@@ -135,7 +136,7 @@
             if(!Session::IsEmptySession()) {
                 (Array) $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
                 for($i = 0; $i < count($projects); $i++) {
-                    $projects[$i]["media"] = (new MediaController)->GetMedias((Int) $projects[$i]["id_project"])[0];
+                    $projects[$i]["media"] = (new MediaController)->GetAllMedias((Int) $projects[$i]["id_project"])[0];
                 }
                 (Array) $data = [
                     "title" => "Meus Projetos",
@@ -171,7 +172,7 @@
 
             // LIMPEZA DOS CAMPOS
             (Int) $id_user = Form::SanatizeField($form["id_user"], FILTER_SANITIZE_NUMBER_INT);
-            (Int) $id_course = Form::SanatizeField($form["id_course"], FILTER_SANITIZE_NUMBER_INT);
+            (Int) $id_course = (Int) Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
             (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
             (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
 
@@ -209,7 +210,7 @@
             if($user["token_expiration"] > date("Y-m-d H:i:s")) {
                 (Array) $data = [
                     "title" => "Alterar Senha",
-                    "css" => "change-password",
+                    "css" => "login",
                     "name" => $user["name"],
                     "js" => "change-password"
                 ];
@@ -227,7 +228,7 @@
             if(Session::IsEmptySession()) {
                 (Array) $data = [
                     "title" => "Recuperar Senha",
-                    "css" => "recover-password",
+                    "css" => "login",
                     "js" => "recover-password"
                 ];
                 $this->View("Users/recover-password", $data);
@@ -285,7 +286,7 @@
             (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
             (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
             (String) $type = Form::SanatizeField($form["type"], FILTER_UNSAFE_RAW);
-            (Int) $course = Form::SanatizeField($form["course"], FILTER_UNSAFE_RAW);
+            (Int) $course = (Int) Form::SanatizeField($form["course"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS, SE O EMAIL É VÁLIDO E O CURSO
             Form::VerifyEmptyFields([$email, $name, $password, $type, $course]);
@@ -293,7 +294,7 @@
             Form::ValidateCourse($course);
 
             // VALIDAÇÃO DO TIPO DO USUÁRIO
-            if($type == "Aluno(a)" || $type == "Professor(a)") {
+            if($type == 0 || $type == 1) {
                 $this->GetModel();
                 (Int) $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
                 (String) $password = Form::EncryptPassword($password);
@@ -347,7 +348,10 @@
                         Segue abaixo um link para altera sua senha:
                     </p>
                     <p>
-                        <a href='".getenv("URL")."alterar-senha?token=$token'>".getenv("URL")."alterar-senha?token=$token</a>
+                        O Link irá expirar em 1 hora.
+                    </p>
+                    <p>
+                        <a href='".URL."alterar-senha?token=$token'>".URL."alterar-senha?token=$token</a>
                     </p>
                     <p style='color:red;'>
                         Não compartilhe esse link com ninguém!

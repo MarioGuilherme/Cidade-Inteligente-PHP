@@ -70,7 +70,7 @@
          * @param Array $projects Dados dos projetos
          * @return Array Projetos com suas mídias associadas
          */
-        public function GetMedias(Int $id_project) : Array {
+        public function GetAllMedias(Int $id_project) : Array {
             $this->GetModel();
             return $this->mediaModel::Select("", "id_project = ?", "", "", "id_media, name, type, path, description", [$id_project])->fetchAll(PDO::FETCH_ASSOC);
         }

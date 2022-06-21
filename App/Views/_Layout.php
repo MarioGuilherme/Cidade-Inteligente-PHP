@@ -22,13 +22,7 @@
 
 <body>
 
-    <?php
-        (String) $file = __DIR__ . "/../$view.php";
-        if(file_exists($file))
-            require $file;
-        else
-            die("View file ($file) doesn't exist!");
-    ?>
+    <?php require $file = __DIR__ . "/$view.php"; ?>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.8/jquery.mask.min.js"></script>

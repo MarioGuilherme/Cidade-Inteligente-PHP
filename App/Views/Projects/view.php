@@ -1,8 +1,5 @@
 <div class="parallax">
-    <?php
-        require __DIR__ . "/../Page/Components/_Navbar.php";
-        require __DIR__ . "/../Page/Components/_Jumbotron.php";
-    ?>
+    <?php require __DIR__ . "/../Components/_Navbar.php"; ?>
     <div class="container-fluid">
         <div class="row mt-5">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
@@ -14,7 +11,10 @@
         </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-                <div class="row justify-content-center align-items-center text-center  title-projeto m-1 p-1">
+                <h5 class="font-weight-bold text-center title-projeto">
+                    Pessoas envolvidas
+                </h5>
+                <div class="row justify-content-center align-items-center text-center m-1 p-1">
                     <?php foreach ($data["project"]["users"] as $user) : ?>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                             <p>
@@ -49,7 +49,7 @@
                 <h5 class="font-weight-bold text-center title-projeto">
                     Descrição
                 </h5>
-                <p>
+                <p class="text-center">
                     <?= $data["project"]["description"] ?>
                 </p>
             </div>
@@ -59,25 +59,25 @@
             <?php foreach ($data["project"]["medias"] as $media): ?>
                 <div class="col-12 col-sm-12 col-lg-3 col-md-3">
                     <div class="card">
-                        <div class="card-body">
-                            <?php if($media["type"] == "video/mp4") : ?>
+                        <div class="card-body text-center">
+                            <?php if ($media["type"] == "video/mp4"): ?>
                                 <video class="d-block" style="width:-webkit-fill-available;" preload="metadata" controls src="medias/<?= $media["path"] ?>"></video>
                             <?php else : ?>
                                 <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["path"] ?>">
                             <?php endif; ?>
                             <div class="form-group mt-2">
-                                <input maxlength="60" class="form-control" type="text" value="<?= $media["name"] ?>" disabled>
+                                <h4>
+                                    <?= $media["name"] ?>
+                                </h4>
                             </div>
                             <div class="form-group">
-                                <textarea maxlength="300" class="form-control" rows="3" disabled><?= $media["description"] ?></textarea>
+                                <?= $media["description"] ?>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
-</div>
-<?php
-                require __DIR__ . "/../Page/Components/_Footer.php";
-            ?>
     </div>
+    <?php require __DIR__ . "/../Components/_Footer.php"; ?>
+</div>

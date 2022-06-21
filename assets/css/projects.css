@@ -8,11 +8,6 @@
     color: white;
 }
 
-.carousel-inner>div>img,
-video {
-    height: 400px !important;
-}
-
 .galeria {
     background: #c5c5c55e !important;
     padding: 1em;

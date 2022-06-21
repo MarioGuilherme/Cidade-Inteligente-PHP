@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `cidade_inteligente`.`medias` (
   `id_media` INT NOT NULL AUTO_INCREMENT,
   `id_project` INT NOT NULL,
   `name` VARCHAR(60) NOT NULL,
-  `type` VARCHAR(15) NOT NULL,
+  `type` TINYINT NOT NULL,
   `path` CHAR(28) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
   PRIMARY KEY (`id_media`),

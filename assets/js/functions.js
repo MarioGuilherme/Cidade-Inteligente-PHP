@@ -24,7 +24,7 @@ function SweetAlert(icon, msg) {
     Swal.fire({
         icon: icon,
         html: `<h2 style="color:white; font-weight:bold;">${msg}</h2>`,
-        background: "rgb(31, 50, 51)",
+        background: "rgb(51, 51, 51)",
         allowOutsideClick: false
     });
 }

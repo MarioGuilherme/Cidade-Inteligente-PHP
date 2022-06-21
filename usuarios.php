@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->Index();
+    (new UserController)->Index();

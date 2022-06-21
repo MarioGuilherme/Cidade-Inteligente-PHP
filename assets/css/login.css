@@ -35,14 +35,14 @@ body {
     box-shadow: 0 0 1em rgba(0, 0, 0, 0.315);
 }
 
-.btn-login {
+.btn-login, .btn-recover, .btn-change {
     background: #b11116;
     color: white;
     font-family: 'Montserrat', sans-serif;
     text-transform: uppercase;
 }
 
-.btn-login:hover {
+.btn-login, .btn-recover:hover, .btn-change:hover {
     background: #7d0c0f;
     color: white;
 }

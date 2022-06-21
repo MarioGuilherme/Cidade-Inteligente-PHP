@@ -1,6 +1,7 @@
 $(document).ready(() => {
     var users = [];
     var index = 0;
+    var id_media = 0;
 
     for (let i = 0; i < $(".user[involved=true]").length; i++)
         users.push($(".user[involved=true]")[i].id);
@@ -43,6 +44,7 @@ $(document).ready(() => {
                 SweetAlert(response.icon, response.msg);
                 $(".btn-update-project").text("Salvar alterações");
                 $(".btn-update-project").attr("disabled", false);
+                response.icon == "success" && setTimeout(() => location.reload(), 1600)
             });
         }
     });
@@ -50,7 +52,7 @@ $(document).ready(() => {
     $(".btn-delete-media").click(function() {
         Swal.fire({
             html: `<h2 style="color: white;">Deseja mesmo excluir esta mídia?</h2>`,
-            background: "rgb(39, 39, 61)",
+            background: "rgb(51, 51, 51)",
             icon: "question",
             showCancelButton: true,
             allowOutsideClick: false,
@@ -70,6 +72,14 @@ $(document).ready(() => {
         });
     });
 
+    $("body").on("click", ".btn-remove-new-media", function() {
+        $(`input[index=${$(this).attr("id")}]`).remove();
+        $(this).parents("div.col-12").hide(500);
+        setTimeout(() => {
+            $(this).parents("div.col-12").remove();
+        });
+    });
+
     $(".inputs-medias").on("change", "input[type=file]", function() {
         let file = $("input[type=file]").last()[0].files[0];
         let reader = new FileReader();
@@ -85,19 +95,16 @@ $(document).ready(() => {
                 SweetAlert("error", "Apenas formatos jpg, .png e .mp4 são aceitos.");
                 $(".inputs-medias").find("input[type=file]").last().remove();
             }
-
             if (type == "image" || type == "video") {
                 $(".col-btn").before(`
                     <div class="col-12 col-sm-12 col-lg-3 col-md-3 my-3">
                         <div class="card">
-                            <div style="right: 0;" class="position-absolute">
-                                <button type="button" class="btn btn-danger btn-delete-media" index="${index}">
-                                    <i class="mdi mdi-trash-can-outline"></i>
-                                    Apagar
-                                </button>
-                            </div>
                             <div class="card-body">
                                 ${media}
+                                <button type="button" id="${index}" class="btn btn-warning btn-block btn-remove-new-media mt-1">
+                                    <i class="mdi mdi-trash-can-outline"></i>
+                                    Cancelar Nova Mídia
+                                </button>
                                 <div class="form-group">
                                     <label class="text-dark">
                                         Nome

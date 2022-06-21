@@ -67,7 +67,7 @@
             Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
 
             // LIMPEZA DOS CAMPOS
-            (Int) $id_course = Form::SanatizeField($form["id_course"], FILTER_SANITIZE_NUMBER_INT);
+            (Int) $id_course = (Int) Form::SanatizeField($form["id_course"], FILTER_SANITIZE_NUMBER_INT);
             (String) $course = Form::SanatizeField($form["course"], FILTER_UNSAFE_RAW);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA
@@ -83,8 +83,7 @@
 
         public function List() : void {
             $this->GetModel();
-            (Array) $courses = $this->courseModel::Select()->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($courses as $course) {
+            foreach ($this->GetAllCourses() as $course) {
                 echo "<tr role='row'>
                         <td class='text-center'>
                             $course[id_course]
