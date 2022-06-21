@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `epiz_30694311_cidade_inteligente`.`users` (
   `name` VARCHAR(100) NOT NULL,
   `email` VARCHAR(60) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `type` VARCHAR(12) NOT NULL,
+  `type` TINYINT NOT NULL COMMENT '1 - Admin/Professor\n0 - Normal/Aluno',
   `token` CHAR(156) NULL,
   `token_expiration` DATETIME NULL,
   PRIMARY KEY (`id_user`),
@@ -115,4 +115,4 @@ INSERT INTO areas (area) VALUES ("Rural");
 INSERT INTO areas (area) VALUES ("Urbana");
 
 -- SENHA DO ADMINISTRADOR: 123
-INSERT INTO users (id_course, name, email, password, type) VALUES (7, "Mário Guilherme", "marioguifatec2021@gmail.com", "$2y$10$amLSaXM/l4MJy.X8Pjnq7.3KBFOKyP9bKxyZfPQu3HXp4Lwhp63ZG", "Professor(a)");
+INSERT INTO users (id_course, name, email, password, type) VALUES (7, "Mário Guilherme", "marioguifatec2021@gmail.com", "$2y$10$amLSaXM/l4MJy.X8Pjnq7.3KBFOKyP9bKxyZfPQu3HXp4Lwhp63ZG", 1);
