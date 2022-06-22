@@ -9,10 +9,10 @@
                 <?= $project["description"] ?>
             </p>
         </div>
+        <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-block mt-2 btn-view-project">
+            Ver Projeto
+        </a>
         <?php if (\App\Utils\Session::IsAdmin()): ?>
-            <a href="ver-projeto?id=<?= $project["id_project"] ?>" class="btn btn-block mt-2 btn-view-project">
-                Ver Projeto
-            </a>
             <a href="editar-projeto?id=<?= $project["id_project"] ?>" class="btn mt-2 btn-edit-project">
                 Editar
             </a>

@@ -15,7 +15,7 @@
          * @return void
          */
         public static function LoadResponses() : void {
-            require "responses.php";
+            require "Responses.php";
         }
 
         /**

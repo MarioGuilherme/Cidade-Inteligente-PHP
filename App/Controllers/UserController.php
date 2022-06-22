@@ -135,14 +135,14 @@
         public function MyProjects() : void {
             if(!Session::IsEmptySession()) {
                 (Array) $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
-                for($i = 0; $i < count($projects); $i++) {
+                for($i = 0; $i < count($projects); $i++)
                     $projects[$i]["media"] = (new MediaController)->GetAllMedias((Int) $projects[$i]["id_project"])[0];
-                }
+
                 (Array) $data = [
                     "title" => "Meus Projetos",
                     "css" => "my-projects",
                     "projects" => $projects,
-                    "btns" => $this->RenderButtons(0),
+                    "btns" => $this->RenderButtons(),
                     "js" => "my-projects"
                 ];
                 $this->View("Users/my-projects", $data);

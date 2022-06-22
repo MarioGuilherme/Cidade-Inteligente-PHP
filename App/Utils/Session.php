@@ -49,6 +49,6 @@
          * @return Bool Retorna true se o usuário for um Professor e false se não for
          */
         public static function IsAdmin() : Bool {
-            return $_SESSION["type"] == "Professor(a)" ? true : false;
+            return $_SESSION["type"] == 1 ? true : false;
         }
     }

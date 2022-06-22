@@ -260,7 +260,7 @@
                 Response::Message(GENERAL_ERROR);
         }
 
-        public function Update(Array $form, Array|null $medias) : void {
+        public function Update($form, $medias) : void {
             if(Session::IsAdmin()) {
                 // LIMPEZA DO FORMULÁRIO
                 (Int) $id_project = Form::SanatizeField($form["id_project"], FILTER_SANITIZE_NUMBER_INT);
