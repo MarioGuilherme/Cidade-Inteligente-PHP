@@ -1,55 +1,82 @@
 $(document).ready(() => {
-    Ajax("services/list-courses", "html", null, response => {
-        $("tbody").html(response);
-        $("table").DataTable({
-            "language": {
-                "url": "assets/pt_br.json"
-            }
-        });
+    setDataTable();
+
+    const resetDataTable = async () => {
+        const courses = await api.get("courses");
+        const dataTable = $("table").DataTable();
+
+        if (courses.length == 0)
+            dataTable.clear().draw();
+        else {
+            dataTable.clear();
+            courses.map(course => {
+                dataTable.row.add([
+                    course.id_course,
+                    course.course,
+                    `<button id="${course.id_course}" class="btn btn-edit-course btn-strong-gray">
+                        Editar
+                    </button>
+                    <button id="${course.id_course}" class="btn btn-delete-course btn-strong-red">
+                        Apagar
+                    </button>`
+                ]).draw();
+            });
+        }
+    }
+
+    $(".btn-save").click(async () => {
+        if ($("input[name=id_course]").val() == "") {
+            sweetAlertAwait("Cadastrando curso");
+            const { icon, message } = await api.post("courses", { course: $("input[name=course]").val() });
+            window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+            if (icon == "success") {
+                await resetDataTable();
+                sweetAlert(icon, message);
+                cleanAllFields();
+                $(".modal").modal("hide");
+            } else
+                sweetAlert(icon, message);
+
+        } else {
+            sweetAlertAwait("Salvando alterações");
+            const { icon, message } = await api.patch("courses", {
+                id_course: $("input[name=id_course]").val(),
+                course: $("input[name=course]").val()
+            });
+            window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+            if (icon == "success") {
+                await resetDataTable();
+                sweetAlert(icon, message);
+                cleanAllFields();
+                $(".modal").modal("hide");
+            } else
+                sweetAlert(icon, message);
+        }
     });
-    $(".btn-new-course").click(() => {
-        VerifyFields($("form").serializeArray());
-        Ajax("services/new-course", "json", $("form").serialize(), response => {
-            $("input[name=id_course]").val("0");
-            SweetAlert(response.icon, response.msg);
-            CleanFields(response.icon);
-            if (response.icon == "success") {
-                $("#modal").modal("hide");
-                Ajax("services/list-courses", "html", null, response => $("tbody").html(response));
-            }
-        });
-    });
-    $(".btn-form-course").click(() => {
-        $("input[name=id_course]").val("0");
-        $("input[name=course]").val("");
+
+    $("button[data-target='#formModal']").click(() => {
+        cleanAllFields();
         $(".modal-title").html("Cadastrar Curso");
-        $(".btn-update-course").hide();
-        $(".btn-new-course").show();
-        $("#modal").modal("show");
     });
-    $("tbody").on("click", ".btn-edit-course", function() {
-        Ajax("services/view-course", "json", { id_course: $(this).attr("id") }, course => {
-            $("input[name=id_course]").val(course.id_course);
-            $("input[name=course]").val(course.course);
-            $(".modal-title").html("Editar Curso");
-            $(".btn-update-course").show();
-            $(".btn-new-course").hide();
-            $("#modal").modal("show");
-        });
+
+    $("tbody").on("click", ".btn-edit-course", async function() {
+        sweetAlertAwait("Carregando dados do curso");
+        const course = await api.get(`courses?id=${$(this).attr("id")}`);
+        swal.close();
+        window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+        $("input[name=id_course]").val(course.id_course);
+        $("input[name=course]").val(course.course);
+        $(".modal-title").html("Editar Curso");
+        $(".modal").modal("show");
     });
-    $(".btn-update-course").click(function() {
-        Ajax("services/update-course", "json", $("form").serialize(), response => {
-            SweetAlert(response.icon, response.msg);
-            if (response.icon == "success") {
-                $("#modal").modal("hide");
-                Ajax("services/list-courses", "html", null, response => $("tbody").html(response));
-            }
-        });
-    });
-    $("tbody").on("click", ".btn-delete-course", function() {
+
+    $("tbody").on("click", ".btn-delete-course", async function() {
         Swal.fire({
             html: `<h2 style="color: white;">Deseja mesmo excluir este curso?</h2>`,
-            background: "rgb(51, 51, 51)",
+            background: "rgb(70, 5, 7)",
             icon: "question",
             showCancelButton: true,
             allowOutsideClick: false,
@@ -57,12 +84,17 @@ $(document).ready(() => {
             confirmButtonColor: "#d9534f",
             cancelButtonText: "Não",
             cancelButtonColor: "#f0ad4e"
-        }).then(result => {
+        }).then(async result => {
             if (result.value) {
-                Ajax("services/delete-course", "json", { id_course: $(this).attr("id") }, response => {
-                    SweetAlert(response.icon, response.msg);
-                    response.icon == "success" ? $(this).parents("tr").hide(500) : null;
-                });
+                sweetAlertAwait("Excluindo curso");
+                const { icon, message } = await api.delete(`courses?id=${$(this).attr("id")}`);
+                window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+                if (icon == "success") {
+                    await resetDataTable();
+                    sweetAlert(icon, message);
+                } else
+                    sweetAlert(icon, message);
             }
         });
     });

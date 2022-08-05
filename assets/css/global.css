@@ -1,0 +1,101 @@
+.btn-default-red {
+    background: #b11116;
+    color: white;
+}
+
+.btn-default-red:hover {
+    background: #7d0c0f;
+    color: white !important;
+}
+
+.btn-strong-red {
+    background: #720909;
+    color: white !important;
+}
+
+.qrCode > img {
+    padding: 5px;
+    background-color: white;
+}
+
+.btn-strong-gray {
+    background: #494949;
+    color: white !important;
+}
+
+.default-color {
+    color: #b11116;
+}
+
+a {
+    text-decoration: none !important;
+    color: #ffffff;
+}
+
+a:hover {
+    color: inherit
+}
+
+td {
+    vertical-align: middle !important;
+}
+
+thead {
+    background: #b11116;
+    color: white;
+    border-radius: 20px;
+}
+
+footer {
+    background: #212529;
+    color: #fff;
+    padding-top: 25px;
+}
+
+footer p {
+    font-size: 12px;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+}
+
+.dropdown-menu li {
+    position: relative;
+}
+
+.dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: -7px;
+}
+
+.dropdown-menu .dropdown-submenu-left {
+    right: 100%;
+    left: auto;
+}
+
+.dropdown-menu>li:hover>.dropdown-submenu {
+    display: block;
+}
+
+.navbar-toggler {
+    width: 50px;
+    height: 35px;
+    background: #b11116;
+    color: #fff;
+}
+
+.devs {
+    background: #1c2024;
+    padding: 10px;
+    padding-bottom: 0;
+    color: #777777;
+}
+
+@media screen and (max-width: 600px) {
+    h3 {
+        font-size: 1.5em;
+    }
+}

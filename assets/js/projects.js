@@ -1,17 +1,10 @@
-$(document).ready(() => {})
-
-
-
-function typeWrite(elemento) {
-    const textoArray = elemento.innerHTML.split('');
-    elemento.innerHTML = ' ';
-    textoArray.forEach(function(letra, i) {
-
-        setTimeout(function() {
-            elemento.innerHTML += letra;
-        }, 75 * i)
-
-    });
-}
-const titulo = document.querySelector('.titulo-principal');
-typeWrite(titulo);
+$(document).ready(() => {
+    const typeWrite = element => {
+        const textoArray = element.innerHTML.split("");
+        element.innerHTML = " ";
+        textoArray.forEach((letra, i) => {
+            setTimeout(() => element.innerHTML += letra, 75 * i);
+        });
+    }
+    typeWrite($(".title")[0]);
+});

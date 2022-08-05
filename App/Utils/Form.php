@@ -7,122 +7,78 @@
     use App\Utils\Response;
 
     /**
-     * Classe responsável por tratar dados de um formulário
-     *
+     * Classe responsável por fazer validações e limpezas de dados de entradas.
      * @author Mário Guilherme
      */
     class Form {
         /**
-         * Método responsável por verificar se existe algum campo vazio num formulário.
-         * @param Array $fields Campos a serem verificados
+         * Método responsável por verificar se há campos vazios num array.
+         * @param array $fields Campos a serem verificados
          * @return void
          */
-        public static function VerifyEmptyFields(Array $form) : void {
-            foreach ($form as $field) {
-                (String) $field == "" ? Response::Message(EMPTY_FIELDS) : "";
-            }
+        public static function isEmptyFields(array $fields) : void {
+            foreach ($fields as $value)
+                if (trim($value) == "")
+                    Response::returnResponse(Response::EMPTYS_FIELDS, 400, "error");
         }
 
-        // FUTURISTICO
         /**
-         * Método responsável por validar o ID de alguma entidade.
-         * @param Int $id ID da entidade
-         * @return void
+         * Método responsável por sanatizar um dado do tipo texto.
+         * @param string $data Texto a ser sanatizado
+         * @param int $filter Tipo de filtro a ser aplicado
+         * @return string Texto sanatizado
          */
-        public static function ValidateID(Array $form) : void {
-            foreach ($form as $id) {
-                !is_numeric($id) || $id < 1 ? Response::Message(INVALID_ID) : "";
-            }
+        public static function sanatizeString(string $data, int $filter = FILTER_UNSAFE_RAW) : string {
+            return filter_var(htmlspecialchars(trim($data)), $filter);
+        }
+
+        /**
+         * Método responsável por sanatizar um dado do tipo inteiro.
+         * @param string $data Campo a ser sanatizado
+         * @return string Valor sanatizado e convertido
+         */
+        public static function sanatizeInt(string $data) : string {
+            return preg_replace("/[^0-9]/", "", $data);
         }
 
         /**
          * Método responsável por criptografar a senha.
-         * @param String $password Senha a ser criptografada
-         * @return String Retorna a senha criptografada
+         * @param string $password Senha a ser criptografada
+         * @return string Senha criptografada
          */
-        public static function EncryptPassword(String $password) : String {
+        public static function encryptPassword(string $password) : string {
             return password_hash($password, PASSWORD_DEFAULT);
         }
 
         /**
-         * Método responsável por reorganizar o Array de arquivos.
-         * @param Array $medias Superglobal com os dados dos arquivos
-         * @return Array Array reorganizado com os dados dos arquivos
-         */
-        public static function RearrangeFiles(Array $medias) : Array {
-            foreach ($medias as $key => $all) {
-                foreach ($all as $i => $val) {
-                    (Array) $new_array[$i][$key] = $val;    
-                }    
-            }
-            return $new_array;
-        }
-
-        /**
-         * Método responsável por verificar a senha para login.
-         * @param String $password Senha a ser verificada
-         * @param String $hash Hash da senha criptografada do banco de dados
+         * Método responsável por validar a senha durante o login.
+         * @param string $password Senha a ser verificada
+         * @param string $hash Senha criptografada
          * @return void
          */
-        public static function VerifyPassword(String $password, String $hash) : void {
-            !password_verify($password, $hash) ? Response::Message(WRONG_PASSWORD) : "";
+        public static function verifyPassword(string $password, string $hash) : void {
+            !password_verify($password, $hash) ? Response::returnResponse(Response::WRONG_PASSWORD, 400, "error") : "";
         }
 
         /**
-         * Método responsável por validar o email
-         * @param String $email Email a ser validado
-         * @return void Retorna true se o email for válido
-         */
-        public static function ValidateEmail(String $email) : void {
-            !filter_var($email, FILTER_VALIDATE_EMAIL) ? Response::Message(INVALID_EMAIL) : "";
-        }
-
-        /**
-         * Método responsável por validar a área.
-         * @param Int $course ID da área
+         * Método responsável por validar um email.
+         * @param string $email Email a ser validado
          * @return void
          */
-        public static function ValidateArea(Int $area) : void {
-            !is_numeric($area) || $area < 1 ? Response::Message(INVALID_AREA) : "";
+        public static function validateEmail(string $email) : void {
+            !filter_var($email, FILTER_VALIDATE_EMAIL) ? Response::returnResponse(Response::INVALID_EMAIL, 400, "error") : "";
         }
 
         /**
-         * Método responsável por validar o curso.
-         * @param Int $course ID do curso
-         * @return void
+         * Método responsável por converter um dado do tipo Date no formato do formulário para o formato do banco de dados.
+         * @param string $date Data a ser convertida
+         * @return string Data convertida
          */
-        public static function ValidateCourse(Int $course) : void {
-            !is_numeric($course) || $course < 1 ? Response::Message(INVALID_COURSE) : "";
-        }
-
-        /**
-         * Método responsável por validar a data e hora.
-         * @param String $date_time Data e hora a ser validada
-         * @return void
-         */
-        public static function ValidateDateTime(String $date_time) : void {
-            !preg_match("/^[0-9]{4}[-][0-9]{2}[-][0-9]{2}[T][0-9]{2}[:][0-9]{2}$/", $date_time, $matches) ? Response::Message(INVALID_DATE_TIME) : "";
-        }
-
-        public static function ConvertToDate(String $date) : String {
-            (Array) $date = explode("-", $date);
-            (String) $year = substr($date[0], 0, 4);
-            (String) $month = $date[1];
-            (String) $day = $date[2];
+        public static function convertToDate(string $date) : string {
+            (array) $date = explode("-", $date);
+            (string) $year = substr($date[0], 0, 4);
+            (string) $month = $date[1];
+            (string) $day = $date[2];
             return "$year-$month-$day";
-        }
-
-        public static function ConvertToDateTime(String $date_time) : String {
-            return date("Y-m-d H:i:s", strtotime($date_time));
-        }
-
-        /**
-         * Método responsável por sanatizar um campo
-         * @param String $field Campo a ser sanatizado
-         * @param Int $filter Tipo de filtro a ser aplicado
-         * @return String|Int Campo sanatizado
-         */
-        public static function SanatizeField(String|Int $field, Int $filter) : String|Int {
-            return filter_var(htmlspecialchars(trim($field)), $filter);
         }
     }

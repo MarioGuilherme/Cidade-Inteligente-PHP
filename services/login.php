@@ -2,6 +2,8 @@
 
     require __DIR__ . "/../App/Config/App.php";
 
+    use App\Core\Services;
     use App\Controllers\UserController;
 
-    (new UserController)->Login($_POST);
+    (array) $payload = Services::getPayload();
+    (new UserController)->login($payload);

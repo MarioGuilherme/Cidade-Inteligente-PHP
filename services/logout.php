@@ -4,4 +4,4 @@
 
     use App\Utils\Session;
 
-    Session::DestroySession();
+    Session::destroySession();

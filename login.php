@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->FormLogin();
+    (new UserController)->formLogin();

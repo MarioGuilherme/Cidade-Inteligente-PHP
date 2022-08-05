@@ -1,44 +1,16 @@
-.btn-card {
-    background: #b11116;
-    color: white;
-}
-
-.btn-card:hover {
-    background: #7d0c0f;
-    color: white;
-}
-
-.galeria {
-    background: #c5c5c55e !important;
-    padding: 1em;
-    margin-bottom: 1em;
-}
-
-.navbar-toggler {
-    background: #b11116;
-}
-
-.mdi-menu {
-    color: aliceblue;
-    font-size: 24px;
-}
-
-@media (max-width: 600px) {
-    .titulo-principal {
-        font-size: 30px;
-        margin-top: 14px;
+@keyframes pisca {
+    0%,
+    100% {
+        opacity: 1;
     }
-    .sub-titulo {
-        width: 95%;
-        padding: 20px;
+    50% {
+        opacity: 0;
     }
-    .card {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .navbar-brand {
-        font-size: 1em;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
+}
+
+.title:after {
+    content: "_";
+    margin-left: 5px;
+    opacity: 1;
+    animation: pisca .7s infinite;
 }

@@ -7,18 +7,16 @@
     require __DIR__ . "/Configs.php";
 
     use App\Utils\Session;
-    use App\Utils\Response;
     use App\Database\Database;
 
-    // CONFIGURA EXIBIÇÃO DE ERROS, CONFIGURAÇÕES DO SERVIDOR, TIME ZONE, INICIA SESSÃO E CARREGA AS RESPOSTAS
-    ini_set("display_errors", DISPLAY_ERRORS);
+    // CONFIGURA EXIBIÇÃO DE ERROS, CONFIGURA D TIME ZONE E ESPECIFICAÇÕES LOCAIS E INICIA A SESSÃO
+    ini_set("display_errors", DEV_ENV);
     setlocale(LC_ALL, "pt_BR", "pt_BR.utf-8", "pt_BR.utf-8", "portuguese");
     date_default_timezone_set("America/Sao_Paulo");
-    Session::StartSession();
-    Response::LoadResponses();
+    Session::startSession();
     
     // SETA AS CONFIGURAÇÕES DA CONEXÃO COM O BANCO DE DADOS
-    Database::Config(
+    Database::config(
         DRIVER,
         HOST,
         DATABASE,

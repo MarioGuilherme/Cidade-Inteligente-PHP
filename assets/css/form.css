@@ -1,0 +1,27 @@
+form {
+    margin: 0px 25px 25px 25px;
+}
+
+.formTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #b11116;
+    color: white;
+    height: 80px;
+    box-shadow: 0 6px 6px rgb(92 92 92 / 40%);
+    width: 100%;
+}
+
+.formContent {
+    background: #c5c5c55e !important;
+    width: 98%;
+    padding-top: 25px;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+}
+
+label {
+    color: #b11116;
+}

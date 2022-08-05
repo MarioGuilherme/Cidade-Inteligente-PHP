@@ -5,16 +5,15 @@
     namespace App\Utils;
 
     /**
-     * Classe responsável por fazer o controle dos uploads de arquivos
-     *
+     * Classe responsável por fazer o controle das mídias no servidor.
      * @author Mário Guilherme
      */
     class File {
         /**
-         * Extensões permitidas
-         * @var Array
+         * Extensões permitidas no servidor.
+         * @var array
          */
-        public static Array $extensionsAllowed = [
+        private static array $extensionsAllowed = [
             "png",
             "jpg",
             "jpeg",
@@ -22,106 +21,72 @@
         ];
 
         /**
-         * Diretório onde serão armazenados os arquivos
-         * @var String
+         * Diretório onde serão armazenados as mídias.
+         * @var string
          */
-        public static String $directory = __DIR__ . "/../../medias/";
+        public static string $directory = __DIR__ . "/../../medias/";
 
         /**
-         * Nome do arquivo
-         * @var String
+         * Método responsável por criar o arquivo no servidor e retornar o nome do arquivo gerado.
+         * @param string $base64 Base64 da mídia
+         * @param string $type Tipo da mídia
+         * @return string Nome do arquivo
          */
-        public static String $name;
+        public static function createFile(string $base64, string $type) : string {
+            if (!file_exists(self::$directory)) mkdir(self::$directory);
+            (string) $fileName = uniqid((string) time()) . "." . self::getExtension($type);
+            (string) $path = self::$directory . $fileName;
+            file_put_contents($path, base64_decode($base64));
+            return $fileName;
+        }
 
         /**
-         * Diretório temporário do arquivo
-         * @var String
-         */
-        public static String $tmpName;
-
-        /**
-         * Extensão do arquivo
-         * @var String
-         */
-        public static String $extension;   
-
-        /**
-         * Código de erro durante o upload do arquivo
-         * @var Int
-         */
-        public static Int $error;
-
-        /**
-         * Tamanho do arquivo
-         * @var Int
-         */
-        public static Int $size;
-
-        /**
-         * Método responsável por setar os atributos da classe.
-         * @param Array $file Dados do arquivo
+         * Método responsável por atualizar o conteúdo binário de um mídia sem alterar seu nome.
+         * @param string $fileName Nome do arquivo
+         * @param string $base64 Base64 novo que irá sobrescrever o conteúdo antigo
          * @return void
          */
-        public static function SetFile(Array $file) : void {
-            self::$name = $file["name"];
-            self::$tmpName = $file["tmp_name"];
-            self::$extension = self::GetExtension($file["name"]);
-            self::$error = $file["error"];
-            self::$size = $file["size"];
+        public static function updateFileContent(string $fileName, string $base64) : void {
+            (string) $path = self::$directory . $fileName;
+            file_put_contents($path, base64_decode($base64));
         }
 
         /**
-         * Método responsável por retornar a extensão do arquivo.
-         * @param String $name Nome do arquivo
-         * @return String Extensão do arquivo
-         */
-        private static function GetExtension(String $name) : String {
-            return strtolower(pathinfo($name, PATHINFO_EXTENSION));
-        }
-
-        /**
-         * Método responsável por fazer as validações do arquivo como a existência de arquivo anexado, extensão, tamanho e erros de upload.
+         * Método responsável por validar a extensão e o tamanho do arquivo.
+         * @param array $file Dados do arquivo
          * @return void
          */
-        public static function VerifyFile() : void {
-            if(self::$name == "")
-                Response::Message(FILE_NOT_SEND);
-            if(self::$error != UPLOAD_ERR_OK)
-                Response::Message(ERROR_UPLOAD);
-            if(self::$size > 2.5 * (1024 * 1024))
-                Response::Message(FILE_TOO_BIG);
+        public static function isValidFile(array $file) : void {
+            if (!in_array(self::getExtension($file["type"]), self::$extensionsAllowed)) // VALIDA A EXTENSÃO DO ARQUIVO
+                Response::returnResponse(Response::INVALID_EXTENSION, 400, "error");
+            if (self::getSize($file["base64"]) > 2621440) // VALIDA O TAMANHO DO ARQUIVO
+                Response::returnResponse(Response::FILE_TOO_BIG, 400, "error");
         }
 
         /**
-         * Método responsável por renomear o arquivo com um padrão de nome.
+         * Método responsável por retornar o tamanho do arquivo em bytes.
+         * @param string $base64 Base64 do arquivo
+         * @return float Tamanho do arquivo em bytes
+         */
+        public static function getSize(string $base64) : float {
+            return (float) (strlen($base64) * 3 / 4);
+        }
+
+        /**
+         * Método responsável por obter a extensão do arquivo.
+         * @param string $type Tipo do arquivo
+         * @return string Extensão do arquivo
+         */
+        public static function getExtension(string $type) : string {
+            return (string) explode("/", $type)[1];
+        }
+
+        /**
+         * Método responsável por deletar um arquivo das pastas de mídias.
+         * @param string $fileName Nome do arquivo
          * @return void
          */
-        private static function RenameFile() : void {
-            self::$name = uniqid((String) time()) . "." . self::$extension;
-        }
-
-        /**
-         * Método responsável por mover o arquivo já verificado e renomeado para a pasta de destino.
-         * @return String Nome do arquivo
-         */
-        public static function MoveFile() : String {
-            self::VerifyFile();
-            self::RenameFile();
-            if(!file_exists(self::$directory))
-                mkdir(self::$directory, 0777, true);
-            if(in_array(self::$extension, self::$extensionsAllowed))
-                if(move_uploaded_file(self::$tmpName, self::$directory.self::$name))
-                    return self::$name;
-                else
-                    Response::Message(ERROR_UPLOAD);
-        }
-
-        /**
-         * Método responsável por deletar o arquivo da pasta de destino.
-         * @param String $file Nome do arquivo
-         * @return void
-         */
-        public static function DeleteFile(String $file) : void {
-            unlink(self::$directory . $file);
+        public static function deleteFile(string $fileName) : void {
+            unlink(self::$directory . $fileName);
         }
     }

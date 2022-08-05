@@ -1,0 +1,61 @@
+.title-my-projetos {
+    background: #b11116;
+    color: white;
+    width: 100%;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
+}
+
+.btn-edit-project {
+    background: rgb(80, 80, 80);
+    color: white;
+    border: none;
+}
+
+.btn-edit-project:hover {
+    background: rgb(51, 51, 51);
+    color: white;
+    border: none;
+}
+
+.btn-delete-project {
+    background: #b11116;
+    color: white;
+    border: none;
+}
+
+.btn-delete-project:hover {
+    background: #7d0c0f;
+    color: white;
+    border: none;
+}
+
+.btn-view-project {
+    background: rgb(53, 83, 100);
+    color: white;
+    border: none;
+}
+
+.btn-view-project:hover {
+    background: rgb(51, 51, 51);
+    color: white;
+    border: none;
+}
+
+.navbar-toggler {
+    background: #b11116;
+}
+
+.mdi-menu {
+    color: aliceblue;
+    font-size: 24px;
+}
+
+.card-projeto {
+    padding: 10px;
+    box-shadow: 0 0 1em rgb(114 114 114);
+}

@@ -4,4 +4,4 @@
 
     use App\Controllers\CourseController;
 
-    (new CourseController())->Index();
+    (new CourseController)->index();

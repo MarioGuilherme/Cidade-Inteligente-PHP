@@ -1,16 +1,21 @@
 $(document).ready(() => {
     $(".btn-login").click(() => {
-        VerifyFields($("form").serializeArray());
-        Ajax("services/login", "json", {
-            email: $("input[name=email]").val(),
-            password: $("input[name=password]").val(),
-            remeber: $("input[name=remember]").is(":checked") ? 1 : 0,
-        }, response => {
-            SweetAlert(response.icon, response.msg);
-            Redirect(response.icon, "projetos");
-        });
-    });
-    $(".esqueceu-senha").click(() => {
-        $(location).attr("href", "recuperar-senha");
+        formHasEmptyField($("form").serializeArray());
+
+        (async () => {
+            sweetAlertAwait("Fazendo login");
+            const { icon, message } = await api.post("login", {
+                email: $("input[name=email]").val(),
+                password: $("input[name=password]").val()
+            });
+            window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+            if (icon == "success") {
+                sweetAlert(icon, message);
+                cleanAllFields();
+                redirect(icon, "/");
+            } else
+                sweetAlert(icon, message);
+        })();
     });
 });

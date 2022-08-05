@@ -4,4 +4,4 @@
 
     use App\Controllers\ProjectController;
 
-    (new ProjectController())->FormProject();
+    (new ProjectController)->formProject();

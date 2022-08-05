@@ -16,379 +16,499 @@
     };
 
     /**
-     * Classe herdada de Controller responsável por controlar as ações do Usuário
-     *
+     * Classe herdada de Controller responsável por controlar as ações do Usuário.
      * @author Mário Guilherme
      */
     class UserController extends Controller {
         private User $userModel;
 
         /**
-         *  Método responsável de instanciar o modelo de Usuário.
+         * Método responsável de instanciar o modelo de Usuário.
          * @return void
          */
-        private function GetModel() {
-            $this->userModel = new User();
+        private function getModel() : void {
+            if (!isset($this->userModel)) $this->userModel = new User;
         }
 
-        public function Index() : void {
-            $this->GetModel();
-            (Array) $data = [
+        /**
+         * Método responsável por carregar a tela de Usuários.
+         * @return void
+         */
+        public function index() : void {
+            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
                 "title" => "Usuários",
-                "css" => "users",
-                "btns" => $this->RenderButtons(),
-                "courses" => (new CourseController)->GetAllCourses(),
-                "js" => "users"
+                "currentNavItem" => "usuarios",
+                "users" => $this->getAllUsers(),
+                "courses" => (new CourseController)->getAllCourses(),
+                "pathForm" => "Users",
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar",
+                    "dataTable"
+                ],
+                "js" => [
+                    "navbar",
+                    "users"
+                ]
             ];
-            $this->View("Users/index", $data);
-        }
-
-        public function ViewByID(Int $id_user) : void {
-            $this->GetModel();
-            (Array) $user = $this->userModel::Select("", "id_user = ?", "", "", "id_user, id_course, name, email", [$id_user])->fetch(PDO::FETCH_ASSOC);
-            Response::Message($user);
+            $this->view("Users/main", $page);
         }
 
         /**
-         * Método responsável por retornar todos o ID e nome dos usuários
-         * @return Array Array de usuário
-         */
-        public function GetUsers() : Array {
-            $this->GetModel();
-            return $this->userModel::Select("", "", "", "", "id_user, name")->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        /**
-         * Método responsável por retornar o email, token e a expiração do token
-         * @param Int $id_user
-         * @return Array Array de dados do usuário
-         */
-        public function GetUserByToken(String $token) : Array {
-            $this->GetModel();
-            (Array) $data = $this->userModel::Select("", "token = ?", "", "", "name, token, token_expiration", [$token])->fetch(PDO::FETCH_ASSOC);
-            if(!$data)
-                Session::Redirect("projetos");
-            else
-                return $data;
-        }
-
-        public function Delete(Int $id_user) : void {
-            $this->GetModel();
-            (Array) $projects = count((new ProjectUserController)->GetProjectByUser($id_user));
-            if($projects)
-                Response::Message(USER_FK_ERROR);
-            else
-                $this->userModel::Delete("id_user = ?", [$id_user]) ? Response::Message(USER_DELETED) : Response::Message(GENERAL_ERROR);
-        }
-
-        public function List() : void {
-            $this->GetModel();
-            (Array) $users = $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course")->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($users as $user) {
-                echo "<tr role='row'>
-                    <td class='text-center'>
-                        $user[id_user]
-                    </td>
-                    <td class='text-center'>
-                        $user[course]
-                    </td>
-                    <td class='text-center'>
-                        $user[name]
-                    </td>
-                    <td class='text-center'>
-                        $user[email]
-                    </td>
-                    <td class='text-center'>
-                        <button id='$user[id_user]' class='btn btn-edit-user'>
-                            Editar
-                        </button>
-                        <button id='$user[id_user]' class='btn btn-delete-user'>
-                            Apagar
-                        </button>
-                    </td>
-                </tr>";
-            }
-        }
-
-        /**
-         * Método responsável por carregar a View de cadastro de usuário
+         * Método responsável por carregar o formulário para cadastro de usuário.
          * @return void
          */
-        public function FormRegister() : void {
-            if(Session::IsAdmin()) {
-                (Array) $data = [
-                    "title" => "Cadastro de Usuário",
-                    "css" => "register",
-                    "btns" => $this->RenderButtons(3),
-                    "courses" => (new CourseController)->GetAllCourses(),
-                    "js" => "register"
-                ];
-                $this->View("Users/register", $data);
-            } else
-                Session::Redirect("projetos");
+        public function formRegisterPage() : void {
+            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Cadastrar Usuário",
+                "currentNavItem" => "cadastrar-usuario",
+                "courses" => (new CourseController)->getAllCourses(),
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar",
+                    "form"
+                ],
+                "js" => [
+                    "navbar",
+                    "createUser"
+                ]
+            ];
+            $this->view("Users/formPage", $page);
         }
 
         /**
-         * Método responsável por carregar a View de cadastro de usuário
+         * Método responsável por carregar o formulário de login.
          * @return void
          */
-        public function MyProjects() : void {
-            if(!Session::IsEmptySession()) {
-                (Array) $projects = (new ProjectUserController)->GetProjectByUser((Int) $_SESSION["id_user"]);
-                for($i = 0; $i < count($projects); $i++)
-                    $projects[$i]["media"] = (new MediaController)->GetAllMedias((Int) $projects[$i]["id_project"])[0];
+        public function formLogin() : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, redireciona para a página principal
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    header("Location: /");
+                else
+                    header("Location: services/logout");
 
-                (Array) $data = [
-                    "title" => "Meus Projetos",
-                    "css" => "my-projects",
-                    "projects" => $projects,
-                    "btns" => $this->RenderButtons(),
-                    "js" => "my-projects"
-                ];
-                $this->View("Users/my-projects", $data);
-            } else
-                Session::Redirect("projetos");
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Login",
+                "css" => [
+                    "font",
+                    "global",
+                    "auth",
+                ],
+                "js" => [
+                    "navbar",
+                    "createUser",
+                    "login"
+                ]
+            ];
+            $this->view("Users/formLogin", $page);
         }
 
         /**
-         * Método responsável por carregar a View de login
+         * Método responsável por carregar o formulário para enviar o email de recuperação de senha.
          * @return void
          */
-        public function FormLogin() : void {
-            if(Session::IsEmptySession()) {
-                (Array) $data = [
-                    "title" => "Login",
-                    "css" => "login",
-                    "js" => "login"
-                ];
-                $this->View("Users/login", $data);
-            } else
-                Session::Redirect("projetos");
+        public function formSendEmail() : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, redireciona para a página principal
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    header("Location: /");
+                else
+                    header("Location: services/logout");
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Enviar email de recuperação de senha",
+                "css" => [
+                    "font",
+                    "global",
+                    "auth",
+                ],
+                "js" => [
+                    "navbar",
+                    "createUser",
+                    "sendEmailRecover"
+                ]
+            ];
+            $this->view("Users/sendEmailRecover", $page);
         }
 
-        public function Update(Array $form) : void {
-            // VERIFICA SE O USUÁRIO É PROFESSOR
-            Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
+        /**
+         * Método responsável por carregar o formulário de alteração de senha.
+         * @param string $token Token de recuperação de senha
+         * @return void
+         */
+        public function formChangePassword(string $token) : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, redireciona para a página principal
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    header("Location: /");
+                else
+                    header("Location: services/logout");
+
+            $this->getModel();
+            (array) $user = $this->userModel::select(where: "token = ?", fields: "name, token, token_expiration", params: [$token])->fetch(PDO::FETCH_ASSOC);
+
+            if (!$user)
+                header("Location: projetos");
+
+            if ($user["token_expiration"] < date("Y-m-d H:i:s"))
+                header("Location: /");
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Alterar Senha",
+                "token" => $token,
+                "name" => $user["name"],
+                "css" => [
+                    "font",
+                    "global",
+                    "auth",
+                ],
+                "js" => [
+                    "navbar",
+                    "createUser",
+                    "changePassword"
+                ]
+            ];
+            $this->view("Users/changePassword", $page);
+        }
+
+        /**
+         * Método responsável por carregar a tela com os projetos relacionados ao Usuário logado.
+         * @param int $currentPage Número da página atual
+         * @return void
+         */
+        public function myProjects(int $currentPage) : void {
+            if (!Session::isLogged() || !Session::userLoggedExist(array_key_exists("id_user", $_SESSION) ? (int) $_SESSION["id_user"] : 0))
+                header("Location: /"); // Se o usuário estiver não estiver logado ou se nem existir no banco de dados, redireciona para a página inicial
+
+            (array) $projects = (new ProjectUserController)->getAllProjectsByUser((int) $_SESSION["id_user"]);
+            if ($currentPage <= 0)
+                $currentPage = 1;
+
+            // Lógica para aplicar 6 projetos por página
+            (float) $totalPages = ceil(count($projects) / 6);
+            if ($currentPage > $totalPages) // Se for acessado uma página que não existir na lista, redireciona para a última página
+                $currentPage = (int) $totalPages;
+
+            $projects = array_slice($projects, ($currentPage - 1) * 6, 6);
+
+            for ($i = 0; $i < count($projects); $i++) // PARA CADA PROJETO DO USUÁRIO, PEGA A PRIMEIRA MÍDIA DO PROJETO
+                $projects[$i]["media"] = (new MediaController)->getMediasByProjectToCard((int) $projects[$i]["id_project"])[0];
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Meus Projetos",
+                "currentNavItem" => "meus-projetos",
+                "projects" => $projects,
+                "totalPages" => $totalPages,
+                "currentPage" => $currentPage,
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar",
+                    "myProjects"
+                ],
+                "js" => [
+                    "navbar",
+                    "myProjects"
+                ]
+            ];
+            $this->view("Users/myProjects", $page);
+        }
+
+        /**
+         * Método responsável por retornar todos os Usuários.
+         * @param bool $isForAPI Informa se os usuários deve ser retornados para uma chamada de API encerrando o script
+         * @return array Array com todos os usuários
+         */
+        public function getAllUsers(bool $isForAPI = false) : array {
+            $this->getModel();
+            (array) $users = $this->userModel::select(join: "u INNER JOIN courses c ON u.id_course = c.id_course", fields: "id_user, name, email, course, isAdmin")->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($isForAPI) // Se true, ele encerra o script com o json (usado para chamada da api)
+                Response::returnResponse($users);
+
+            return $users;
+        }
+
+        /**
+         * Método responsável por retornar os dados de um Usuário a partir de seu ID.
+         * @param int $id_user ID do Usuário
+         * @return void
+         */
+        public function getUserByID(int $id_user) : void {
+            $this->getModel();
+            (array) $user = $this->userModel::select(where: "id_user = ?", fields: "id_user, id_course, name, email, isAdmin", params: [$id_user])->fetch(PDO::FETCH_ASSOC);
+            Response::returnResponse($user);
+        }
+
+        /**
+         * Método responsável por verificar se um Usuário existe pelo ID.
+         * @param int $id_user ID do usuário
+         * @return bool True se o usuário existir e false se não
+         */
+        public function userExists(int $id_user) : bool {
+            $this->getModel();
+            return $this->userModel::select(where: "id_user = ?", fields: "id_user", params: [$id_user])->rowCount() == 1;
+        }
+
+        /**
+         * Método responsável por verificar se existem Usuários relacionado ao ID do Curso.
+         * @param int $id_course ID do Curso
+         * @return bool True se existir usuários, false se não existir
+         */
+        public function courseHasUsersLinked(int $id_course) : bool {
+            $this->getModel();
+            return $this->userModel::select(where: "id_course = ?", fields: "id_user", params: [$id_course])->rowCount() > 0;
+        }
+
+        /**
+         * Método responsável por fazer o login do Usuário.
+         * @param array $form Dados do formulário
+         * @return void
+         */
+        public function login(array $form) : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, retorna aviso de que ele já está logado e encerra a função
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    Response::returnResponse(Response::USER_ALREADY_LOGGED, 401, "warning");
+                else
+                    Response::returnResponse(Response::USER_LOGGED_DOES_NOT_EXIST, 401, "warning");
 
             // LIMPEZA DOS CAMPOS
-            (Int) $id_user = Form::SanatizeField($form["id_user"], FILTER_SANITIZE_NUMBER_INT);
-            (Int) $id_course = (Int) Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
-            (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
-            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
+            (string) $email = Form::sanatizeString($form["email"], FILTER_SANITIZE_EMAIL);
+            (string) $password = Form::sanatizeString($form["password"]);
 
-            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DA ÁREA
-            Form::VerifyEmptyFields([$name, $email, $id_course]);
-            Form::ValidateCourse($id_course);
-            Form::ValidateEmail($email);
+            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O EMAIL
+            Form::isEmptyFields([$email, $password]);
+            Form::validateEmail($email);
 
-            // OBTÉM O MODELO E ATUALIZA A ÁREA
-            $this->GetModel();
-            $this->userModel::Update("id_user = $id_user", [
-                "id_course" => $id_course,
-                "name" => $name,
-                "email" => $email
-            ]) > 0 ? Response::Message(USER_UPDATED) : Response::Message(GENERAL_ERROR);
+            // OBTENÇÃO DO MODEL E OBTÊM OS DADOS DO USUÁRIO
+            $this->getModel();
+            (object) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user, password, isAdmin", params: [$email]);
+
+            if ($stmtUser->rowCount() == 0)
+                Response::returnResponse(Response::USER_NOT_FOUND, 400, "error");
+
+            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+            // VERIFICAÇÃO DE SENHA
+            Form::verifyPassword($password, $user["password"]);
+            $_SESSION = [
+                "id_user" => $user["id_user"],
+                "isAdmin" => $user["isAdmin"]
+            ];
+            Response::returnResponse(Response::LOGGED, 200, "success");
         }
 
         /**
-         * Método responsável por retornar a quantidade de usuários de um determinado curso.
-         * @param Int $id_course ID do curso
-         * @return Int Quantidade de usuários
-         */
-        public function GetUserByCourse(Int $id_course) : Int {
-            $this->GetModel();
-            return $this->userModel::Select("u INNER JOIN courses c ON u.id_course = c.id_course", "c.id_course = ?", "", "", "c.id_course", [$id_course])->rowCount();
-        }
-
-        /**
-         * Método responsável por carregar a View de alterar senha
-         * @param String $token Token de recuperação de senha
+         * Método responsável por enviar um email com token para recuperação de senha.
+         * @param string $email Email do Usuário
          * @return void
          */
-        public function FormChangePassword(String $token) : void {
-            (Array) $user = (new UserController())->GetUserByToken($token);
-            if($user["token_expiration"] > date("Y-m-d H:i:s")) {
-                (Array) $data = [
-                    "title" => "Alterar Senha",
-                    "css" => "login",
-                    "name" => $user["name"],
-                    "js" => "change-password"
-                ];
-                $this->View("Users/change-password", $data);
-            } else
-                Session::Redirect("projetos");
-        }
+        public function sendEmailRecover(string $email) : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, retorna aviso de que ele já está logado e encerra a função
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    Response::returnResponse(Response::USER_ALREADY_LOGGED, 401, "warning");
+                else
+                    Response::returnResponse(Response::USER_LOGGED_DOES_NOT_EXIST, 401, "warning");
 
-        /**
-         * Método responsável por carregar a View que
-         * envia o email para recuperação de senha
-         * @return void
-         */
-        public function FormRecoverPassword() : void {
-            if(Session::IsEmptySession()) {
-                (Array) $data = [
-                    "title" => "Recuperar Senha",
-                    "css" => "login",
-                    "js" => "recover-password"
-                ];
-                $this->View("Users/recover-password", $data);
-            } else
-                Session::Redirect("projetos");
-        }
-
-        /**
-         * Método responsável por fazer o login do usuario
-         * @param Array $form Dados do formulário
-         * @return void
-         */
-        public function Login(Array $form) : void {
             // LIMPEZA DOS CAMPOS
-            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
-            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
+            (string) $email = Form::sanatizeString($email, FILTER_SANITIZE_EMAIL);
 
-            // VALIDAÇÃO DOS CAMPOS
-            Form::VerifyEmptyFields([$email, $password]);
-            Form::ValidateEmail($email);
+            // VALIDAÇÃO DO EMAIL
+            Form::validateEmail($email);
 
-            // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
-            $this->GetModel();
-            (Object) $stmtUser = $this->userModel::Select("INNER JOIN courses ON users.id_course=courses.id_course", "email = ?", "",
-                                                 "", "id_user, courses.id_course, name, email, password, type, course", [$email]);
+            // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO EMAIL
+            $this->getModel();
+            (object) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user, email", params: [$email]);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
-            if($stmtUser->rowCount()) {
-                (Array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-                Form::VerifyPassword($password, $user["password"]);
-                $_SESSION = [
-                    "id_user" => $user["id_user"],
-                    "id_course" => $user["id_course"],
-                    "name" => $user["name"],
-                    "email" => $user["email"],
-                    "type" => $user["type"],
-                    "course" => $user["course"]
-                ];
-                Response::Message(LOGGED);
-            } else
-                Response::Message(USER_NOT_FOUND);
+            if ($stmtUser->rowCount() == 0)
+                Response::returnResponse(Response::EMAIL_NOT_FOUND, 400, "error");
+
+            // OBTÊM O ID DO USUÁRIO E O SEU EMAIL E GERA O TOKEN COM DURAÇÃO DE 1 HORA
+            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            (int) $idUser = $user["id_user"];
+            (string) $emailUser = $user["email"];
+            $this->userModel::update("id_user = $idUser", [
+                "token" => bin2hex(random_bytes(78)),
+                "token_expiration" => date("Y-m-d H:i:s", strtotime("+1 hour"))
+            ]);
+
+            // ENVIA O EMAIL COM O TOKEN
+            (string) $token = $this->userModel::select(where: "id_user = ?", fields: "token, email", params: [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
+            (object) $objEmail = new Email($emailUser);
+            (string) $bodyEmail = file_get_contents(__DIR__ . "/../Views/Users/bodyEmail.php");
+            $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [URL, $token], $bodyEmail);
+            $objEmail->sendEmail("Recuperação de Senha", $bodyEmail);
+            Response::returnResponse(Response::CHANGE_PASSWORD_REQUEST_SEND, 200, "success");
         }
 
         /**
-         * Método responsável por fazer o cadastro de um novo usuario.
-         * @param Array $form Dados do formulário
+         * Método responsável por fazer a alteração da senha do Usuário.
+         * @param array $form Dados do formulário
          * @return void
          */
-        public function Register(Array $form) : void {
-            // VERIFICA SE O USUÁRIO É PROFESSOR
-            Session::IsAdmin() ? "" : Response::Message(INVALID_PERMISSION);
+        public function changePassword(array $form) : void {
+            if (Session::isLogged()) // Se o usuário estiver logado e existir no banco, retorna aviso de que ele já está logado e encerra a função
+                if (Session::userLoggedExist((int) $_SESSION["id_user"]))
+                    Response::returnResponse(Response::USER_ALREADY_LOGGED, 401, "warning");
+                else
+                    Response::returnResponse(Response::USER_LOGGED_DOES_NOT_EXIST, 401, "warning");
 
             // LIMPEZA DOS CAMPOS
-            (String) $email = Form::SanatizeField($form["email"], FILTER_SANITIZE_EMAIL);
-            (String) $name = Form::SanatizeField($form["name"], FILTER_UNSAFE_RAW);
-            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
-            (String) $type = Form::SanatizeField($form["type"], FILTER_UNSAFE_RAW);
-            (Int) $course = (Int) Form::SanatizeField($form["course"], FILTER_UNSAFE_RAW);
+            (string) $token = Form::sanatizeString($form["token"]);
+            (string) $password = Form::sanatizeString($form["password"]);
 
-            // VERIFICA SE HÁ CAMPOS VAZIOS, SE O EMAIL É VÁLIDO E O CURSO
-            Form::VerifyEmptyFields([$email, $name, $password, $type, $course]);
-            Form::ValidateEmail($email);
-            Form::ValidateCourse($course);
+            // VALIDAÇÃO DOS CAMPOS
+            Form::isEmptyFields([$password]);
+
+            // OBTENÇÃO DO MODEL E CONSULTA A EXISTÊNCIA DESSE TOKEN
+            $this->getModel();
+            (object) $stmtUser = $this->userModel::select(where: "token = ?", fields: "id_user, token_expiration", params: [$token]);
+
+            // VERIFICAÇÃO DO TOKEN
+            if ($stmtUser->rowCount() == 0)
+                Response::returnResponse(Response::INVALID_TOKEN, 400, "error");
+
+            // VERIFICA A DATA DE EXPIRAÇÃO DO TOKEN
+            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            if ($user["token_expiration"] < date("Y-m-d H:i:s"))
+                header("Location: /");
+
+            // CRIPTOGRAFA A SENHA
+            $password = Form::encryptPassword($password);
+
+            // ALTERAÇÃO DE SENHA E RETORNO AO USUÁRIO
+            (bool) $isUpdated = $this->userModel::update("token = '$token'", [
+                "token" => null,
+                "token_expiration" => null,
+                "password" => $password
+            ]);
+
+            $isUpdated ?
+                Response::returnResponse(Response::PASSWORD_CHANGED, 200, "success") : 
+                Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
+        }
+
+        /**
+         * Método responsável por cadastrar um Usuário.
+         * @param array $form Dados do formulário.
+         * @return void
+         */
+        public function create(array $form) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            // LIMPEZA DOS CAMPOS
+            (string) $name = Form::sanatizeString($form["name"]);
+            (string) $email = Form::sanatizeString($form["email"], FILTER_SANITIZE_EMAIL);
+            (string) $password = Form::sanatizeString($form["password"]);
+            (string) $type = Form::sanatizeInt($form["type"]);
+            (string) $id_course = Form::sanatizeInt($form["id_course"]);
+
+            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O EMAIL
+            Form::isEmptyFields([$name, $email, $password, $type, $id_course]);
+            Form::validateEmail($email);
 
             // VALIDAÇÃO DO TIPO DO USUÁRIO
-            if($type == 0 || $type == 1) {
-                $this->GetModel();
-                (Int) $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user", [$email])->rowCount();
-                (String) $password = Form::EncryptPassword($password);
-                if(!$stmtUser) {
-                    $this->userModel::Insert([
-                        "id_course" => $course,
-                        "name" => $name,
-                        "email" => $email,
-                        "password" => $password,
-                        "type" => $type
-                    ]);
-                    Response::Message(USER_REGISTERED);
-                } else
-                    Response::Message(EMAIL_ALREADY_EXISTS);
-            } else
-                Response::Message(INVALID_TYPE_USER);
+            if ($type != 0 && $type != 1)
+                Response::returnResponse(Response::INVALID_TYPE_USER, 400, "error");
+
+            // OBTÉM O MODELO DE USUÁRIO E VERIFICA SE O EMAIL JÁ EXISTE
+            $this->getModel();
+            (int) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user", params: [$email])->rowCount();
+
+            if ($stmtUser == 1)
+                Response::returnResponse(Response::EMAIL_ALREADY_EXISTS, 400, "error");
+
+            // VERIFICA O ID DO CURSO
+            if (!(new CourseController)->courseExists((int) $id_course))
+                Response::returnResponse(Response::INVALID_COURSE, 400, "error");
+
+            // REGISTRA O USUÁRIO
+            (bool) $isRegistered = $this->userModel::insert([
+                "id_course" => $id_course,
+                "name" => $name,
+                "email" => $email,
+                "password" => Form::encryptPassword($password),
+                "isAdmin" => $type
+            ]);
+
+            // RETORNA A RESPOSTA
+            $isRegistered ?
+                Response::returnResponse(Response::USER_REGISTERED, 200, "success") : 
+                Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
         }
 
         /**
-         * Método responsável por fazer a recuperação de senha
-         * @param String $email Email do usuário
+         * Método responsável por atualizar um Usuário.
+         * @param array $form Dados do formulário
          * @return void
          */
-        public function RecoverPassword(String $email) : void {
+        public function update(array $form) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
             // LIMPEZA DOS CAMPOS
-            (String) $email = Form::SanatizeField($email, FILTER_SANITIZE_EMAIL);
- 
-            // VALIDAÇÃO DOS CAMPOS
-            Form::ValidateEmail($email);
+            (string) $id_user = Form::sanatizeInt($form["id_user"]);
+            (string) $id_course = Form::sanatizeInt($form["id_course"]);
+            (string) $name = Form::sanatizeString($form["name"]);
+            (string) $email = Form::sanatizeString($form["email"], FILTER_SANITIZE_EMAIL);
+            (string) $isAdmin = Form::sanatizeInt((string) $form["isAdmin"]);
 
-            // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
-            $this->GetModel();
-            (Object) $stmtUser = $this->userModel::Select("", "email = ?", "", "", "id_user, email", [$email]);
-            (Array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O EMAIL
+            Form::isEmptyFields([$id_user, $id_course, $name, $email, $isAdmin]);
+            Form::validateEmail($email);
 
-            // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
-            if($stmtUser->rowCount()) {
-                (Int) $idUser = $user["id_user"];
-                (String) $emailUser = $user["email"];
-                $this->userModel::Update("id_user = $idUser", [
-                    "token" => bin2hex(random_bytes(78)),
-                    "token_expiration" => date("Y-m-d H:i:s", strtotime("+1 hour"))
-                ]);
-                (String) $token = $this->userModel::Select("", "id_user = ?", "", "", "token, email", [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
-                (Object) $objEmail = new Email($emailUser);
-                (String) $bodyEmail =
-                    "<h1>
-                        Olá, você solicitou a recuperação de sua senha.
-                    </h1>
-                    <p>
-                        Segue abaixo um link para altera sua senha:
-                    </p>
-                    <p>
-                        O Link irá expirar em 1 hora.
-                    </p>
-                    <p>
-                        <a href='".URL."alterar-senha?token=$token'>".URL."alterar-senha?token=$token</a>
-                    </p>
-                    <p style='color:red;'>
-                        Não compartilhe esse link com ninguém!
-                    </p>";
-                $objEmail->SendEmail("Recuperação de Senha", $bodyEmail);
-                Response::Message(CHANGE_PASSWORD_REQUEST_SEND);
-            } else
-                Response::Message(EMAIL_NOT_REGISTERED);
+            // VALIDA O ID DO USUÁRIO E DO CURSO
+            if (!$this->userExists((int) $id_user))
+                Response::returnResponse(Response::INVALID_USER, 400, "error");
+
+            if (!(new CourseController)->courseExists((int) $id_course))
+                Response::returnResponse(Response::INVALID_COURSE, 400, "error");
+
+            // ATUALIZA O USUÁRIO E RETORNA A RESPOSTA
+            (bool) $isUpdated = $this->userModel::update("id_user = $id_user", [
+                "id_course" => $id_course,
+                "name" => $name,
+                "email" => $email,
+                "isAdmin" => $isAdmin
+            ]);
+
+            $isUpdated ?
+                Response::returnResponse(Response::USER_UPDATED, 200, "success") : 
+                Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
         }
 
         /**
-         * Método responsável por fazer a alteração da senha
-         * @param String $password Nova senha do usuário
+         * Método responsável por excluir um Usuário.
+         * @param string $id_user ID dp Usuário
          * @return void
          */
-        public function ChangePassword(Array $form) : void {
+        public function delete(string $id_user) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
             // LIMPEZA DOS CAMPOS
-            (String) $token = Form::SanatizeField($form["token"], FILTER_UNSAFE_RAW);
-            (String) $password = Form::SanatizeField($form["password"], FILTER_UNSAFE_RAW);
- 
-            // VALIDAÇÃO DOS CAMPOS
-            Form::VerifyEmptyFields([$token, $password]);
-            
-            // OBTENÇÃO DO MODEL E ALTERAÇÃO DE SENHA
-            $this->GetModel();
-            if($this->userModel::Select("", "token = ?", "", "", "id_user", [$token])->rowCount()) {
-                // CRIPTOGRAFIA DA SENHA
-                (String) $password = Form::EncryptPassword($password);
-    
-                // OBTENÇÃO DO MODEL E ALTERAÇÃO DE SENHA
-                $this->userModel::Update("token = '$token'", [
-                    "token" => null,
-                    "token_expiration" => null,
-                    "password" => $password
-                ]);
-                Response::Message(PASSWORD_CHANGED);
-            }else
-                Response::Message(INVALID_TOKEN);
+            $id_user = Form::sanatizeInt($id_user);
+
+            // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O ID DO USUÁRIO
+            Form::isEmptyFields([$id_user]);
+
+            // VERIFICA SE USUÁRIO EXISTE E SE ESTÁ RELACIONADA A ALGUM PROJETO
+            if (!$this->userExists((int) $id_user))
+                Response::returnResponse(Response::INVALID_USER, 400, "error");
+
+            (bool) $hasProjectsLinked = (new ProjectUserController)->userHasProjectsLinked((int) $id_user);
+
+            if ($hasProjectsLinked)
+                Response::returnResponse(Response::USER_FK_ERROR, 403, "error");
+
+            // DELETA O USUÁRIO E RETORNA A RESPOSTA
+            (bool) $isDeleted = $this->userModel::delete("id_user = ?", [$id_user]);
+
+            $isDeleted ?
+                Response::returnResponse(Response::USER_DELETED, 200, "success") : 
+                Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
         }
     }

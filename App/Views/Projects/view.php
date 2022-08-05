@@ -1,21 +1,30 @@
-<div class="parallax">
-    <?php require __DIR__ . "/../Components/_Navbar.php"; ?>
+<?php require __DIR__ . "/../Shared/_Navbar.php" ?>
+
+<main class="p-3">
     <div class="container-fluid">
-        <div class="row mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 pb-2">
+                <button class="btn btn-default-red btn-block btn-generate-qrcode">
+                    Gerar QRCODE do Projeto
+                </button>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                <h4 class="font-weight-bold text-center title-projeto">
-                    <?= $data["project"]["title"] ?>
+                <hr>
+                <h4 class="font-weight-bold text-center default-color mt-2">
+                    <?= $page["project"]["title"] ?>
                 </h4>
                 <hr>
             </div>
         </div>
         <div class="row">
             <div class="col-12 col-md-12 col-lg-12">
-                <h5 class="font-weight-bold text-center title-projeto">
+                <h5 class="font-weight-bold text-center default-color">
                     Pessoas envolvidas
                 </h5>
                 <div class="row justify-content-center align-items-center text-center m-1 p-1">
-                    <?php foreach ($data["project"]["users"] as $user) : ?>
+                    <?php foreach ($page["users"] as $user) : ?>
                         <div class="col-12 col-sm-12 col-md-3 col-lg-3">
                             <p>
                                 <?= $user["name"] ?>
@@ -26,44 +35,60 @@
             </div>
         </div>
         <div class="row mt-5 text-center">
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h5 class="font-weight-bold title-projeto">
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                <h5 class="font-weight-bold default-color">
                     Área
                 </h5>
                 <p>
-                    <?= $data["project"]["area"] ?>
+                    <?= $page["project"]["area"] ?>
                 </p>
             </div>
-            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                <h5 class="font-weight-bold title-projeto">
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                <h5 class="font-weight-bold default-color">
                     Curso
                 </h5>
                 <p>
-                    <?= $data["project"]["course"] ?>
+                    <?= $page["project"]["course"] ?>
+                </p>
+            </div>
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                <h5 class="font-weight-bold default-color">
+                    Data de ínicio do projeto
+                </h5>
+                <p>
+                    <?= date("d/m/Y", strtotime($page["project"]["startDate"])) ?>
+                </p>
+            </div>
+            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                <h5 class="font-weight-bold default-color">
+                    Data de término do projeto
+                </h5>
+                <p>
+                    <?= date("d/m/Y", strtotime($page["project"]["endDate"])) ?>
                 </p>
             </div>
         </div>
         <hr>
         <div class="row mt-4">
             <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-                <h5 class="font-weight-bold text-center title-projeto">
+                <h5 class="font-weight-bold text-center default-color">
                     Descrição
                 </h5>
-                <p class="text-center">
-                    <?= $data["project"]["description"] ?>
+                <p class="text-justify">
+                    <?= $page["project"]["description"] ?>
                 </p>
             </div>
         </div>
         <hr>
         <div class="row justify-content-center align-items-center m-1 p-1">
-            <?php foreach ($data["project"]["medias"] as $media): ?>
+            <?php foreach ($page["medias"] as $media): ?>
                 <div class="col-12 col-sm-12 col-lg-3 col-md-3">
                     <div class="card">
                         <div class="card-body text-center">
                             <?php if ($media["type"] == "video/mp4"): ?>
-                                <video class="d-block" style="width:-webkit-fill-available;" preload="metadata" controls src="medias/<?= $media["path"] ?>"></video>
+                                <video class="d-block" style="width:-webkit-fill-available;" preload="metadata" controls src="medias/<?= $media["fileName"] ?>"></video>
                             <?php else : ?>
-                                <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["path"] ?>">
+                                <img class="d-block w-100" alt="<?= $media["name"] ?>" src="medias/<?= $media["fileName"] ?>">
                             <?php endif; ?>
                             <div class="form-group mt-2">
                                 <h4>
@@ -79,5 +104,6 @@
             <?php endforeach; ?>
         </div>
     </div>
-    <?php require __DIR__ . "/../Components/_Footer.php"; ?>
-</div>
+</main>
+
+<?php require __DIR__ . "/../Shared/_Footer.php" ?>

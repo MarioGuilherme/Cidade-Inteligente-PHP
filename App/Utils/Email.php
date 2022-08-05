@@ -8,27 +8,66 @@
     use PHPMailer\PHPMailer\SMTP;
 
     /**
-     * Classe responsável por fazer o envio de e-mails
-     *
+     * Classe responsável por fazer o controle do envio de emails.
      * @author Mário Guilherme
      */
     class Email {
+        /**
+         * Objeto PHPMailer.
+         * @var PHPMailer
+         */
         private PHPMailer $mailer;
-        private static String $host = "smtp.gmail.com";
-        private static String $username = "cidadeinteligente2022@gmail.com";
-        private static String $password = "cidadeinteligenteSMTPAdmin";
-        private static String $SMTPSecure = "tls";
-        private static Int $port = 587;
-        private static String $from = "cidadeinteligente2022@gmail.com";
-        private static String $CharSet = "UTF-8";
 
         /**
-         * Método responsável por inicializar o objeto PHPMailer
-         * @param String $receiver E-mail do destinatário
+         * Host do servidor de e-mail.
+         * @var string
          */
-        public function __construct(String $receiver) {
+        private static string $host = "smtp.gmail.com";
+
+        /**
+         * Email do usuário do servidor de e-mail.
+         * @var string
+         */
+        private static string $username = "cidadeinteligente2022@gmail.com";
+
+        /**
+         * Senha do usuário do servidor de e-mail.
+         * @var string
+         */
+        private static string $password = "cidadeinteligenteSMTPAdmin";
+
+        /**
+         * Segurança do servidor de e-mail.
+         * @var string
+         */
+        private static string $SMTPSecure = "tls";
+
+        /**
+         * Porta do servidor de emal.
+         * @var int
+         */
+        private static int $port = 587;
+
+        /**
+         * Email do remetente.
+         * @var string
+         */
+        private static string $from = "cidadeinteligente2022@gmail.com";
+
+        /**
+         * Tipo de codificação.
+         * @var string
+         */
+        private static string $charSet = "UTF-8";
+
+        /**
+         * Método responsável por inicializar o objeto PHPMailer.
+         * @param string $receiver E-mail do destinatário
+         * @return void
+         */
+        public function __construct(string $receiver) {
             $this->mailer = new PHPMailer(true);
-            $this->mailer->SMTPDebug = SMTP::DEBUG_SERVER;
+            $this->mailer->SMTPDebug = DEV_ENV === "true" ? SMTP::DEBUG_SERVER : 0;
             $this->mailer->isSMTP();
             $this->mailer->Host = self::$host;
             $this->mailer->SMTPAuth = true;
@@ -40,16 +79,16 @@
             $this->mailer->setFrom(self::$from);
             $this->mailer->addAddress($receiver);
             $this->mailer->isHTML(true);
-            $this->mailer->CharSet = self::$CharSet;
+            $this->mailer->CharSet = self::$charSet;
         }
 
         /**
-         * Método responsável por enviar um e-mail
-         * @param String $subject E-mail do destinatário
-         * @param String $body Corpo do e-mail
+         * Método responsável por fazer o envio de um e-mail.
+         * @param string $subject E-mail do destinatário
+         * @param string $body Corpo do e-mail
          * @return void
          */
-        public function SendEmail(String $subject, String $body) : void {
+        public function sendEmail(string $subject, string $body) : void {
             $this->mailer->Subject = $subject;
             $this->mailer->Body = $body;
             $this->mailer->send();

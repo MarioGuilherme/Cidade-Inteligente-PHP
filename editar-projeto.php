@@ -4,4 +4,4 @@
 
     use App\Controllers\ProjectController;
 
-    (new ProjectController())->ViewFormProject($_GET["id"]);
+    (new ProjectController)->viewEditProject($_GET["id"]);

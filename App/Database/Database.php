@@ -4,6 +4,8 @@
 
     namespace App\Database;
 
+    use App\Utils\Response;
+    use Exception;
     use PDO;
     use PDOStatement;
     use PDOException;
@@ -11,53 +13,53 @@
     class Database {
         /**
          * Driver do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $driver;
+        private static string $driver;
 
         /**
          * Host do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $host;
+        private static string $host;
 
         /**
          * Nome do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $database;
+        private static string $database;
 
         /**
          * Usuário do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $user;
+        private static string $user;
 
         /**
          * Senha do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $password;
+        private static string $password;
 
         /**
          * Colação de caracteres do banco de dados
-         * @var String
+         * @var string
          */
-        private static String $charset;
+        private static string $charset;
 
         /**
          * Opções da conexão com o banco de dados
-         * @var String
+         * @var string
          */
-        protected static Array $options = [
+        protected static array $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
         /**
          * Nome da tabela a ser manipulada
-         * @var String
+         * @var string
          */
-        private String $table;
+        private string $table;
 
         /**
          * Instancia de conexão com o banco de dados
@@ -67,15 +69,15 @@
 
         /**
          * Método responsável por configurar a classe.
-         * @param String $driver Driver do banco de dados
-         * @param String $host Host do banco de dados
-         * @param String $database Nome do banco de dados
-         * @param String $user Usuário do banco de dados
-         * @param String $password Senha do banco de dados
-         * @param String $charset Colação do banco de dados
+         * @param string $driver Driver do banco de dados
+         * @param string $host Host do banco de dados
+         * @param string $database Nome do banco de dados
+         * @param string $user Usuário do banco de dados
+         * @param string $password Senha do banco de dados
+         * @param string $charset Colação do banco de dados
          * @return void
          */
-        public static function Config(String $driver, String $host, String $database, String $user, String $password, String $charset) : void {
+        public static function config(string $driver, string $host, string $database, string $user, string $password, string $charset) : void {
             self::$driver = $driver;
             self::$host = $host;
             self::$database = $database;
@@ -86,95 +88,108 @@
 
         /**
          * Define a tabela e instancia e conexão
-         * @param String $table
+         * @param string $table
          * @return void
          */
-        public function __construct(String $table = null) {
+        public function __construct(string $table = null) {
             $this->table = $table;
-            $this->SetConnection();
+            $this->setConnection();
         }
 
         /**
          * Método responsável por criar uma conexão com o banco de dados.
          * @return void
          */
-        private function SetConnection() : void {
+        private function setConnection() : void {
             try {
                 $this->PDO = new PDO(self::$driver.":host=".self::$host.";dbname=".self::$database.";charset=".self::$charset, self::$user, self::$password);
                 $this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch(PDOException $e) {
-                die("ERROR: {$e->getMessage()}");
+            } catch(Exception $error) {
+                if (DEV_ENV == "true")
+                    die("For Dev Env [ERROR: {$error->getMessage()}]");
+
+                throw new Exception(Response::GENERAL_ERROR);
+            } catch(PDOException $error) {
+                if (DEV_ENV == "true")
+                    die("For Dev Env [ERROR: {$error->getMessage()}]");
+
+                throw new PDOException(Response::GENERAL_ERROR);
             }
         }
 
         /**
          * Método responsável por executar SQL juntamente com parâmetros no banco de dados.
-         * @param String $sql SQL a ser executada
-         * @param Array $params Parâmetros da SQL (Array [$value])
+         * @param string $sql SQL a ser executada
+         * @param array $params Parâmetros da SQL (array [$value])
          * @return PDOStatement Objeto PDOStatement
          */
-        public function Execute(String $sql, Array $params = []) : PDOStatement {
+        public function execute(string $sql, array $params = []) : PDOStatement {
             try {
                 (Object) $stmt = $this->PDO->prepare($sql);
                 $stmt->execute($params);
                 return $stmt;
-            } catch(PDOException $e) {
-                die("ERROR: {$e->getMessage()}");
+            } catch(Exception $error) {
+                if (DEV_ENV == "true")
+                    die("For Dev Env [ERROR: {$error->getMessage()}]");
+
+                throw new Exception(Response::GENERAL_ERROR);
+            } catch(PDOException $error) {
+                if (DEV_ENV == "true")
+                    die("For Dev Env [ERROR: {$error->getMessage()}]");
+
+                throw new PDOException(Response::GENERAL_ERROR);
             }
         }
 
         /**
          * Método responsável por realizar seleções no banco de dados.
-         * @param String $join Join com outras tabelas
-         * @param String $where Condição para o SELECT
-         * @param String $order Ordenação dos resultados
-         * @param String $limit Limite de resultados
-         * @param String $fields Campos da tabela
-         * @param Array $params Parâmetros da SQL (Array [$value])
+         * @param string $join Join com outras tabelas
+         * @param string $where Condição para o SELECT
+         * @param string $fields Campos da tabela
+         * @param array $params Parâmetros da SQL (array [$value])
          * @return PDOStatement Objeto PDOStatement
          */
-        public function Select(String $join = "", String $where = "", String $order = "", String $limit = "", String $fields = "*", Array $params = []) : PDOStatement {
-            (String) $where = strlen($where) ? "WHERE ".$where : "";
-            (String) $order = strlen($order) ? "ORDER BY ".$order : "";
-            (String) $sql = "SELECT $fields FROM {$this->table} $join $where $order";
-            return $this->Execute($sql, $params);
+        public function select(string $join = "", string $where = "", string $fields = "*", array $params = []) : PDOStatement {
+            (string) $where = strlen($where) ? "WHERE ".$where : "";
+            (string) $sql = "SELECT $fields FROM {$this->table} $join $where";
+            return $this->execute($sql, $params);
         }
 
         /**
          * Método responsável por realizar inserções no dados no banco.
-         * @param Array $values Valores a serem inseridos (Array associativo ["field" => $value])
-         * @return Int ID inserido
+         * @param array $values Valores a serem inseridos (array associativo ["field" => $value])
+         * @return int ID inserido
          */
-        public function Insert(Array $values) : Int {
-            (Array) $fields = array_keys($values);
-            (Array) $binds  = array_pad([], count($fields), "?");
-            (String) $sql = "INSERT INTO {$this->table} (".implode(", " , $fields).") VALUES (".implode(", ", $binds).")";
-            $this->Execute($sql, array_values($values));
-            return (Int) $this->PDO->lastInsertId();
+        public function insert(array $values) : int {
+            (array) $fields = array_keys($values);
+            (array) $binds  = array_pad([], count($fields), "?");
+            (string) $sql = "INSERT INTO {$this->table} (".implode(", " , $fields).") VALUES (".implode(", ", $binds).")";
+            $this->execute($sql, array_values($values));
+            return (int) $this->PDO->lastInsertId();
         }
 
         /**
          * Método responsável por realizar atualizações no banco de dados.
-         * @param String $where Condição para atualização
-         * @param Array $values Valores a serem atualizados (Array associativo ["field" => $value])
-         * @return Bool Retorna true se a atualização for bem sucedida
+         * @param string $where Condição para atualização
+         * @param array $values Valores a serem atualizados (array associativo ["field" => $value])
+         * @return bool True se a atualização for bem sucedida
          */
-        public function Update(String $where, Array $values) : Bool {
-            (Array) $fields = array_keys($values);
-            (String) $sql = "UPDATE {$this->table} SET " . implode(" = ?, ", $fields) . " = ? WHERE $where LIMIT 1";
-            $this->Execute($sql, array_values($values));
+        public function update(string $where, array $values) : bool {
+            (array) $fields = array_keys($values);
+            (string) $sql = "UPDATE {$this->table} SET " . implode(" = ?, ", $fields) . " = ? WHERE $where LIMIT 1";
+            $this->execute($sql, array_values($values));
             return true;
         }
 
         /**
          * Método responsável por realizar exclusões no dados do banco.
-         * @param String $where Condição para exclusão
-         * @param Array $params Parâmetros da SQL (Array [$value])
-         * @return Bool Retorna true se a exclusão for bem sucedida
+         * @param string $where Condição para exclusão
+         * @param array $params Parâmetros da SQL (array [$value])
+         * @return bool True se a exclusão for bem sucedida
          */
-        public function Delete(String $where, Array $params = []) : Bool {
-            (String) $sql = "DELETE FROM {$this->table} WHERE $where";
-            $this->Execute($sql, $params);
+        public function delete(string $where, array $params = []) : bool {
+            (string) $sql = "DELETE FROM {$this->table} WHERE $where";
+            $this->execute($sql, $params);
             return true;
         }
     }

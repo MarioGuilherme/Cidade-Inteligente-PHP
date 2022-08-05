@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController())->FormRecoverPassword();
+    (new UserController)->formSendEmail();

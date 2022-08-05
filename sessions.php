@@ -7,8 +7,7 @@
         "id_user" => 1,
         "name" => "Mário Guilherme",
         "email" => "marioguifatec2021@gmail.com",
-        // "type" => 0,
-        "type" => 1,
+        "isAdmin" => 1,
         "course" => "Análise e Desenvolvimento de Sistemas"
     ];
     echo json_encode($_SESSION);

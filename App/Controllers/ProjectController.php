@@ -15,6 +15,7 @@
         Project_User
     };
     use App\Utils\{
+        File,
         Form,
         Response,
         Session
@@ -22,7 +23,6 @@
 
     /**
      * Classe herdada de Controller responsável por controlar as ações do Projeto
-     *
      * @author Mário Guilherme
      */
     class ProjectController extends Controller {
@@ -33,297 +33,399 @@
          * Método responsável de instanciar o modelo de Projeto e de Projeto_Usuário.
          * @return void
          */
-        private function GetModel() {
-            $this->projectModel = new Project();
-            $this->projectUserModel = new Project_User();
-        }
-
-        /**
-         * Método responsável por retornar quantos projetos existem de uma determinada área.
-         * @param Int $id_area ID da área
-         * @return Int Quantidade de projetos
-         */
-        public function GetProjectByArea(Int $id_area) : Int {
-            $this->GetModel();
-            return $this->projectModel::Select("p INNER JOIN areas a ON p.id_area = a.id_area", "a.id_area = ?", "", "", "a.id_area", [$id_area])->rowCount();
-        }
-
-        /**
-         * Método responsável por retornar quantos projetos existem de um determinad curso.
-         * @param Int $id_course ID do curso
-         * @return Int Quantidade de projetos
-         */
-        public function GetProjectByCourse(Int $id_course) : Int {
-            $this->GetModel();
-            return $this->projectModel::Select("p INNER JOIN courses c ON p.id_course = c.id_course", "c.id_course = ?", "", "", "c.id_course", [$id_course])->rowCount();
-        }
-
-        /**
-         * Método responsável por cadastrar um projeto.
-         * @param Array $form Dados do formulário
-         * @param Array $medias Superglobal com os dados dos arquivos
-         * @return void
-         */
-        public function NewProject(Array $form, Array $medias) : void {
-            if(Session::IsAdmin()) {
-                // LIMPEZA DO FORMULÁRIO
-                (Int) $id_area = Form::SanatizeField($form["area"], FILTER_SANITIZE_NUMBER_INT);
-                (Int) $id_course = Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
-                (String) $title = Form::SanatizeField($form["title"], FILTER_UNSAFE_RAW);
-                (String) $date = Form::ConvertToDate($form["date"]);
-                (String) $description = Form::SanatizeField($form["description"], FILTER_UNSAFE_RAW);
-                (Array) $users = [];
-
-                // REORDENANDO OS IDS DOS USUÁRIOS ENVOLVIDOS
-                foreach ($form["users"] as $id_user) {
-                    $users[] = Form::SanatizeField($id_user, FILTER_SANITIZE_NUMBER_INT);
-                }
-
-                // VALIDAÇÃO DOS CAMPOS
-                Form::VerifyEmptyFields([$id_area, $id_course, $title, $date, $description]);
-                Form::ValidateID([$id_area, $id_course]);
-
-                // REORDENANDO O ARRAY DE MÍDIAS
-                (Array) $medias = array_values(Form::RearrangeFiles($medias));
-                $form["medias"] = array_values($form["medias"]);
-
-                // OBTENÇÃO DO MODEL E CADASTRO DO PROJETO
-                $this->GetModel();
-                (Int) $id_project = $this->projectModel::Insert([
-                    "id_area" => $id_area,
-                    "id_course" => $id_course,
-                    "title" => $title,
-                    "date" => $date,
-                    "description" => $description
-                ]);
-
-                // SE O PROJETO FOI CADASTRADO CORRETAMENTE, PROSSEGUE COM O CADASTRO DOS USUÁRIOS E MÍDIAS
-                if($id_project > 0) {
-                    // INSERÇÃO DOS USUÁRIOS NA TABELA PROJETO_USUÁRIO
-                    foreach ($users as $id_user) {
-                        $this->projectUserModel::Insert([
-                            "id_project" => $id_project,
-                            "id_user" => $id_user
-                        ]);
-                    }
-
-                    // UPLOAD DAS MÍDIAS E INSERT TABELA DE MÍDIAS
-                    for ($i = 0; $i < count($medias); $i++) {
-                        (new MediaController)->NewMedia([
-                            "id_project" => $id_project,
-                            "name" => $medias[$i]["name"],
-                            "type" => $medias[$i]["type"],
-                            "tmp_name" => $medias[$i]["tmp_name"],
-                            "error" => $medias[$i]["error"],
-                            "size" => $medias[$i]["size"],
-                            "name_file" => Form::SanatizeField($form["medias"][$i]["name"], FILTER_UNSAFE_RAW),
-                            "description" => Form::SanatizeField($form["medias"][$i]["description"], FILTER_UNSAFE_RAW)
-                        ]);
-                    }
-                    Response::Message(PROJECT_REGISTERED);
-                } else
-                    Response::Message(GENERAL_ERROR);
-            } else
-                Response::Message(INVALID_PERMISSION);
+        private function getModel() {
+            if (!isset($this->projectModel)) $this->projectModel = new Project;
+            if (!isset($this->projectUserModel)) $this->projectUserModel = new Project_User;
         }
 
         /**
          * Método responsável por carregar a página principal, listando todos os projetos e suas mídias.
+         * @param int $currentPage Número da página atual
          * @return void
          */
-        public function Index() : void {
-            $this->GetModel();
-            (Array) $projects = $this->projectModel::Select()->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($projects as $key => $project) {
-                $projects[$key]["medias"] = (new MediaController)->GetAllMedias((Int) $projects[$key]["id_project"]);
-            }
-            (Array) $data = [
+        public function index(int $currentPage) : void {
+            (array) $projects = $this->getAllProjects();
+            (object) $mediaController = new MediaController;
+            if ($currentPage <= 0)
+                $currentPage = 1;
+
+            // Lógica para aplicar 8 projetos por página
+            (float) $totalPages = ceil(count($projects) / 8);
+            if ($currentPage > $totalPages) // Se for acessado uma página que não existir na lista, redireciona para a última página
+                $currentPage = (int) $totalPages;
+
+            $projects = array_slice($projects, ($currentPage - 1) * 8, 8);
+
+            foreach ($projects as $key => $project)
+                $projects[$key]["medias"] = $mediaController->getMediasByProjectToCard((int) $project["id_project"]);
+
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
                 "title" => "Projetos",
-                "css" => "projects",
-                "btns" => $this->RenderButtons(1),
+                "currentNavItem" => "/",
                 "projects" => $projects,
-                "js" => "projects"
+                "totalPages" => $totalPages,
+                "currentPage" => $currentPage,
+                "css" => [
+                    "font",
+                    "global",
+                    "indexNavbar",
+                    "projects"
+                ],
+                "js" => [
+                    "navbar",
+                    "projects"
+                ]
             ];
-            $this->View("Projects/index", $data);
+            $this->view("Projects/main", $page);
         }
 
         /**
-         * Método responsável de trazer os dados de um projeto de acordo com seu id
-         * @param Int $id_project ID do projeto
+         * Método responsável de carregar a tela de visualização de um projeto.
+         * @param int $id_project ID do projeto
          * @return void
          */
-        public function ViewProject(Int $id_project) : void {
-            $this->GetModel();
-            (Array) $project = $this->projectModel::Select("INNER JOIN areas ON projects.id_area = areas.id_area
-                                                    INNER JOIN courses ON projects.id_course = courses.id_course",
-                                                    "projects.id_project = ?", "", "",
-                                                    "projects.id_project, areas.area AS area, courses.course, title, projects.description, date",
-                                                    [$id_project])->fetch(PDO::FETCH_ASSOC);
-            if(empty($project)) {
-                (Array) $data = [
-                    "title" => "Projeto não encontrado",
-                    "css" => "view-project",
-                    "btns" => $this->RenderButtons(),
-                    "js" => "project-not-found",
-                ];
-                $this->View("Projects/notFound", $data);
+        public function viewProject(int $id_project) : void {
+            $this->getModel();
+            (array) $project = $this->projectModel::select(
+                join: "p INNER JOIN areas a ON p.id_area = a.id_area INNER JOIN courses c ON p.id_course = c.id_course",
+                where: "p.id_project = ?",
+                fields: "id_project, title, a.area, c.course, description, startDate, endDate",
+                params: [$id_project]
+            )->fetch(PDO::FETCH_ASSOC);
+
+            (array) $page = [
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar"
+                ],
+                "js" => [
+                    "navbar",
+                    "qrcode.min", // CDN DO QRCODE
+                    "viewProject"
+                ],
+            ];
+
+            if (empty($project)) {
+                $page["title"] = "404 - Projeto não encontrado";
+                $this->view("Projects/notFound", $page);
             } else {
-                $project["users"] = (new ProjectUserController())->GetUsersByProject((Int) $project["id_project"]);
-                $project["medias"] = (new MediaController())->GetAllMedias((Int) $project["id_project"]);
-                (Array) $data = [
-                    "title" => "Projeto - $project[title]",
-                    "css" => "view-project",
-                    "btns" => $this->RenderButtons(),
-                    "project" => $project,
-                    "js" => "view-project"
-                ];
-                $this->View("Projects/view", $data);
+                $page["title"] = "Projeto - $project[id_project]";
+                $page["project"] = $project;
+                $page["users"] = (new ProjectUserController)->getAllUsersByProject((int) $project["id_project"]);
+                $page["medias"] = (new MediaController)->getMediasByProjectToDetails((int) $project["id_project"]);
+                $this->view("Projects/view", $page);
             }
         }
 
         /**
-         * Método responsável por carregar a View do formulário para editar um projeto de acordo com seu id
-         * @param Int $id_project ID do projeto
+         * Método responsável por carregar o formulário para criar um projeto.
          * @return void
          */
-        public function ViewFormProject(Int $id_project) : void {
-            $this->GetModel();
-            (Array) $project = $this->projectModel::Select("INNER JOIN areas ON projects.id_area = areas.id_area
-                                                    INNER JOIN courses ON projects.id_course = courses.id_course",
-                                                    "projects.id_project = ?", "", "",
-                                                    "projects.id_project, areas.id_area, courses.id_course, title, projects.description, date",
-                                                    [$id_project])->fetch(PDO::FETCH_ASSOC);
-            if(empty($project)) {
-                (Array) $data = [
-                    "title" => "Projeto não encontrado",
-                    "css" => "view-project",
-                    "btns" => $this->RenderButtons(),
-                    "js" => "project-not-found",
-                ];
-                $this->View("Projects/notFound", $data);
-            } else {
-                // TRAZ OS USUÁRIOS DO PROJETO E MESCLA NUM ARRAY COM OS USUÁRIOS DO SISTEMA
-                (Array) $usersOfProject = (new ProjectUserController())->GetUsersByProject((Int) $project["id_project"]);
-                (Array) $usersOfSystem = (new UserController())->GetUsers();
+        public function formProject() : void {
+            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
 
-                for ($i = 0; $i < count($usersOfSystem); $i++) {
-                    $usersOfSystem[$i]["involved"] = false;
-                    for ($j = 0; $j < count($usersOfProject); $j++) {
-                        if($usersOfSystem[$i]["id_user"] == $usersOfProject[$j]["id_user"])
-                            $usersOfSystem[$i]["involved"] = true;
-                    }
+            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
+                "title" => "Criar Projeto",
+                "currentNavItem" => "criar-projeto",
+                "users" => (new UserController)->getAllUsers(false),
+                "areas" => (new AreaController)->getAllAreas(false),
+                "courses" => (new CourseController)->getAllCourses(false),
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar",
+                    "form",
+                    "createProject"
+                ],
+                "js" => [
+                    "navbar",
+                    "createProject",
+                    "qrcode.min" // CDN DO QRCODE
+                ]
+            ];
+            $this->View("Projects/form", $page);
+        }
+
+        /**
+         * Método responsável por carregar a View do formulário para editar um projeto de acordo com seu id.
+         * @param int $id_project ID do projeto
+         * @return void
+         */
+        public function viewEditProject(int $id_project) : void {
+            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            $this->getModel();
+            (array) $project = $this->projectModel::select(
+                join: "p INNER JOIN areas a ON p.id_area = a.id_area INNER JOIN courses c ON p.id_course = c.id_course",
+                where: "p.id_project = ?",
+                fields: "p.id_project, title, a.id_area, c.id_course, description, startDate, endDate",
+                params: [$id_project]
+            )->fetch(PDO::FETCH_ASSOC);
+
+            (array) $page = [
+                "css" => [
+                    "font",
+                    "global",
+                    "genericNavbar",
+                    "form",
+                    "editProject"
+                ],
+                "js" => [
+                    "navbar",
+                    "editProject"
+                ],
+            ];
+
+            if (empty($project)) {
+                $page["title"] = "404 - Projeto não encontrado";
+                $this->view("Projects/notFound", $page);
+            } else {
+                $page["title"] = "Editar Projeto - $project[id_project]";
+                $page["allUsers"] = (new UserController)->getAllUsers();
+                $page["project"] = $project;
+                $page["project"]["usersOfProject"] = (new ProjectUserController)->getAllUsersByProject((int) $project["id_project"]);
+                $page["medias"] = (new MediaController)->getMediasByProjectToDetails((int) $project["id_project"]);
+                $page["areas"] = (new AreaController)->getAllAreas();
+                $page["courses"] = (new CourseController)->getAllCourses();
+
+                for ($i = 0; $i < count($page["allUsers"]); $i++) {
+                    $page["allUsers"][$i]["involved"] = false;
+                    for ($j = 0; $j < count($page["project"]["usersOfProject"]); $j++)
+                        if ($page["allUsers"][$i]["id_user"] == $page["project"]["usersOfProject"][$j]["id_user"])
+                            $page["allUsers"][$i]["involved"] = true;
                 }
 
-                $project["users"] = $usersOfSystem;
-                $project["medias"] = (new MediaController())->GetAllMedias((Int) $project["id_project"]);
-                (Array) $data = [
-                    "title" => "Editar Projeto - $project[title]",
-                    "css" => "edit-project",
-                    "btns" => $this->RenderButtons(),
-                    "areas" => (new AreaController())->GetAllAreas(),
-                    "courses" => (new CourseController())->GetAllCourses(),
-                    "project" => $project,
-                    "js" => "edit-project"
-                ];
-                $this->View("Projects/edit", $data);
+                $this->View("Projects/edit", $page);
             }
         }
 
         /**
-         * Método responsável por carregar a View do formulário para criar um projeto
+         * Método responsável por retornar todos os Projetos.
+         * @return array Array com todos os Projetos.
+         */
+        public function getAllProjects() : array {
+            $this->getModel();
+            return (array) $this->projectModel::select(fields: "id_project, title, description")->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * Método responsável por verificar se um Projeto existe pelo ID.
+         * @param int $id_project ID do Curso.
+         * @return bool True se existir, false se não existir.
+         */
+        public function projectExists(int $id_project) : bool {
+            $this->getModel();
+            return !!$this->projectModel::select(where: "id_project = ?", fields: "id_project", params: [$id_project])->fetch(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * Método responsável por verificar se existem projetos relacionado ao ID do Curso.
+         * @param int $id_course ID do Curso.
+         * @return bool True se existir, false se não.
+         */
+        public function courseHasProjectsLinked(int $id_course) : bool {
+            $this->getModel();
+            return $this->projectModel::select(where: "id_course = ?", fields: "id_project", params: [$id_course])->rowCount() > 0;
+        }
+
+        /**
+         * Método responsável por verificar se existem projetos relacionado ao ID da Área.
+         * @param int $id_area ID da área
+         * @return bool True se existir, false se não.
+         */
+        public function areaHasProjectsLinked(int $id_area) : bool {
+            $this->getModel();
+            return $this->projectModel::select(where: "id_area = ?", fields: "id_project", params: [$id_area])->rowCount() > 0;
+        }
+
+        /**
+         * Método responsável por cadastrar um projeto.
+         * @param array $form Dados do formulário
          * @return void
          */
-        public function FormProject() : void {
-            if(Session::IsAdmin()) {
-                (Array) $data = [
-                    "title" => "Cadastro de Projeto",
-                    "css" => "new-project",
-                    "btns" => $this->RenderButtons(2),
-                    "users" => (new UserController())->GetUsers(),
-                    "areas" => (new AreaController())->GetAllAreas(),
-                    "courses" => (new CourseController())->GetAllCourses(),
-                    "js" => "new-project"
+        public function create(array $form) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            // LIMPEZA DOS DADOS DO PROJETO
+            (string) $title = Form::sanatizeString($form["title"]);
+            (string) $startDate = Form::convertToDate($form["startDate"]);
+            (string) $endDate = Form::convertToDate($form["endDate"]);
+            (string) $description = Form::sanatizeString($form["description"]);
+            (string) $id_area = Form::sanatizeInt($form["id_area"]);
+            (string) $id_course = Form::sanatizeInt($form["id_course"]);
+            (array) $users = [];
+            (array) $medias = [];
+
+            foreach ($form["users"] as $id_user) // LIMPA OS IDS DOS USUÁRIOS
+                $users[] = Form::sanatizeInt($id_user);
+
+            foreach ($form["medias"] as $media) // LIMPA OS DADOS DAS MÍDIAS
+                $medias[] = [
+                    "name" => Form::sanatizeString($media["name"]),
+                    "description" => Form::sanatizeString($media["description"]),
+                    "type" => Form::sanatizeString($media["type"]),
+                    "size" => File::getSize($media["base64"]),
+                    "base64" => $media["base64"]
                 ];
-                $this->View("Projects/form", $data);
-            } else
-                Session::Redirect("projetos");
-        }
 
-        public function Delete(Int $id_project) : void {
-            $this->GetModel();
-            (Array) $medias = (new MediaController)->GetAllMedias($id_project);
-            (Bool) $deleteMedia = $this->projectModel::Delete("id_project = ?", [$id_project]);
-            if($deleteMedia) {
-                (new MediaController)->DeleteProjectMedias($medias);
-                Response::Message(PROJECT_DELETED);
-            } else
-                Response::Message(GENERAL_ERROR);
-        }
+            Form::isEmptyFields([$title, $startDate, $endDate, $description, $id_area, $id_course]); // VERIFICA SE HÁ CAMPOS VAZIOS
 
-        public function Update($form, $medias) : void {
-            if(Session::IsAdmin()) {
-                // LIMPEZA DO FORMULÁRIO
-                (Int) $id_project = Form::SanatizeField($form["id_project"], FILTER_SANITIZE_NUMBER_INT);
-                (Int) $id_area = Form::SanatizeField($form["area"], FILTER_SANITIZE_NUMBER_INT);
-                (Int) $id_course = Form::SanatizeField($form["course"], FILTER_SANITIZE_NUMBER_INT);
-                (String) $title = Form::SanatizeField($form["title"], FILTER_UNSAFE_RAW);
-                (String) $date = Form::ConvertToDate($form["date"]);
-                (String) $description = Form::SanatizeField($form["description"], FILTER_UNSAFE_RAW);
-                (Array) $users = [];
+            if (count($users) == 0 || count($medias) == 0) // VERIFICA SE HÁ USUÁRIOS OU MÍDIAS
+                Response::returnResponse(Response::EMPTY_USERS_OR_MEDIA, 400, "error");
 
-                // REORDENANDO OS IDS DOS USUÁRIOS ENVOLVIDOS
-                foreach ($form["users"] as $id_user)
-                    $users[] = Form::SanatizeField($id_user, FILTER_SANITIZE_NUMBER_INT);
+            foreach ($medias as $media) // VERIFICA SE O ARQUIVO É VÁLIDO
+                File::isValidFile($media);
 
-                // VALIDAÇÃO DOS CAMPOS
-                Form::VerifyEmptyFields([$id_area, $id_course, $title, $date, $description]);
-                Form::ValidateID([$id_area, $id_course, $id_project]);
+            foreach ($medias as $media) // VERIFICA SE OS DADOS PREENCHIDOS PARA AS MÍDIAS NÃO ESTÃO VAZIOS
+                Form::isEmptyFields([$media["name"], $media["type"], $media["description"], (string) $media["size"], $media["base64"]]);
 
-                // REORDENANDO O ARRAY DE MÍDIAS
-                if ($medias != null) {
-                    (Array) $medias = array_values(Form::RearrangeFiles($medias));
-                    $form["medias"] = array_values($form["medias"]);
-                }
+            if (!(new CourseController)->courseExists((int) $id_course)) // VERIFICA O ID DO CURSO
+                Response::returnResponse(Response::INVALID_COURSE, 400, "error");
 
-                // OBTENÇÃO DO MODEL E CADASTRO DO PROJETO
-                $this->GetModel();
-                (Bool) $updatedProject = $this->projectModel::Update("id_project = $id_project", [
-                    "id_area" => $id_area,
-                    "id_course" => $id_course,
-                    "title" => $title,
-                    "description" => $description,
-                    "date" => $date,
+            if (!(new AreaController)->areaExists((int) $id_area)) // VERIFICA O ID DA ÁREA
+                Response::returnResponse(Response::INVALID_AREA, 400, "error");
+
+            $this->getModel(); // INSTANCIA O MODELO DE PROJETO E PROJETO_USUARIO E FAZ A INSERÇÃO NA TEBELA DE PROJETOS
+            (int) $idProjectRegistered = $this->projectModel::insert([
+                "id_area" => $id_area,
+                "id_course" => $id_course,
+                "title" => $title,
+                "description" => $description,
+                "startDate" => $startDate,
+                "endDate" => $endDate
+            ]);
+
+            if ($idProjectRegistered == 0) // VERIFICA SE O PROJETO FOI CADASTRADO
+                Response::returnResponse(Response::GENERAL_ERROR, 400, "error");
+
+            foreach ($users as $id_user) // INSERE E RELACIONA OS USUÁRIOS COM O PROJETO CADASTRADO
+                $this->projectUserModel::insert([
+                    "id_project" => $idProjectRegistered,
+                    "id_user" => $id_user
                 ]);
 
-                // SE O PROJETO FOI CADASTRADO CORRETAMENTE, PROSSEGUE COM O CADASTRO DOS USUÁRIOS E MÍDIAS
-                if($updatedProject) {
-                    $this->projectUserModel::Delete("id_project = ?", [$id_project]);
+            (object) $mediaController = new MediaController;
+            foreach ($medias as $media) // CRIA A MÍDIA NO SERVIDOR E A CADASTRA NO BANCO
+                $mediaController->create($media, $idProjectRegistered);
 
-                    foreach ($users as $id_user) {
-                        $this->projectUserModel::Insert([
-                            "id_project" => $id_project,
-                            "id_user" => $id_user
-                        ]);
-                    }
+            Response::returnResponse(URL . "ver-projeto?id=$idProjectRegistered", 200, "success");
+        }
 
-                    if ($medias != null) {
-                        // UPLOAD DAS MÍDIAS E INSERT TABELA DE MÍDIAS
-                        for ($i = 0; $i < count($medias); $i++)
-                            (new MediaController)->NewMedia([
-                                "id_project" => $id_project,
-                                "name" => $medias[$i]["name"],
-                                "type" => $medias[$i]["type"],
-                                "tmp_name" => $medias[$i]["tmp_name"],
-                                "error" => $medias[$i]["error"],
-                                "size" => $medias[$i]["size"],
-                                "name_file" => Form::SanatizeField($form["medias"][$i]["name"], FILTER_UNSAFE_RAW),
-                                "description" => Form::SanatizeField($form["medias"][$i]["description"], FILTER_UNSAFE_RAW)
-                            ]);
-                    }
-                    Response::Message(PROJECT_UPDATED);
+        /**
+         * Método responsável por deletar um projeto e todas as suas mídias e relaçionamentos com usuários.
+         * @param string $id_project ID do projeto
+         * @return void
+         */
+        public function delete(string $id_project) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            (array) $medias = (new MediaController)->getMediasByProjectToCard((int) $id_project);    
+
+            // DELETA O PROJETO
+            $this->getModel();
+            (bool) $isDeleted = $this->projectModel::delete("id_project = ?", [$id_project]);
+
+            if ($isDeleted) {
+                foreach ($medias as $media)
+                    File::deleteFile($media["fileName"]);
+
+                Response::returnResponse(Response::PROJECT_DELETED, 200, "success");
+            }
+
+            Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
+        }
+
+        /**
+         * Método responsável por atualizar um projeto.
+         * @param array $data Dados do projeto.
+         */
+        public function update(array $form) : void {
+            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+
+            // LIMPEZA DOS DADOS DO PROJETO
+            (string) $id_project = Form::sanatizeString($form["id_project"]);
+            (string) $title = Form::sanatizeString($form["title"]);
+            (string) $startDate = Form::convertToDate($form["startDate"]);
+            (string) $endDate = Form::convertToDate($form["endDate"]);
+            (string) $description = Form::sanatizeString($form["description"]);
+            (string) $id_area = Form::sanatizeInt($form["id_area"]);
+            (string) $id_course = Form::sanatizeInt($form["id_course"]);
+            (array) $users = [];
+            (array) $medias = [];
+            (array) $mediasToDelete = [];
+
+            foreach ($form["users"] as $id_user) // LIMPA OS IDS DOS USUÁRIOS
+                $users[] = Form::sanatizeInt($id_user);
+
+            foreach ($form["mediasToDelete"] as $id_media) // LIMPA OS IDS DAS MÍDIAS A SEREM DELETADAS
+                $mediasToDelete[] = Form::sanatizeInt($id_media);
+
+            foreach ($form["medias"] as $media)
+                $medias[] = [
+                    "id_media" => array_key_exists("id_media", $media) ? Form::sanatizeInt($media["id_media"]) : "0",
+                    "name" => Form::sanatizeString($media["name"]),
+                    "description" => Form::sanatizeString($media["description"]),
+                    "type" => Form::sanatizeString($media["type"]),
+                    "size" => (strlen($media["base64"]) <= 28) ? $media["size"] : File::getSize($media["base64"]),
+                    "base64" => $media["base64"],
+                ];
+
+            Form::isEmptyFields([$title, $startDate, $endDate, $description, $id_area, $id_course]); // VERIFICA SE HÁ CAMPOS VAZIOS
+
+            if (count($users) == 0 || count($medias) == 0) // VERIFICA SE HÁ USUÁRIOS OU MÍDIAS
+                Response::returnResponse(Response::EMPTY_USERS_OR_MEDIA, 400, "error");
+
+            foreach ($medias as $media) // VERIFICA SE APENAS ARQUIVOS NOVOS É VÁLIDO
+                if (strlen($media["base64"]) > 28)
+                    File::isValidFile($media);
+
+            foreach ($medias as $media) // VERIFICA SE OS DADOS PREENCHIDOS PARA AS MÍDIAS NÃO ESTÃO VAZIOS
+                Form::isEmptyFields([$media["name"], $media["type"], $media["description"], $media["type"], $media["base64"]]);
+
+            if (!$this->projectExists((int) $id_project)) // VERIFICA O ID DO PROJETO
+                Response::returnResponse(Response::INVALID_PROJECT, 400, "error");
+
+            if (!(new CourseController)->courseExists((int) $id_course)) // VERIFICA O ID DO CURSO
+                Response::returnResponse(Response::INVALID_COURSE, 400, "error");
+
+            if (!(new AreaController)->areaExists((int) $id_area)) // VERIFICA O ID DA ÁREA
+                Response::returnResponse(Response::INVALID_AREA, 400, "error");
+
+            // FAZ A ATUALIZAÇÃO NA TEBELA DE PROJETOS
+            (bool) $isUpdatedProject = $this->projectModel::update("id_project = $id_project", [
+                "id_area" => $id_area,
+                "id_course" => $id_course,
+                "title" => $title,
+                "description" => $description,
+                "startDate" => $startDate,
+                "endDate" => $endDate
+            ]);
+
+            if ($isUpdatedProject == 0) // VERIFICA SE O PROJETO FOI ATUALIZADO
+                Response::returnResponse(Response::GENERAL_ERROR, 400, "error");
+
+            $this->projectUserModel::delete("id_project = ?", [$id_project]);
+            foreach ($users as $id_user)
+                $this->projectUserModel::insert([
+                    "id_project" => $id_project,
+                    "id_user" => $id_user
+                ]);
+
+            (object) $mediaController = new MediaController;
+            foreach ($medias as $media) {
+                if ($media["id_media"] != "0") { // A MÍDIA EXIST NO SERVIDOR
+                    if (strlen($media["base64"]) <= 28)
+                        $mediaController->updateWithoutBase64($media); // ATUALIZA APENAS O NOME E A DESCRIÇÃO
+                    else
+                        $mediaController->updateFullMedia($media); // ATUALIZA TODOS OS DADOS DA MÍDIA
                 } else
-                    Response::Message(GENERAL_ERROR);
-            } else
-                Response::Message(INVALID_PERMISSION);
+                    $mediaController->create($media, (int) $id_project);
+            }
+
+            foreach ($mediasToDelete as $id_media) // DELETA AS MÍDIAS
+                $mediaController->delete((int) $id_media);
+
+            Response::returnResponse(Response::PROJECT_UPDATED, 200, "success");
         }
     }

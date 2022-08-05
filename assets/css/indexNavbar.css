@@ -1,0 +1,67 @@
+body {
+    background: #c5c5c55e !important;
+}
+
+.container-navbar {
+    height: auto;
+    background: linear-gradient( rgba(59, 59, 59, 0.932), rgba(59, 59, 59, 0.932)), url(../img/indexBackground.jpg) no-repeat center center;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 40%);
+    color: #ffffff;
+    padding-bottom: 40px;
+}
+
+nav {
+    background: transparent!important;
+    color: #ffffff !important;
+    padding: 25px !important;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 97px;
+    margin-top: 30px;
+    font-weight: 800;
+    width: 100%;
+    font-size: 40px;
+    color: #fff;
+}
+
+.subtitle {
+    background: #b11116;
+    color: white;
+    width: 60%;
+    padding: 50px;
+    position: relative;
+    margin-top: -100px;
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 6px 6px rgb(92 92 92 / 40%);
+}
+
+.galery {
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+@media (max-width: 600px) {
+    .subtitle {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 30px;
+        margin-top: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar-brand {
+        font-size: 1em;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}

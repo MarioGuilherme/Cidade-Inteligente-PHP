@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    (new UserController)->MyProjects();
+    (new UserController)->myProjects(!array_key_exists("page", $_GET) ? 1 : (int) $_GET["page"]);

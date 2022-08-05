@@ -7,4 +7,4 @@
     const DATABASE = "cidade_inteligente";
     const CHARSET = "utf8";
     const URL = "http://localhost/Cidade-Inteligente/";
-    const DISPLAY_ERRORS = "true";
+    const DEV_ENV = "false";

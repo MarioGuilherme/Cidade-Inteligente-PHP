@@ -4,4 +4,4 @@
 
     use App\Controllers\AreaController;
 
-    (new AreaController)->Index();
+    (new AreaController)->index();
