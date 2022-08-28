@@ -15,19 +15,34 @@
         Session
     };
 
+    use App\Core\{
+        Page
+    };
+    use App\Database\Database;
+
     /**
      * Classe herdada de Controller responsável por controlar as ações do Usuário.
      * @author Mário Guilherme
      */
     class UserController extends Controller {
-        private User $userModel;
+        /**
+         * Modelo de Área.
+         * @var User
+         */
+        private User $model;
 
         /**
-         * Método responsável de instanciar o modelo de Usuário.
+         * Classe do banco de dados com acesso à tabela dos usuários.
+         */
+        private Database $userDAO;
+
+        /**
+         * Método responsável de instanciar o Modelo de Usuário e o objeto Database para abstração de dados da tabela dos usuários.
          * @return void
          */
         private function getModel() : void {
-            if (!isset($this->userModel)) $this->userModel = new User;
+            if (!isset($this->model)) $this->model = new User;
+            if (!isset($this->userDAO)) $this->userDAO = new Database("users");
         }
 
         /**
@@ -35,51 +50,19 @@
          * @return void
          */
         public function index() : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
-
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Usuários",
-                "currentNavItem" => "usuarios",
-                "users" => $this->getAllUsers(),
-                "courses" => (new CourseController)->getAllCourses(),
-                "pathForm" => "Users",
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "dataTable"
-                ],
-                "js" => [
-                    "navbar",
-                    "users"
-                ]
-            ];
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
+            $page = new Page(
+                "Usuários", // Título da página
+                "usuarios", // Nome do item da navbar a ser desativado
+                [
+                    "users" => $this->getAllUsers(),
+                    "courses" => (new CourseController)->getAllCourses()
+                ], // Dados para a tela
+                [ "genericNavbar", "dataTable" ], // Arquivos CSS
+                [ "navbar", "users" ], // Arquivos JS
+                "Users", // Caminho para o formulário de cadastro no modal
+            );
             $this->view("Users/main", $page);
-        }
-
-        /**
-         * Método responsável por carregar o formulário para cadastro de usuário.
-         * @return void
-         */
-        public function formRegisterPage() : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
-
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Cadastrar Usuário",
-                "currentNavItem" => "cadastrar-usuario",
-                "courses" => (new CourseController)->getAllCourses(),
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "form"
-                ],
-                "js" => [
-                    "navbar",
-                    "createUser"
-                ]
-            ];
-            $this->view("Users/formPage", $page);
         }
 
         /**
@@ -93,19 +76,13 @@
                 else
                     header("Location: services/logout");
 
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Login",
-                "css" => [
-                    "font",
-                    "global",
-                    "auth",
-                ],
-                "js" => [
-                    "navbar",
-                    "createUser",
-                    "login"
-                ]
-            ];
+            $page = new Page(
+                "Login", // Título da página
+                "", // Nome do item da navbar a ser desativado
+                [], // Dados para a tela
+                [ "auth" ], // Arquivos CSS
+                [ "login" ], // Arquivos JS
+            );
             $this->view("Users/formLogin", $page);
         }
 
@@ -120,19 +97,13 @@
                 else
                     header("Location: services/logout");
 
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Enviar email de recuperação de senha",
-                "css" => [
-                    "font",
-                    "global",
-                    "auth",
-                ],
-                "js" => [
-                    "navbar",
-                    "createUser",
-                    "sendEmailRecover"
-                ]
-            ];
+            $page = new Page(
+                "Enviar email de recuperação de senha", // Título da página
+                "", // Nome do item da navbar a ser desativado
+                [], // Dados para a tela
+                [ "auth" ], // Arquivos CSS
+                [ "sendEmailRecover" ], // Arquivos JS
+            );
             $this->view("Users/sendEmailRecover", $page);
         }
 
@@ -149,29 +120,22 @@
                     header("Location: services/logout");
 
             $this->getModel();
-            (array) $user = $this->userModel::select(where: "token = ?", fields: "name, token, token_expiration", params: [$token])->fetch(PDO::FETCH_ASSOC);
+            (object) $user = $this->userDAO->select(where: "token = ?", fields: "name, token, token_expiration", params: [$token])->fetchObject($this->model::class);
 
             if (!$user)
                 header("Location: projetos");
 
-            if ($user["token_expiration"] < date("Y-m-d H:i:s"))
+            if ($user->token_expiration < date("Y-m-d H:i:s"))
                 header("Location: /");
 
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Alterar Senha",
-                "token" => $token,
-                "name" => $user["name"],
-                "css" => [
-                    "font",
-                    "global",
-                    "auth",
-                ],
-                "js" => [
-                    "navbar",
-                    "createUser",
-                    "changePassword"
-                ]
-            ];
+
+            $page = new Page(
+                "Alterar Senha", // Título da página
+                "", // Nome do item da navbar a ser desativado
+                [ "name" => $user->name, "token" => $user->token ], // Dados para a tela
+                [ "auth" ], // Arquivos CSS
+                [ "changePassword" ], // Arquivos JS
+            );
             $this->view("Users/changePassword", $page);
         }
 
@@ -184,37 +148,44 @@
             if (!Session::isLogged() || !Session::userLoggedExist(array_key_exists("id_user", $_SESSION) ? (int) $_SESSION["id_user"] : 0))
                 header("Location: /"); // Se o usuário estiver não estiver logado ou se nem existir no banco de dados, redireciona para a página inicial
 
-            (array) $projects = (new ProjectUserController)->getAllProjectsByUser((int) $_SESSION["id_user"]);
+            $projectUserController = new ProjectUserController;
+            $totalProjects = $projectUserController->projectUserDAO->select(
+                fields: "COUNT(*)",
+                where: "id_user = ?",
+                params: [$_SESSION["id_user"]]
+            )->fetchColumn();
+
             if ($currentPage <= 0)
                 $currentPage = 1;
 
             // Lógica para aplicar 6 projetos por página
-            (float) $totalPages = ceil(count($projects) / 6);
+            (float) $totalPages = ceil($totalProjects / 6);
             if ($currentPage > $totalPages) // Se for acessado uma página que não existir na lista, redireciona para a última página
-                $currentPage = (int) $totalPages;
+                $currentPage = (int) $totalPages == 0 ? 1 : $totalPages;
 
-            $projects = array_slice($projects, ($currentPage - 1) * 6, 6);
+            (array) $projects = $projectUserController->projectUserDAO->select(
+                join: "pu INNER JOIN projects p ON pu.id_project = p.id_project",
+                where: "pu.id_user = ?",
+                fields: "p.id_project, title, description",
+                params: [$_SESSION["id_user"]],
+                limit: $currentPage * 6 - 6 . ", 6"
+            )->fetchAll(PDO::FETCH_CLASS, User::class);
 
+            (object) $mediaController = new MediaController;
             for ($i = 0; $i < count($projects); $i++) // PARA CADA PROJETO DO USUÁRIO, PEGA A PRIMEIRA MÍDIA DO PROJETO
-                $projects[$i]["media"] = (new MediaController)->getMediasByProjectToCard((int) $projects[$i]["id_project"])[0];
+                $projects[$i]->media = $mediaController->getMediasByProjectToCard($projects[$i]->id_project)[0];
 
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Meus Projetos",
-                "currentNavItem" => "meus-projetos",
-                "projects" => $projects,
-                "totalPages" => $totalPages,
-                "currentPage" => $currentPage,
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "myProjects"
-                ],
-                "js" => [
-                    "navbar",
-                    "myProjects"
-                ]
-            ];
+            $page = new Page(
+                "Meus Projetos", // Título da página
+                "meus-projetos", // Nome do item da navbar a ser desativado
+                [
+                    "projects" => $projects,
+                    "totalPages" => $totalPages,
+                    "currentPage" => $currentPage
+                ], // Dados para a tela
+                [ "genericNavbar", "myProjects" ], // Arquivos CSS
+                [ "navbar", "myProjects" ] // Arquivos JS
+            );
             $this->view("Users/myProjects", $page);
         }
 
@@ -225,7 +196,10 @@
          */
         public function getAllUsers(bool $isForAPI = false) : array {
             $this->getModel();
-            (array) $users = $this->userModel::select(join: "u INNER JOIN courses c ON u.id_course = c.id_course", fields: "id_user, name, email, course, isAdmin")->fetchAll(PDO::FETCH_ASSOC);
+            (array) $users = $this->userDAO->select(
+                join: "u INNER JOIN courses c ON u.id_course = c.id_course",
+                fields: "id_user, name, email, course, isAdmin"
+            )->fetchAll(PDO::FETCH_CLASS, $this->model::class);
 
             if ($isForAPI) // Se true, ele encerra o script com o json (usado para chamada da api)
                 Response::returnResponse($users);
@@ -240,7 +214,7 @@
          */
         public function getUserByID(int $id_user) : void {
             $this->getModel();
-            (array) $user = $this->userModel::select(where: "id_user = ?", fields: "id_user, id_course, name, email, isAdmin", params: [$id_user])->fetch(PDO::FETCH_ASSOC);
+            (object) $user = $this->userDAO->select(where: "id_user = ?", fields: "id_user, id_course, name, email, isAdmin", params: [$id_user])->fetchObject($this->model::class);
             Response::returnResponse($user);
         }
 
@@ -251,7 +225,7 @@
          */
         public function userExists(int $id_user) : bool {
             $this->getModel();
-            return $this->userModel::select(where: "id_user = ?", fields: "id_user", params: [$id_user])->rowCount() == 1;
+            return $this->userDAO->select(where: "id_user = ?", fields: "id_user", params: [$id_user])->rowCount() == 1;
         }
 
         /**
@@ -261,7 +235,7 @@
          */
         public function courseHasUsersLinked(int $id_course) : bool {
             $this->getModel();
-            return $this->userModel::select(where: "id_course = ?", fields: "id_user", params: [$id_course])->rowCount() > 0;
+            return $this->userDAO->select(where: "id_course = ?", fields: "id_user", params: [$id_course])->rowCount() > 0;
         }
 
         /**
@@ -286,18 +260,18 @@
 
             // OBTENÇÃO DO MODEL E OBTÊM OS DADOS DO USUÁRIO
             $this->getModel();
-            (object) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user, password, isAdmin", params: [$email]);
+            (object) $stmtUser = $this->userDAO->select(where: "email = ?", fields: "id_user, password, isAdmin", params: [$email]);
 
             if ($stmtUser->rowCount() == 0)
                 Response::returnResponse(Response::USER_NOT_FOUND, 400, "error");
 
-            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+            (array) $user = $stmtUser->fetchObject($this->model::class);
 
             // VERIFICAÇÃO DE SENHA
-            Form::verifyPassword($password, $user["password"]);
+            Form::verifyPassword($password, $user->password);
             $_SESSION = [
-                "id_user" => $user["id_user"],
-                "isAdmin" => $user["isAdmin"]
+                "id_user" => $user->id_user,
+                "isAdmin" => $user->isAdmin
             ];
             Response::returnResponse(Response::LOGGED, 200, "success");
         }
@@ -322,23 +296,23 @@
 
             // OBTENÇÃO DO MODEL E VERIFICAÇÃO DA EXISTÊNCIA DO EMAIL
             $this->getModel();
-            (object) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user, email", params: [$email]);
+            (object) $stmtUser = $this->userDAO->select(where: "email = ?", fields: "id_user, email", params: [$email]);
 
             // VERIFICAÇÃO DA EXISTÊNCIA DO USUÁRIO
             if ($stmtUser->rowCount() == 0)
                 Response::returnResponse(Response::EMAIL_NOT_FOUND, 400, "error");
 
             // OBTÊM O ID DO USUÁRIO E O SEU EMAIL E GERA O TOKEN COM DURAÇÃO DE 1 HORA
-            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-            (int) $idUser = $user["id_user"];
-            (string) $emailUser = $user["email"];
-            $this->userModel::update("id_user = $idUser", [
+            (object) $user = $stmtUser->fetchObject($this->model::class);
+            (int) $idUser = $user->id_user;
+            (string) $emailUser = $user->email;
+            $this->userDAO->update("id_user = $idUser", [
                 "token" => bin2hex(random_bytes(78)),
                 "token_expiration" => date("Y-m-d H:i:s", strtotime("+1 hour"))
             ]);
 
             // ENVIA O EMAIL COM O TOKEN
-            (string) $token = $this->userModel::select(where: "id_user = ?", fields: "token, email", params: [$idUser])->fetch(PDO::FETCH_ASSOC)["token"];
+            (string) $token = $this->userDAO->select(where: "id_user = ?", fields: "token, email", params: [$idUser])->fetchObject($this->model::class)->token;
             (object) $objEmail = new Email($emailUser);
             (string) $bodyEmail = file_get_contents(__DIR__ . "/../Views/Users/bodyEmail.php");
             $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [URL, $token], $bodyEmail);
@@ -367,22 +341,22 @@
 
             // OBTENÇÃO DO MODEL E CONSULTA A EXISTÊNCIA DESSE TOKEN
             $this->getModel();
-            (object) $stmtUser = $this->userModel::select(where: "token = ?", fields: "id_user, token_expiration", params: [$token]);
+            (object) $stmtUser = $this->userDAO->select(where: "token = ?", fields: "id_user, token_expiration", params: [$token]);
 
             // VERIFICAÇÃO DO TOKEN
             if ($stmtUser->rowCount() == 0)
                 Response::returnResponse(Response::INVALID_TOKEN, 400, "error");
 
             // VERIFICA A DATA DE EXPIRAÇÃO DO TOKEN
-            (array) $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-            if ($user["token_expiration"] < date("Y-m-d H:i:s"))
+            (array) $user = $stmtUser->fetchObject($this->model::class);
+            if ($user->token_expiration < date("Y-m-d H:i:s"))
                 header("Location: /");
 
             // CRIPTOGRAFA A SENHA
             $password = Form::encryptPassword($password);
 
             // ALTERAÇÃO DE SENHA E RETORNO AO USUÁRIO
-            (bool) $isUpdated = $this->userModel::update("token = '$token'", [
+            (bool) $isUpdated = $this->userDAO->update("token = '$token'", [
                 "token" => null,
                 "token_expiration" => null,
                 "password" => $password
@@ -405,20 +379,20 @@
             (string) $name = Form::sanatizeString($form["name"]);
             (string) $email = Form::sanatizeString($form["email"], FILTER_SANITIZE_EMAIL);
             (string) $password = Form::sanatizeString($form["password"]);
-            (string) $type = Form::sanatizeInt($form["type"]);
+            (string) $isAdmin = Form::sanatizeInt($form["isAdmin"]);
             (string) $id_course = Form::sanatizeInt($form["id_course"]);
 
             // VERIFICA SE HÁ CAMPOS VAZIOS E VALIDA O EMAIL
-            Form::isEmptyFields([$name, $email, $password, $type, $id_course]);
+            Form::isEmptyFields([$name, $email, $password, $isAdmin, $id_course]);
             Form::validateEmail($email);
 
             // VALIDAÇÃO DO TIPO DO USUÁRIO
-            if ($type != 0 && $type != 1)
+            if ($isAdmin != 0 && $isAdmin != 1)
                 Response::returnResponse(Response::INVALID_TYPE_USER, 400, "error");
 
             // OBTÉM O MODELO DE USUÁRIO E VERIFICA SE O EMAIL JÁ EXISTE
             $this->getModel();
-            (int) $stmtUser = $this->userModel::select(where: "email = ?", fields: "id_user", params: [$email])->rowCount();
+            (int) $stmtUser = $this->userDAO->select(where: "email = ?", fields: "id_user", params: [$email])->rowCount();
 
             if ($stmtUser == 1)
                 Response::returnResponse(Response::EMAIL_ALREADY_EXISTS, 400, "error");
@@ -428,12 +402,12 @@
                 Response::returnResponse(Response::INVALID_COURSE, 400, "error");
 
             // REGISTRA O USUÁRIO
-            (bool) $isRegistered = $this->userModel::insert([
+            (bool) $isRegistered = $this->userDAO->insert([
                 "id_course" => $id_course,
                 "name" => $name,
                 "email" => $email,
                 "password" => Form::encryptPassword($password),
-                "isAdmin" => $type
+                "isAdmin" => $isAdmin
             ]);
 
             // RETORNA A RESPOSTA
@@ -469,7 +443,7 @@
                 Response::returnResponse(Response::INVALID_COURSE, 400, "error");
 
             // ATUALIZA O USUÁRIO E RETORNA A RESPOSTA
-            (bool) $isUpdated = $this->userModel::update("id_user = $id_user", [
+            (bool) $isUpdated = $this->userDAO->update("id_user = $id_user", [
                 "id_course" => $id_course,
                 "name" => $name,
                 "email" => $email,
@@ -487,7 +461,7 @@
          * @return void
          */
         public function delete(string $id_user) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             $id_user = Form::sanatizeInt($id_user);
@@ -505,7 +479,7 @@
                 Response::returnResponse(Response::USER_FK_ERROR, 403, "error");
 
             // DELETA O USUÁRIO E RETORNA A RESPOSTA
-            (bool) $isDeleted = $this->userModel::delete("id_user = ?", [$id_user]);
+            (bool) $isDeleted = $this->userDAO->delete("id_user = ?", [$id_user]);
 
             $isDeleted ?
                 Response::returnResponse(Response::USER_DELETED, 200, "success") : 

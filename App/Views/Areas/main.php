@@ -26,19 +26,19 @@
                             </th>
                         </thead>
                         <tbody>
-                            <?php foreach($page["areas"] as $area): ?>
+                            <?php foreach($page->data as $area): ?>
                                 <tr role="row">
                                     <td>
-                                        <?= $area["id_area"] ?>
+                                        <?= $area->id_area ?>
                                     </td>
                                     <td>
-                                        <?= $area["area"] ?>
+                                        <?= $area->area ?>
                                     </td>
                                     <td>
-                                        <button id="<?= $area["id_area"] ?>" class="btn btn-edit-area btn-strong-gray">
+                                        <button id="<?= $area->id_area ?>" class="btn btn-edit-area btn-strong-gray">
                                             Editar
                                         </button>
-                                        <button id="<?= $area["id_area"] ?>" class="btn btn-delete-area btn-strong-red">
+                                        <button id="<?= $area->id_area ?>" class="btn btn-delete-area btn-strong-red">
                                             Apagar
                                         </button>
                                     </td>

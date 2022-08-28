@@ -12,43 +12,43 @@
 
     class Database {
         /**
-         * Driver do banco de dados
+         * Driver do banco de dados.
          * @var string
          */
         private static string $driver;
 
         /**
-         * Host do banco de dados
+         * Host do banco de dados.
          * @var string
          */
         private static string $host;
 
         /**
-         * Nome do banco de dados
+         * Nome do banco de dados.
          * @var string
          */
         private static string $database;
 
         /**
-         * Usuário do banco de dados
+         * Usuário do banco de dados.
          * @var string
          */
         private static string $user;
 
         /**
-         * Senha do banco de dados
+         * Senha do banco de dados.
          * @var string
          */
         private static string $password;
 
         /**
-         * Colação de caracteres do banco de dados
+         * Colação de caracteres do banco de dados.
          * @var string
          */
         private static string $charset;
 
         /**
-         * Opções da conexão com o banco de dados
+         * Opções da conexão com o banco de dados.
          * @var string
          */
         protected static array $options = [
@@ -56,13 +56,13 @@
         ];
 
         /**
-         * Nome da tabela a ser manipulada
+         * Nome da tabela a ser manipulada.
          * @var string
          */
         private string $table;
 
         /**
-         * Instancia de conexão com o banco de dados
+         * Instancia de conexão com o banco de dados.
          * @var PDO
          */
         private PDO $PDO;
@@ -87,9 +87,8 @@
         }
 
         /**
-         * Define a tabela e instancia e conexão
+         * Construtor da classe que define a tabela e inicia e conexão com o Banco de dados.
          * @param string $table
-         * @return void
          */
         public function __construct(string $table = null) {
             $this->table = $table;
@@ -125,7 +124,7 @@
          */
         public function execute(string $sql, array $params = []) : PDOStatement {
             try {
-                (Object) $stmt = $this->PDO->prepare($sql);
+                (object) $stmt = $this->PDO->prepare($sql);
                 $stmt->execute($params);
                 return $stmt;
             } catch(Exception $error) {
@@ -143,15 +142,17 @@
 
         /**
          * Método responsável por realizar seleções no banco de dados.
+         * @param string $fields Campos da tabela
          * @param string $join Join com outras tabelas
          * @param string $where Condição para o SELECT
-         * @param string $fields Campos da tabela
+         * @param string $limit Limite de linhas
          * @param array $params Parâmetros da SQL (array [$value])
          * @return PDOStatement Objeto PDOStatement
          */
-        public function select(string $join = "", string $where = "", string $fields = "*", array $params = []) : PDOStatement {
-            (string) $where = strlen($where) ? "WHERE ".$where : "";
-            (string) $sql = "SELECT $fields FROM {$this->table} $join $where";
+        public function select(string $fields = "*", string $join = "", string $where = "", string $limit = "", array $params = []) : PDOStatement {
+            (string) $where = strlen($where) ? "WHERE $where" : "";
+            (string) $limit = strlen($limit) ? "LIMIT $limit" : "";
+            (string) $sql = "SELECT $fields FROM {$this->table} $join $where $limit";
             return $this->execute($sql, $params);
         }
 

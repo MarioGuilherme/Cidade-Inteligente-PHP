@@ -5,14 +5,18 @@
     namespace App\Controllers;
 
     use PDO;
-    use App\Core\Controller;
+    use App\Core\{
+        Controller,
+        Page
+    };
     use App\Controllers\{
         MediaController,
         UserController
     };
+    use App\Database\Database;
     use App\Models\{
         Project,
-        Project_User
+        User
     };
     use App\Utils\{
         File,
@@ -26,16 +30,31 @@
      * @author Mário Guilherme
      */
     class ProjectController extends Controller {
+        /**
+         * Modelo de Curso.
+         * @var Project
+         */
         private Project $projectModel;
-        private Project_User $projectUserModel;
 
         /**
-         * Método responsável de instanciar o modelo de Projeto e de Projeto_Usuário.
+         * Modelo de Usuário.
+         * @var Project_User
+         */
+        private User $userModel;
+
+        /**
+         * Classe do banco de dados com acesso à tabela dos cursos.
+         */
+        private Database $projectDAO;
+
+        /**
+         * Método responsável de instanciar o modelo de Curso e o objeto Database para abstração de dados da tabela dos cursos.
          * @return void
          */
-        private function getModel() {
+        private function getModel() : void {
             if (!isset($this->projectModel)) $this->projectModel = new Project;
-            if (!isset($this->projectUserModel)) $this->projectUserModel = new Project_User;
+            if (!isset($this->userModel)) $this->userModel = new User;
+            if (!isset($this->projectDAO)) $this->projectDAO = new Database("projects");
         }
 
         /**
@@ -44,38 +63,38 @@
          * @return void
          */
         public function index(int $currentPage) : void {
-            (array) $projects = $this->getAllProjects();
-            (object) $mediaController = new MediaController;
+            $this->getModel();
+            $totalProjects = $this->projectDAO->select(fields: "COUNT(*)")->fetchColumn();
+
             if ($currentPage <= 0)
                 $currentPage = 1;
 
             // Lógica para aplicar 8 projetos por página
-            (float) $totalPages = ceil(count($projects) / 8);
+            (float) $totalPages = ceil($totalProjects / 8);
             if ($currentPage > $totalPages) // Se for acessado uma página que não existir na lista, redireciona para a última página
-                $currentPage = (int) $totalPages;
+                $currentPage = (int) $totalPages == 0 ? 1 : $totalPages;
 
-            $projects = array_slice($projects, ($currentPage - 1) * 8, 8);
+            (array) $projects = $this->projectDAO->select(
+                fields: "id_project, title, description",
+                limit: $currentPage * 8 - 8 . ", 8"
+            )->fetchAll(PDO::FETCH_CLASS, $this->projectModel::class);
 
+            (object) $mediaController = new MediaController;
             foreach ($projects as $key => $project)
-                $projects[$key]["medias"] = $mediaController->getMediasByProjectToCard((int) $project["id_project"]);
+                $projects[$key]->medias = $mediaController->getMediasByProjectToCard($project->id_project);
 
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Projetos",
-                "currentNavItem" => "/",
-                "projects" => $projects,
-                "totalPages" => $totalPages,
-                "currentPage" => $currentPage,
-                "css" => [
-                    "font",
-                    "global",
-                    "indexNavbar",
-                    "projects"
-                ],
-                "js" => [
-                    "navbar",
-                    "projects"
-                ]
-            ];
+            $page = new Page(
+                "Projetos", // Título da página
+                "/", // Nome do item da navbar a ser desativado
+                [
+                    "projects" => $projects,
+                    "totalPages" => $totalPages,
+                    "currentPage" => $currentPage
+                ], // Dados para a tela
+                [ "indexNavbar", "projects" ], // Arquivos CSS
+                [ "navbar", "projects" ], // Arquivos JS
+                "Areas", // Caminho para o formulário de cadastro no modal
+            );
             $this->view("Projects/main", $page);
         }
 
@@ -86,36 +105,34 @@
          */
         public function viewProject(int $id_project) : void {
             $this->getModel();
-            (array) $project = $this->projectModel::select(
+            (object) $project = $this->projectDAO->select(
                 join: "p INNER JOIN areas a ON p.id_area = a.id_area INNER JOIN courses c ON p.id_course = c.id_course",
                 where: "p.id_project = ?",
                 fields: "id_project, title, a.area, c.course, description, startDate, endDate",
                 params: [$id_project]
-            )->fetch(PDO::FETCH_ASSOC);
-
-            (array) $page = [
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar"
-                ],
-                "js" => [
-                    "navbar",
-                    "qrcode.min", // CDN DO QRCODE
-                    "viewProject"
-                ],
-            ];
+            )->fetchObject($this->projectModel::class);
 
             if (empty($project)) {
-                $page["title"] = "404 - Projeto não encontrado";
+                $page = new Page(
+                    "404 - Projeto não encontrado", // Título da página
+                    "", // Nome do item da navbar a ser desativado
+                    [], // Dados para a tela
+                    [ "genericNavbar" ], // Arquivos CSS
+                    [ "navbar" ], // Arquivos JS
+                );
                 $this->view("Projects/notFound", $page);
-            } else {
-                $page["title"] = "Projeto - $project[id_project]";
-                $page["project"] = $project;
-                $page["users"] = (new ProjectUserController)->getAllUsersByProject((int) $project["id_project"]);
-                $page["medias"] = (new MediaController)->getMediasByProjectToDetails((int) $project["id_project"]);
-                $this->view("Projects/view", $page);
             }
+
+            $project->users = (new ProjectUserController)->getAllUsersByProject($project->id_project);
+            $project->medias = (new MediaController)->getMediasByProjectToDetails($project->id_project);
+            $page = new Page(
+                "Projeto - $project->id_project", // Título da página
+                "", // Nome do item da navbar a ser desativado
+                [ "project" => $project ], // Dados para a tela
+                [ "genericNavbar" ], // Arquivos CSS
+                [ "navbar", "qrcode.min", "viewProject" ], // Arquivos JS
+            );
+            $this->view("Projects/view", $page);
         }
 
         /**
@@ -123,28 +140,19 @@
          * @return void
          */
         public function formProject() : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
-
-            (array) $page = [ // VARIÁVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Criar Projeto",
-                "currentNavItem" => "criar-projeto",
-                "users" => (new UserController)->getAllUsers(false),
-                "areas" => (new AreaController)->getAllAreas(false),
-                "courses" => (new CourseController)->getAllCourses(false),
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "form",
-                    "createProject"
-                ],
-                "js" => [
-                    "navbar",
-                    "createProject",
-                    "qrcode.min" // CDN DO QRCODE
-                ]
-            ];
-            $this->View("Projects/form", $page);
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
+            $page = new Page(
+                "Criar Projeto", // Título da página
+                "criar-projeto", // Nome do item da navbar a ser desativado
+                [
+                    "users" => (new UserController)->getAllUsers(false),
+                    "areas" => (new AreaController)->getAllAreas(false),
+                    "courses" => (new CourseController)->getAllCourses(false)
+                ], // Dados para a tela
+                [ "genericNavbar", "form", "createProject" ], // Arquivos CSS
+                [ "navbar", "createProject", "qrcode.min" ], // Arquivos JS
+            );
+            $this->view("Projects/form", $page);
         }
 
         /**
@@ -153,60 +161,62 @@
          * @return void
          */
         public function viewEditProject(int $id_project) : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             $this->getModel();
-            (array) $project = $this->projectModel::select(
+            (array) $project = $this->projectDAO->select(
                 join: "p INNER JOIN areas a ON p.id_area = a.id_area INNER JOIN courses c ON p.id_course = c.id_course",
                 where: "p.id_project = ?",
                 fields: "p.id_project, title, a.id_area, c.id_course, description, startDate, endDate",
                 params: [$id_project]
-            )->fetch(PDO::FETCH_ASSOC);
-
-            (array) $page = [
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "form",
-                    "editProject"
-                ],
-                "js" => [
-                    "navbar",
-                    "editProject"
-                ],
-            ];
+            )->fetchObject($this->projectModel::class);
 
             if (empty($project)) {
-                $page["title"] = "404 - Projeto não encontrado";
+                $page = new Page(
+                    "Projeto não encontrado", // Título da página
+                    "", // Nome do item da navbar a ser desativado
+                    [], // Dados para a tela
+                    [ "genericNavbar" ], // Arquivos CSS
+                    [ "navbar" ], // Arquivos JS
+                );
                 $this->view("Projects/notFound", $page);
-            } else {
-                $page["title"] = "Editar Projeto - $project[id_project]";
-                $page["allUsers"] = (new UserController)->getAllUsers();
-                $page["project"] = $project;
-                $page["project"]["usersOfProject"] = (new ProjectUserController)->getAllUsersByProject((int) $project["id_project"]);
-                $page["medias"] = (new MediaController)->getMediasByProjectToDetails((int) $project["id_project"]);
-                $page["areas"] = (new AreaController)->getAllAreas();
-                $page["courses"] = (new CourseController)->getAllCourses();
-
-                for ($i = 0; $i < count($page["allUsers"]); $i++) {
-                    $page["allUsers"][$i]["involved"] = false;
-                    for ($j = 0; $j < count($page["project"]["usersOfProject"]); $j++)
-                        if ($page["allUsers"][$i]["id_user"] == $page["project"]["usersOfProject"][$j]["id_user"])
-                            $page["allUsers"][$i]["involved"] = true;
-                }
-
-                $this->View("Projects/edit", $page);
             }
-        }
 
-        /**
-         * Método responsável por retornar todos os Projetos.
-         * @return array Array com todos os Projetos.
-         */
-        public function getAllProjects() : array {
-            $this->getModel();
-            return (array) $this->projectModel::select(fields: "id_project, title, description")->fetchAll(PDO::FETCH_ASSOC);
+            if (!$this->userIsRelatedWithProject((int) $id_project)) {// Verifica se o usuário editor está incluido no projeto
+                $page = new Page(
+                    "Acesso restrito", // Título da página
+                    "", // Nome do item da navbar a ser desativado
+                    [], // Dados para a tela
+                    [ "genericNavbar" ], // Arquivos CSS
+                    [ "navbar" ], // Arquivos JS
+                );
+                $this->view("Projects/Forbidden", $page);
+            }
+
+            (array) $allUsers = (new UserController)->getAllUsers();
+            (array) $usersOfProject = (new ProjectUserController)->getAllUsersByProject($project->id_project);
+            $project->medias = (new MediaController)->getMediasByProjectToDetails($project->id_project);
+
+            for ($i = 0; $i < count($allUsers); $i++) {
+                $allUsers[$i]->involved = false;
+                for ($j = 0; $j < count($usersOfProject); $j++)
+                    if ($allUsers[$i]->id_user == $usersOfProject[$j]->id_user)
+                        $allUsers[$i]->involved = true;
+            }
+
+            $page = new Page(
+                "Editar Projeto - $project->id_project", // Título da página
+                "", // Nome do item da navbar a ser desativado
+                [
+                    "project" => $project,
+                    "areas" => (new AreaController)->getAllAreas(),
+                    "courses" => (new CourseController)->getAllCourses(),
+                    "allUsers" => $allUsers
+                ], // Dados para a tela
+                [ "genericNavbar", "form", "editProject" ], // Arquivos CSS
+                [ "navbar", "editProject" ], // Arquivos JS
+            );
+            $this->view("Projects/edit", $page);
         }
 
         /**
@@ -216,7 +226,7 @@
          */
         public function projectExists(int $id_project) : bool {
             $this->getModel();
-            return !!$this->projectModel::select(where: "id_project = ?", fields: "id_project", params: [$id_project])->fetch(PDO::FETCH_ASSOC);
+            return !!$this->projectDAO->select(where: "id_project = ?", fields: "id_project", params: [$id_project])->rowCount() > 0;
         }
 
         /**
@@ -226,7 +236,7 @@
          */
         public function courseHasProjectsLinked(int $id_course) : bool {
             $this->getModel();
-            return $this->projectModel::select(where: "id_course = ?", fields: "id_project", params: [$id_course])->rowCount() > 0;
+            return $this->projectDAO->select(where: "id_course = ?", fields: "id_project", params: [$id_course])->rowCount() > 0;
         }
 
         /**
@@ -236,7 +246,21 @@
          */
         public function areaHasProjectsLinked(int $id_area) : bool {
             $this->getModel();
-            return $this->projectModel::select(where: "id_area = ?", fields: "id_project", params: [$id_area])->rowCount() > 0;
+            return $this->projectDAO->select(where: "id_area = ?", fields: "id_project", params: [$id_area])->rowCount() > 0;
+        }
+
+        /**
+         * Método responsável por verificar se o usuário logado está relacionado um determinado projeto.
+         * @param int $id_project ID da área
+         * @return bool True se estiver, false se não.
+         */
+        public function userIsRelatedWithProject(int $id_project) : bool {
+            $this->getModel();
+            return (new ProjectUserController)->projectUserDAO->select(
+                fields: "id_project",
+                where: "id_user = ? AND id_project = ?",
+                params: [$_SESSION["id_user"], $id_project]
+            )->rowCount() > 0;
         }
 
         /**
@@ -245,7 +269,7 @@
          * @return void
          */
         public function create(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithJson(); // Verificação completa de segurança
 
             // LIMPEZA DOS DADOS DO PROJETO
             (string) $title = Form::sanatizeString($form["title"]);
@@ -287,7 +311,7 @@
                 Response::returnResponse(Response::INVALID_AREA, 400, "error");
 
             $this->getModel(); // INSTANCIA O MODELO DE PROJETO E PROJETO_USUARIO E FAZ A INSERÇÃO NA TEBELA DE PROJETOS
-            (int) $idProjectRegistered = $this->projectModel::insert([
+            (int) $idProjectRegistered = $this->projectDAO->insert([
                 "id_area" => $id_area,
                 "id_course" => $id_course,
                 "title" => $title,
@@ -299,13 +323,14 @@
             if ($idProjectRegistered == 0) // VERIFICA SE O PROJETO FOI CADASTRADO
                 Response::returnResponse(Response::GENERAL_ERROR, 400, "error");
 
+            (object) $projectUserController = new ProjectUserController;
+            (object) $mediaController = new MediaController;
             foreach ($users as $id_user) // INSERE E RELACIONA OS USUÁRIOS COM O PROJETO CADASTRADO
-                $this->projectUserModel::insert([
+                $projectUserController->projectUserDAO->insert([
                     "id_project" => $idProjectRegistered,
                     "id_user" => $id_user
                 ]);
 
-            (object) $mediaController = new MediaController;
             foreach ($medias as $media) // CRIA A MÍDIA NO SERVIDOR E A CADASTRA NO BANCO
                 $mediaController->create($media, $idProjectRegistered);
 
@@ -318,17 +343,24 @@
          * @return void
          */
         public function delete(string $id_project) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithJson(); // Verificação completa de segurança
+
+            // VERIFICA SE PROJETO EXISTE
+            if (!$this->projectExists((int) $id_project))
+                Response::returnResponse(Response::INVALID_PROJECT, 400, "error");
+
+            if (!$this->userIsRelatedWithProject((int) $id_project)) // Verifica se o usuário editor está incluido no projeto
+                Response::returnResponse(Response::USER_NOT_RELATED, 403, "error");
 
             (array) $medias = (new MediaController)->getMediasByProjectToCard((int) $id_project);    
 
             // DELETA O PROJETO
             $this->getModel();
-            (bool) $isDeleted = $this->projectModel::delete("id_project = ?", [$id_project]);
+            (bool) $isDeleted = $this->projectDAO->delete("id_project = ?", [$id_project]);
 
             if ($isDeleted) {
                 foreach ($medias as $media)
-                    File::deleteFile($media["fileName"]);
+                    File::deleteFile($media->fileName);
 
                 Response::returnResponse(Response::PROJECT_DELETED, 200, "success");
             }
@@ -341,7 +373,7 @@
          * @param array $data Dados do projeto.
          */
         public function update(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithJson(); // Verificação completa de segurança
 
             // LIMPEZA DOS DADOS DO PROJETO
             (string) $id_project = Form::sanatizeString($form["id_project"]);
@@ -383,6 +415,9 @@
             foreach ($medias as $media) // VERIFICA SE OS DADOS PREENCHIDOS PARA AS MÍDIAS NÃO ESTÃO VAZIOS
                 Form::isEmptyFields([$media["name"], $media["type"], $media["description"], $media["type"], $media["base64"]]);
 
+            if (!$this->userIsRelatedWithProject((int) $id_project)) // Verifica se o usuário editor está incluido no projeto
+                Response::returnResponse(Response::USER_NOT_RELATED, 403, "error");
+
             if (!$this->projectExists((int) $id_project)) // VERIFICA O ID DO PROJETO
                 Response::returnResponse(Response::INVALID_PROJECT, 400, "error");
 
@@ -393,7 +428,7 @@
                 Response::returnResponse(Response::INVALID_AREA, 400, "error");
 
             // FAZ A ATUALIZAÇÃO NA TEBELA DE PROJETOS
-            (bool) $isUpdatedProject = $this->projectModel::update("id_project = $id_project", [
+            (bool) $isUpdatedProject = $this->projectDAO->update("id_project = $id_project", [
                 "id_area" => $id_area,
                 "id_course" => $id_course,
                 "title" => $title,
@@ -405,9 +440,12 @@
             if ($isUpdatedProject == 0) // VERIFICA SE O PROJETO FOI ATUALIZADO
                 Response::returnResponse(Response::GENERAL_ERROR, 400, "error");
 
-            $this->projectUserModel::delete("id_project = ?", [$id_project]);
+            (object) $projectUserController = new ProjectUserController;
+            (object) $mediaController = new MediaController;
+
+            $projectUserController->projectUserDAO->delete("id_project = ?", [$id_project]);
             foreach ($users as $id_user)
-                $this->projectUserModel::insert([
+                $projectUserController->projectUserDAO->insert([
                     "id_project" => $id_project,
                     "id_user" => $id_user
                 ]);

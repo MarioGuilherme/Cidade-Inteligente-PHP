@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <?php require __DIR__ . "/../$page[pathForm]/formModal.php" ?>
+                <?php require __DIR__ . "/../$page->pathFormModal/formModal.php" ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default-red btn-block btn-save">

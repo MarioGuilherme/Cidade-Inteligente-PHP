@@ -24,6 +24,7 @@
         const PROJECT_DELETED = "Projeto deletado com sucesso!";
         const PROJECT_UPDATED = "Projeto atualizado com sucesso!";
         const INVALID_PROJECT = "ID do projeto inválido. Reinicie a página e tente novamente.";
+        const USER_NOT_RELATED = "Você não faz parte deste projeto para poder alterar ou editar.";
 
         // Mídias
         const INVALID_EXTENSION = "Extensão inválida, apenas jpg, jpeg, png e mp4 são permitidas.";
@@ -67,18 +68,17 @@
 
         /**
          * Método responsável retornar uma resposta e encerrar o script.
-         * @param string|array $message Mensagem ou dados a ser retornado
+         * @param string|array|object $message Mensagem ou dados a ser retornado
          * @param string $icon Ícone do SweetAlert
          * @param int $httpCode Código de status HTTP
          * @return void
          */
-        public static function returnResponse(string|array $message, int $httpCode = 200, string $icon = null) : void {
+        public static function returnResponse(string|array|object $message, int $httpCode = 200, string $icon = null) : void {
             http_response_code($httpCode);
-
-            if (is_array($message))
-                die(json_encode($message));
 
             if ($icon != null)
                 die(json_encode(["message" => $message, "icon" => $icon]));
+
+            die(json_encode($message));
         }
     }

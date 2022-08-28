@@ -5,7 +5,11 @@
     namespace App\Controllers;
 
     use PDO;
-    use App\Core\Controller;
+    use App\Core\{
+        Controller,
+        Page
+    };
+    use App\Database\Database;
     use App\Models\Course;
     use App\Utils\{
         Form,
@@ -18,14 +22,24 @@
      * @author Mário Guilherme
      */
     class CourseController extends Controller {
-        private Course $courseModel;
+        /**
+         * Modelo de Curso.
+         * @var Course
+         */
+        private Course $model;
 
         /**
-         * Método responsável de instanciar o modelo de Curso.
+         * Classe do banco de dados com acesso à tabela dos cursos.
+         */
+        private Database $courseDAO;
+
+        /**
+         * Método responsável de instanciar o modelo de Curso e o objeto Database para abstração de dados da tabela dos cursos.
          * @return void
          */
         private function getModel() : void {
-            if (!isset($this->courseModel)) $this->courseModel = new Course;
+            if (!isset($this->model)) $this->model = new Course;
+            if (!isset($this->courseDAO)) $this->courseDAO = new Database("courses");
         }
 
         /**
@@ -33,24 +47,15 @@
          * @return void
          */
         public function index() : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
-
-            (array) $page = [ // Variável com as informações da página
-                "title" => "Cursos",
-                "currentNavItem" => "cursos",
-                "courses" => $this->getAllCourses(),
-                "pathForm" => "Courses",
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "dataTable"
-                ],
-                "js" => [
-                    "navbar",
-                    "courses"
-                ]
-            ];
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
+            $page = new Page(
+                "Cursos", // Título da página
+                "cursos", // Nome do item da navbar a ser desativado
+                $this->getAllCourses(), // Dados para a tela
+                [ "genericNavbar", "dataTable" ], // Arquivos CSS
+                [ "navbar", "courses" ], // Arquivos JS
+                "Courses" // Caminho para o formulário de cadastro no modal
+            );
             $this->view("Courses/main", $page);
         }
 
@@ -61,7 +66,7 @@
          */
         public function getAllCourses(bool $isForAPI = false) : array {
             $this->getModel();
-            (array) $courses = $this->courseModel::select()->fetchAll(PDO::FETCH_ASSOC);
+            (array) $courses = $this->courseDAO->select()->fetchAll(PDO::FETCH_CLASS, $this->model::class);
 
             if ($isForAPI) // Se true, ele encerra o script com o json (usado para chamada da api)
                 Response::returnResponse($courses);
@@ -76,7 +81,7 @@
          */
         public function getCourseByID(int $id_course) : void {
             $this->getModel();
-            (array) $course = $this->courseModel::select(where: "id_course = ?", params: [$id_course])->fetch(PDO::FETCH_ASSOC);
+            (array) $course = $this->courseDAO->select(where: "id_course = ?", params: [$id_course])->fetchObject($this->model::class);
             Response::returnResponse($course);
         }
 
@@ -87,7 +92,7 @@
          */
         public function courseExists(int $id_course) : bool {
             $this->getModel();
-            return !!$this->courseModel::select(where: "id_course = ?", fields: "id_course", params: [$id_course])->fetch(PDO::FETCH_ASSOC);
+            return !!$this->courseDAO->select(where: "id_course = ?", fields: "id_course", params: [$id_course])->rowCount() > 0;
         }
 
         /**
@@ -96,7 +101,7 @@
          * @return void
          */
         public function create(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             (string) $course = Form::sanatizeString($form["course"]);
@@ -106,7 +111,7 @@
 
             // OBTÉM O MODELO E CADASTRA UM NOVO CURSO
             $this->getModel();
-            (int) $idRegistered = $this->courseModel::insert(["course" => $course]);
+            (int) $idRegistered = $this->courseDAO->insert(["course" => $course]);
 
             $idRegistered > 0
                 ? Response::returnResponse(Response::COURSE_REGISTERED, 201, "success")
@@ -119,7 +124,7 @@
          * @return void
          */
         public function update(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             (string) $id_course = Form::sanatizeInt($form["id_course"]);
@@ -133,7 +138,7 @@
                 Response::returnResponse(Response::INVALID_COURSE, 400, "error");
 
             // ATUALIZA O CURSO E RETORNA A RESPOSTA
-            (bool) $isUpdated = $this->courseModel::update("id_course = $id_course", ["course" => $course]);
+            (bool) $isUpdated = $this->courseDAO->update("id_course = $id_course", ["course" => $course]);
 
             $isUpdated ?
                 Response::returnResponse(Response::COURSE_UPDATED, 200, "success") : 
@@ -146,7 +151,7 @@
          * @return void
          */
         public function delete(string $id_course) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             (string) $id_course = Form::sanatizeInt($id_course);
@@ -165,7 +170,7 @@
                 Response::returnResponse(Response::COURSE_FK_ERROR, 403, "error");
 
             // DELETA O CURSO E RETORNA A RESPOSTA
-            (bool) $isDeleted = $this->courseModel::delete("id_course = ?", [$id_course]);
+            (bool) $isDeleted = $this->courseDAO->delete("id_course = ?", [$id_course]);
 
             $isDeleted ?
                 Response::returnResponse(Response::COURSE_DELETED, 200, "success") : 

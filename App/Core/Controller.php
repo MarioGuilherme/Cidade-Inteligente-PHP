@@ -10,22 +10,13 @@
      */
     class Controller {
         /**
-         * Método responsável por retornar o objeto Model de uma determinada entidade.
-         * @param string $model Caminho do Model
-         * @return object Objeto Model
-         */
-        public function model(string $model) : object {
-            (object) $model = "App\Models\\$model";
-            return new $model;
-        }
-
-        /**
-         * Método responsável por carregar uma View e passar as configurações da página para esta View.
+         * Método responsável por carregar uma View com um objeto Page com as informações da página.
          * @param string $view Caminho da View
-         * @param array $page Dados passados para a View
+         * @param object $page Objeto Page com as informações da página
          * @return void
          */
-        public function view(string $view, array $page = []) : void {
+        protected function view(string $view, object $page = null) : void {
             require __DIR__ . "/../Views/Shared/_Layout.php";
+            exit;
         }
     }

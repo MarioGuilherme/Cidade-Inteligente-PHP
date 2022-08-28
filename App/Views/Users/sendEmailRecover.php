@@ -22,9 +22,12 @@
                         <button type="button" class="btn mb-2 btn-strong-red btn-block btn-recover">
                             Enviar Email de Recuperação
                         </button>
-                        <a href="/" class="forget-password">
+                        <a href="login" class="forget-password">
                             Voltar ao Login
                         </a>
+                        <div class="text-center font-weight-bold mt-3">
+                            &copy;<?= date("Y") ?>
+                        </div>
                     </div>
                 </div>
             </div>

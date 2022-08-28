@@ -7,16 +7,16 @@
         <hr>
         <div class="row justify-content-center mb-5 myProjects">
             <?php
-                if(empty($page["projects"]))
+                if(empty($page->data["projects"]))
                     echo "<h3 class='text-center'>Você não está participando de nenhum projeto.</h3>";
                 else
-                    foreach ($page["projects"] as $project)
+                    foreach ($page->data["projects"] as $project)
                         require __DIR__ . "/card.php";
             ?>
         </div>
         <div class="row justify-content-center mt-3 pages">
-            <?php for ($i = 1; $i <= $page["totalPages"]; $i++) : ?>
-                <?php if ($i != $page["currentPage"]) : ?>
+            <?php for ($i = 1; $i <= $page->data["totalPages"]; $i++) : ?>
+                <?php if ($i != $page->data["currentPage"]) : ?>
                     <a href="<?= URL . "meus-projetos?page=$i" ?>">
                         <button class="btn btn-default-red m-1">
                             <?= $i ?>

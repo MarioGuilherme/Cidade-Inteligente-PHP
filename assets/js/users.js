@@ -28,23 +28,60 @@ $(document).ready(() => {
     }
 
     $(".btn-save").click(async () => {
-        sweetAlertAwait("Salvando alterações");
-        const { icon, message } = await api.patch("users", {
-            id_user: $("input[name=id_user]").val(),
-            id_course: $("select[name=id_course]").val(),
-            name: $("input[name=name]").val(),
-            email: $("input[name=email]").val(),
-            isAdmin: $("input[type=checkbox]").is(":checked") ? 1 : 0
-        });
-        window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+        if ($("input[name=id_user]").val() == "") {
+            formHasEmptyField($("form").serializeArray().slice(1, -1));
 
-        if (icon == "success") {
-            await resetDataTable();
-            sweetAlert(icon, message);
-            cleanAllFields();
-            $(".modal").modal("hide");
-        } else
-            sweetAlert(icon, message);
+            if ($($("input[type=password")[0]).val() != $($("input[type=password")[1]).val()) {
+                sweetAlert("error", "As senhas não conferem");
+                return;
+            }
+
+            (async () => {
+                sweetAlertAwait("Cadastrando usuário");
+                const { icon, message } = await api.post("users", {
+                    name: $("input[name=name]").val(),
+                    email: $("input[name=email]").val(),
+                    password: $("input[name=password]").val(),
+                    type: $("select[name=type]").val(),
+                    id_course: $("select[name=id_course]").val(),
+                    isAdmin: $("select[name=isAdmin]").val()
+                });
+                window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+                if (icon == "success") {
+                    await resetDataTable();
+                    sweetAlert(icon, message);
+                    cleanAllFields();
+                    $(".modal").modal("hide");
+                } else
+                    sweetAlert(icon, message);
+            })();
+        } else {
+            sweetAlertAwait("Salvando alterações");
+            const { icon, message } = await api.patch("users", {
+                id_user: $("input[name=id_user]").val(),
+                name: $("input[name=name]").val(),
+                email: $("input[name=email]").val(),
+                type: $("select[name=type]").val(),
+                id_course: $("select[name=id_course]").val(),
+                isAdmin: $("select[name=isAdmin]").val()
+            });
+            window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
+
+            if (icon == "success") {
+                await resetDataTable();
+                sweetAlert(icon, message);
+                cleanAllFields();
+                $(".modal").modal("hide");
+            } else
+                sweetAlert(icon, message);
+        }
+    });
+
+    $("button[data-target='#formModal']").click(() => {
+        $("div.passwordInputs").show();
+        cleanAllFields();
+        $(".modal-title").html("Cadastrar Usuário");
     });
 
     $("tbody").on("click", ".btn-edit-user", async function() {
@@ -55,11 +92,12 @@ $(document).ready(() => {
         window.onbeforeunload = () => {}; // Desativa o alert de confirmação de saída
 
         $("input[name=id_user]").val(user.id_user);
-        $("select[name=id_course]").val(user.id_course);
         $("input[name=name]").val(user.name);
         $("input[name=email]").val(user.email);
-        $("input[type=checkbox]").prop("checked", user.isAdmin == 1 ? true : false);
+        $("select[name=id_course]").val(user.id_course);
+        $("select[name=isAdmin]").val(user.isAdmin);
         $(".modal-title").html("Editar Usuário");
+        $("div.passwordInputs").hide();
         $(".modal").modal("show");
     });
 

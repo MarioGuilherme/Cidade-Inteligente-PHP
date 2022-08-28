@@ -26,19 +26,19 @@
                             </th>
                         </thead>
                         <tbody>
-                            <?php foreach($page["courses"] as $course): ?>
+                            <?php foreach($page->data as $course): ?>
                                 <tr role="row">
                                     <td>
-                                        <?= $course["id_course"] ?>
+                                        <?= $course->id_course ?>
                                     </td>
                                     <td>
-                                        <?= $course["course"] ?>
+                                        <?= $course->course ?>
                                     </td>
                                     <td>
-                                        <button id="<?= $course["id_course"] ?>" class="btn btn-edit-course btn-strong-gray">
+                                        <button id="<?= $course->id_course ?>" class="btn btn-edit-course btn-strong-gray">
                                             Editar
                                         </button>
-                                        <button id="<?= $course["id_course"] ?>" class="btn btn-delete-course btn-strong-red">
+                                        <button id="<?= $course->id_course ?>" class="btn btn-delete-course btn-strong-red">
                                             Apagar
                                         </button>
                                     </td>

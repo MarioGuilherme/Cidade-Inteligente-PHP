@@ -9,14 +9,14 @@
         </div>
         <div class="formContent">
             <form class="form">
-                <input type="hidden" name="id_project" value="<?= $page["project"]["id_project"] ?>">
+                <input type="hidden" name="id_project" value="<?= $page->data["project"]->id_project ?>">
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-12 input-form-title">
                         <div class="form-group">
                             <label>
                                 Título
                             </label>
-                            <input value="<?= $page["project"]["title"] ?>" type="text" maxlength="120" name="title" class="form-control" placeholder="Digite o titulo">
+                            <input value="<?= $page->data["project"]->title ?>" type="text" maxlength="120" name="title" class="form-control" placeholder="Digite o titulo">
                         </div>
                     </div>
                 </div>
@@ -29,9 +29,9 @@
                                         Área do projeto
                                     </label>
                                     <select class="form-control" name="id_area">
-                                        <?php foreach ($page["areas"] as $area): ?>
-                                            <option value="<?= $area["id_area"] ?>">
-                                                <?= $area["area"] ?>
+                                        <?php foreach ($page->data["areas"] as $area): ?>
+                                            <option value="<?= $area->id_area ?>">
+                                                <?= $area->area ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -43,9 +43,9 @@
                                         Curso do projeto
                                     </label>
                                     <select id="my-select" class="form-control" name="id_course">
-                                        <?php foreach ($page["courses"] as $course): ?>
-                                            <option value="<?= $course["id_course"] ?>">
-                                                <?= $course["course"] ?>
+                                        <?php foreach ($page->data["courses"] as $course): ?>
+                                            <option value="<?= $course->id_course ?>">
+                                                <?= $course->course ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -56,7 +56,7 @@
                                     <label>
                                         Data de ínicio do projeto
                                     </label>
-                                    <input class="form-control" value="<?= $page["project"]["startDate"] ?>" type="date" name="startDate">
+                                    <input class="form-control" value="<?= $page->data["project"]->startDate ?>" type="date" name="startDate">
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6">
@@ -64,7 +64,7 @@
                                     <label>
                                         Data de término do projeto
                                     </label>
-                                    <input class="form-control" value="<?= $page["project"]["endDate"] ?>" type="date" name="endDate">
+                                    <input class="form-control" value="<?= $page->data["project"]->endDate ?>" type="date" name="endDate">
                                 </div>
                             </div>
                         </div>
@@ -75,14 +75,14 @@
                                 Pessoas Envolvidas
                             </label>
                             <div class="users">
-                                <?php foreach ($page["allUsers"] as $user): ?>
-                                    <?php if ($user["involved"] == true): ?>
-                                        <div class="user" id="<?= $user["id_user"] ?>" involved="true">
-                                            <span> <?= substr($user["name"], 0, 58) ?> </span>
+                                <?php foreach ($page->data["allUsers"] as $user): ?>
+                                    <?php if ($user->involved == true): ?>
+                                        <div class="user" id="<?= $user->id_user ?>" involved="true">
+                                            <span> <?= substr($user->name, 0, 58) ?> </span>
                                         </div>
                                     <?php else: ?>
-                                        <div class="user" id="<?= $user["id_user"] ?>">
-                                            <span> <?= substr($user["name"], 0, 58) ?> </span>
+                                        <div class="user" id="<?= $user->id_user ?>">
+                                            <span> <?= substr($user->name, 0, 58) ?> </span>
                                         </div>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -96,7 +96,7 @@
                             <label for="my-textarea">
                                 Descrição
                             </label>
-                            <textarea class="form-control" name="description" maxlength="800" rows="5"><?= $page["project"]["description"] ?></textarea>
+                            <textarea class="form-control" name="description" maxlength="800" rows="5"><?= $page->data["project"]->description ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -117,14 +117,14 @@
                     </div>
                 </div>
                 <div class="medias row align-items-center">
-                    <?php foreach ($page["medias"] as $media): ?>
+                    <?php foreach ($page->data["project"]->medias as $media): ?>
                         <div class="col-12 col-sm-12 col-lg-3 col-md-3 my-3">
-                            <div class="card media" id="<?= $media["id_media"] ?>">
+                            <div class="card media" id="<?= $media->id_media ?>">
                                 <div class="card-body">
-                                    <?php if($media["type"] == "video/mp4") : ?>
-                                        <video class="d-block" style="width:100%;" preload="metadata" controls src="medias/<?= $media["fileName"] ?>" size="<?= $media["size"] ?>"></video>
+                                    <?php if($media->type == "video/mp4") : ?>
+                                        <video class="d-block" style="width:100%;" preload="metadata" controls src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>"></video>
                                     <?php else : ?>
-                                        <img class="d-block w-100" src="medias/<?= $media["fileName"] ?>" size="<?= $media["size"] ?>">
+                                        <img class="d-block w-100" src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>">
                                     <?php endif; ?>
                                     <div class="row mt-2 mb-1">
                                         <div class="col-12 col-lg-6 pr-1">
@@ -134,7 +134,7 @@
                                             </button>
                                         </div>
                                         <div class="col-12 col-lg-6 pl-1">
-                                            <button type="button" class="btn w-100 btn-remove-media btn-default-red" id="<?= $media["id_media"] ?>">
+                                            <button type="button" class="btn w-100 btn-remove-media btn-default-red" id="<?= $media->id_media ?>">
                                                 <i class="mdi mdi-trash-can-outline"></i>
                                                 Apagar
                                             </button>
@@ -144,13 +144,13 @@
                                         <label>
                                             Nome
                                         </label>
-                                        <input maxlength="60" class="form-control" type="text" value="<?= $media["name"] ?>">
+                                        <input maxlength="60" class="form-control" type="text" value="<?= $media->name ?>">
                                     </div>
                                     <div class="form-group">
                                         <label>
                                             Descrição
                                         </label>
-                                        <textarea maxlength="200" class="form-control" rows="3"><?= $media["description"] ?></textarea>
+                                        <textarea maxlength="200" class="form-control" rows="3"><?= $media->description ?></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -172,6 +172,6 @@
 <?php require __DIR__ . "/../Shared/_Footer.php" ?>
 
 <script>
-    document.querySelectorAll("select")[0].value = "<?= $page["project"]["id_area"] ?>";
-    document.querySelectorAll("select")[1].value = "<?= $page["project"]["id_course"] ?>";
+    document.querySelectorAll("select")[0].value = "<?= $page->data["project"]->id_area ?>";
+    document.querySelectorAll("select")[1].value = "<?= $page->data["project"]->id_course ?>";
 </script>

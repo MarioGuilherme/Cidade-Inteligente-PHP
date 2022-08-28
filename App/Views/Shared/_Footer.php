@@ -53,6 +53,8 @@
                 <small>
                     <p>
                         Desenvolvido por Mario Guilherme e Vitor Martins.
+                        <br>
+                        &copy;<?= date("Y") ?>
                     </p>
                 </small>
             </div>

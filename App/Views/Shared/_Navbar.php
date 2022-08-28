@@ -11,26 +11,6 @@
                 <?php if(\App\Utils\Session::isAdmin()) : ?>
                     <li class="nav-item active">
                         <div class="dropdown">
-                            <a class="nav-link" aria-colcount="dropdown-toggle" id="dropDownRegister" data-toggle="dropdown" aria-expanded="false" href="#">
-                                Cadastrar
-                                <i class="fas fa-chevron-up"></i>
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropDownRegister">
-                                <li>
-                                    <a class="dropdown-item" href="criar-projeto">
-                                        Projeto
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="cadastrar-usuario">
-                                        Usuário
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item active">
-                        <div class="dropdown">
                             <a class="nav-link" aria-colcount="dropdown-toggle" id="dropDownAdmin" data-toggle="dropdown" aria-expanded="false" href="#">
                                 Admin
                                 <i class="fas fa-chevron-up"></i>
@@ -69,6 +49,13 @@
                             </a>
                         </li>
                         <?php if (App\Utils\Session::isLogged()) : ?>
+                            <?php if(\App\Utils\Session::isAdmin()) : ?>
+                                <li>
+                                    <a class="dropdown-item" href="criar-projeto">
+                                        Cadastrar <br> Projeto
+                                    </a>
+                                </li>   
+                            <?php endif ; ?>
                             <li>
                                 <a class="dropdown-item" href="meus-projetos">
                                     Meus Projetos
@@ -96,8 +83,6 @@
         </ul>
     </div>
 </nav>
-<?php if (isset($page["currentNavItem"])): ?>
-    <script>
-        document.querySelector("a[href='<?= !isset($page["currentNavItem"]) ? "" : $page["currentNavItem"] ?>']").classList.add("disabled");
-    </script>
-<?php endif; ?>
+<script>
+    document.querySelector("a[href='<?= $page->currentNavItem ?>']").classList.add("disabled");
+</script>

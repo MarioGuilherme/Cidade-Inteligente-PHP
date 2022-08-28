@@ -61,9 +61,8 @@
         private static string $charSet = "UTF-8";
 
         /**
-         * Método responsável por inicializar o objeto PHPMailer.
+         * Constutor da classe que inicializa o objeto PHPMailer.
          * @param string $receiver E-mail do destinatário
-         * @return void
          */
         public function __construct(string $receiver) {
             $this->mailer = new PHPMailer(true);

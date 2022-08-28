@@ -5,7 +5,11 @@
     namespace App\Controllers;
 
     use PDO;
-    use App\Core\Controller;
+    use App\Core\{
+        Controller,
+        Page
+    };
+    use App\Database\Database;
     use App\Models\Area;
     use App\Utils\{
         Form,
@@ -18,14 +22,24 @@
      * @author Mário Guilherme
      */
     class AreaController extends Controller {
-        private Area $areaModel;
+        /**
+         * Modelo de Área.
+         * @var Area
+         */
+        private Area $model;
 
         /**
-         * Método responsável de instanciar o modelo de Área.
+         * Classe do banco de dados com acesso à tabela das áreas.
+         */
+        private Database $areaDAO;
+
+        /**
+         * Método responsável de instanciar o Modelo de Área e o objeto Database para abstração de dados da tabela das áreas.
          * @return void
          */
         private function getModel() : void {
-            if (!isset($this->areaModel)) $this->areaModel = new Area;
+            if (!isset($this->model)) $this->model = new Area;
+            if (!isset($this->areaDAO)) $this->areaDAO = new Database("areas");
         }
 
         /**
@@ -33,24 +47,15 @@
          * @return void
          */
         public function index() : void {
-            Session::checkAuthWithRedirect(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
-
-            (array) $page = [ // VÁRIAVEL COM AS INFORMAÇÕES DA PÁGINA
-                "title" => "Áreas",
-                "currentNavItem" => "areas",
-                "areas" => $this->getAllAreas(),
-                "pathForm" => "Areas",
-                "css" => [
-                    "font",
-                    "global",
-                    "genericNavbar",
-                    "dataTable"
-                ],
-                "js" => [
-                    "navbar",
-                    "areas"
-                ]
-            ];
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
+            $page = new Page(
+                "Áreas", // Título da página
+                "areas", // Nome do item da navbar a ser desativado
+                $this->getAllAreas(), // Dados para a tela
+                [ "genericNavbar", "dataTable" ], // Arquivos CSS
+                [ "navbar", "areas" ], // Arquivos JS
+                "Areas", // Caminho para o formulário de cadastro no modal
+            );
             $this->view("Areas/main", $page);
         }
 
@@ -61,7 +66,7 @@
          */
         public function getAllAreas(bool $isForAPI = false) : array {
             $this->getModel();
-            (array) $areas = $this->areaModel::select()->fetchAll(PDO::FETCH_ASSOC);
+            (array) $areas = $this->areaDAO->select()->fetchAll(PDO::FETCH_CLASS, $this->model::class);
 
             if ($isForAPI) // Se true, ele encerra o script com o json (usado para chamada da api)
                 Response::returnResponse($areas);
@@ -76,7 +81,7 @@
          */
         public function getAreaByID(int $id_area) : void {
             $this->getModel();
-            (array) $area = $this->areaModel::select(where: "id_area = ?", params: [$id_area])->fetch(PDO::FETCH_ASSOC);
+            (object) $area = $this->areaDAO->select(where: "id_area = ?", params: [$id_area])->fetchObject($this->model::class);
             Response::returnResponse($area);
         }
 
@@ -87,7 +92,7 @@
          */
         public function areaExists(int $id_area) : bool {
             $this->getModel();
-            return !!$this->areaModel::select(where: "id_area = ?", fields: "id_area", params: [$id_area])->fetch(PDO::FETCH_ASSOC);
+            return !!$this->areaDAO->select(where: "id_area = ?", fields: "id_area", params: [$id_area])->rowCount() > 0;
         }
 
         /**
@@ -96,7 +101,7 @@
          * @return void
          */
         public function create(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             (string) $area = Form::sanatizeString($form["area"]);
@@ -106,7 +111,7 @@
 
             // OBTÉM O MODELO E CADASTRA UMA NOVA ÁREA
             $this->getModel();
-            (int) $idRegistered = $this->areaModel::insert(["area" => $area]);
+            (int) $idRegistered = $this->areaDAO->insert(["area" => $area]);
 
             $idRegistered > 0
                 ? Response::returnResponse(Response::AREA_REGISTERED, 201, "success")
@@ -119,7 +124,7 @@
          * @return void
          */
         public function update(array $form) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             (string) $id_area = Form::sanatizeInt($form["id_area"]);
@@ -133,7 +138,7 @@
                 Response::returnResponse(Response::INVALID_AREA, 400, "error");
 
             // ATUALIZA A ÁREA E RETORNA A RESPOSTA
-            (bool) $isUpdated = $this->areaModel::update("id_area = $id_area", ["area" => $area]);
+            (bool) $isUpdated = $this->areaDAO->update("id_area = $id_area", ["area" => $area]);
 
             $isUpdated ?
                 Response::returnResponse(Response::AREA_UPDATED, 200, "success") : 
@@ -146,7 +151,7 @@
          * @return void
          */
         public function delete(string $id_area) : void {
-            Session::checkAuthWithJson(); // VERIFICAÇÃO BRUTA DE SEGURANÇA
+            Session::checkAuthWithRedirect(); // Verificação completa de segurança
 
             // LIMPEZA DOS CAMPOS
             $id_area = Form::sanatizeInt($id_area);
@@ -164,7 +169,7 @@
                 Response::returnResponse(Response::AREA_FK_ERROR, 403, "error");
     
             // DELETA A ÁREA E RETORNA A RESPOSTA
-            (bool) $isDeleted = $this->areaModel::delete("id_area = ?", [$id_area]);
+            (bool) $isDeleted = $this->areaDAO->delete("id_area = ?", [$id_area]);
     
             $isDeleted ?
                 Response::returnResponse(Response::AREA_DELETED, 200, "success") : 

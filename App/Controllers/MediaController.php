@@ -7,9 +7,9 @@
     use PDO;
     use App\Core\Controller;
     use App\Models\Media;
+    use App\Database\Database;
     use App\Utils\{
-        File,
-        Response
+        File
     };
 
     /**
@@ -17,14 +17,24 @@
      * @author Mário Guilherme
      */
     class MediaController extends Controller {
-        private Media $mediaModel;
+        /**
+         * Modelo de Mídia.
+         * @var Media
+         */
+        private Media $model;
 
         /**
-         * Método responsável de instanciar o modelo de Mídia.
+         * Classe do banco de dados com acesso à tabela das mídias.
+         */
+        private Database $mediaDAO;
+
+        /**
+         * Método responsável de instanciar o modelo de Mídia e o objeto Database para abstração de dados da tabela das midias.
          * @return void
          */
         private function getModel() : void {
-            if (!isset($this->mediaModel)) $this->mediaModel = new Media;
+            if (!isset($this->model)) $this->model = new Media;
+            if (!isset($this->mediaDAO)) $this->mediaDAO = new Database("medias");
         }
 
         /**
@@ -34,7 +44,7 @@
          */
         public function getFileNameByID(int $id_media) : string {
             $this->getModel();
-            return $this->mediaModel::select(where: "id_media = ?", fields: "fileName", params: [$id_media])->fetch(PDO::FETCH_ASSOC)["fileName"];
+            return $this->mediaDAO->select(where: "id_media = ?", fields: "fileName", params: [$id_media])->fetchObject($this->model::class)->fileName;
         }
 
         /**
@@ -44,7 +54,7 @@
          */
         public function getMediasByProjectToCard(int $id_project) : array {
             $this->getModel();
-            return $this->mediaModel::select(where: "id_project = ?", fields: "id_media, type, fileName", params: [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+            return $this->mediaDAO->select(where: "id_project = ?", fields: "id_media, type, fileName", params: [$id_project])->fetchAll(PDO::FETCH_CLASS, $this->model::class);
         }
 
         /**
@@ -54,7 +64,7 @@
          */
         public function getMediasByProjectToDetails(int $id_project) : array {
             $this->getModel();
-            return $this->mediaModel::select(where: "id_project = ?", fields: "id_media, name, type, size, fileName, description", params: [$id_project])->fetchAll(PDO::FETCH_ASSOC);
+            return $this->mediaDAO->select(where: "id_project = ?", fields: "id_media, name, type, size, fileName, description", params: [$id_project])->fetchAll(PDO::FETCH_CLASS, $this->model::class);
         }
 
         /**
@@ -65,7 +75,7 @@
          */
         public function create(array $media, int $id_project) : void {
             $this->getModel();
-            $this->mediaModel::insert([
+            $this->mediaDAO->insert([
                 "id_project" => $id_project,
                 "name" => $media["name"],
                 "type" => $media["type"],
@@ -82,7 +92,7 @@
          */
         public function updateWithoutBase64(array $media) : void {
             $this->getModel();
-            $this->mediaModel::update("id_media = $media[id_media]", [
+            $this->mediaDAO->update("id_media = $media[id_media]", [
                 "name" => $media["name"],
                 "description" => $media["description"]
             ]);
@@ -96,7 +106,7 @@
         public function updateFullMedia(array $media) : void {
             (string) $fileName = $this->getFileNameByID((int) $media["id_media"]);
             File::updateFileContent($fileName, $media["base64"]);
-            $this->mediaModel::update("id_media = $media[id_media]", [
+            $this->mediaDAO->update("id_media = $media[id_media]", [
                 "name" => $media["name"],
                 "type" => $media["type"],
                 "size" => $media["size"],
@@ -111,7 +121,7 @@
          */
         public function delete(int $id_media) : void {
             (string) $fileName = $this->getFileNameByID((int) $id_media);
-            $this->mediaModel::delete("id_media = ?", [$id_media]);
+            $this->mediaDAO->delete("id_media = ?", [$id_media]);
             File::deleteFile($fileName);
         }
     }

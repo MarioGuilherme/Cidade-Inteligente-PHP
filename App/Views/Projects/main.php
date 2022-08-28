@@ -14,16 +14,16 @@
     <div class="galery">
         <div class="row justify-content-center mt-3">
             <?php
-                if (empty($page["projects"]))
+                if (empty($page->data["projects"]))
                     echo "<h3 class='text-center'>Nenhum projeto cadastrado</h3>";
                 else
-                    foreach ($page["projects"] as $project)
+                    foreach ($page->data["projects"] as $project)
                         require __DIR__ . "/card.php";
             ?>
         </div>
         <div class="row justify-content-center mt-3">
-            <?php for ($i = 1; $i <= $page["totalPages"]; $i++) : ?>
-                <?php if ($i != $page["currentPage"]) : ?>
+            <?php for ($i = 1; $i <= $page->data["totalPages"]; $i++) : ?>
+                <?php if ($i != $page->data["currentPage"]) : ?>
                     <a href="<?= URL . "?page=$i" ?>">
                         <button class="btn btn-default-red m-1">
                             <?= $i ?>

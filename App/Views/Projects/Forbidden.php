@@ -5,7 +5,7 @@
         <div class="row text-center m-3">
             <div class="col-12 col-lg-12">
                 <h1 class="font-weight-bold text-center">
-                    Projeto não encontrado
+                    Você não está relacionado à este projeto para poder alterá-lo
                 </h1>
                 <hr>
                 <a href="<?= URL ?>" class="default-color">

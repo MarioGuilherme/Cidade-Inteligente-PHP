@@ -30,6 +30,9 @@
                         <button type="button" class="btn mb-2 btn-block btn-strong-red btn-login">
                             Entrar
                         </button>
+                        <div class="text-center font-weight-bold mt-3">
+                            &copy;<?= date("Y") ?>
+                        </div>
                     </div>
                 </div>
             </div>

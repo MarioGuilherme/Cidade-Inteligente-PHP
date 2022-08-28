@@ -15,37 +15,36 @@
          * Objeto Controller ao qual será manipulado durante a requisição.
          * @var object
          */
-        public object $controller;
+        private object $controller;
 
         /**
          * Entidade a qual será manipulada durante a requisição. Usada para concatenar a string nas chamadas dos métodos do Controller.
          * @var string
          */
-        public string $entity;
+        private string $entity;
 
         /**
          * Método HTTP recebido na requisição.
          * @var string
          */
-        public string $method;
+        private string $method;
 
         /**
          * Payload recebido na requisição.
          * @var array|null
          */
-        public array|null $payload;
+        private array|null $payload;
 
         /**
          * Parâmetro de consulta ID recebido na URL da requisição.
          * @var string|null
          */
-        public string|null $id;
+        private string|null $id;
 
         /**
          * Construtor da classe que realiza as configurações do Controller e configurações
          * de métodos, preparando-a para executar a requisição.
          * @param string $entity Entidade (Controller) a ser manipulada
-         * @return void
          */
         public function __construct(string $controller) {
             $this->controller = new ("\App\Controllers\\{$controller}Controller");

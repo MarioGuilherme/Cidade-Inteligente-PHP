@@ -31,9 +31,9 @@
                                         <option value="">
                                             SELECIONE A ÁREA
                                         </option>
-                                        <?php foreach ($page["areas"] as $area): ?>
-                                            <option value="<?= $area["id_area"] ?>">
-                                                <?= $area["area"] ?>
+                                        <?php foreach ($page->data["areas"] as $area): ?>
+                                            <option value="<?= $area->id_area ?>">
+                                                <?= $area->area ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -48,9 +48,9 @@
                                         <option value="">
                                             SELECIONE O CURSO
                                         </option>
-                                        <?php foreach ($page["courses"] as $course): ?>
-                                            <option value="<?= $course["id_course"] ?>">
-                                                <?= $course["course"] ?>
+                                        <?php foreach ($page->data["courses"] as $course): ?>
+                                            <option value="<?= $course->id_course ?>">
+                                                <?= $course->course ?>
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -80,9 +80,9 @@
                                 Pessoas Envolvidas
                             </label>
                             <div class="users">
-                                <?php foreach ($page["users"] as $user): ?>
-                                    <div class="user" id="<?= $user["id_user"] ?>">
-                                        <span> <?= substr($user["name"], 0, 58) ?> </span>
+                                <?php foreach ($page->data["users"] as $user): ?>
+                                    <div class="user" id="<?= $user->id_user ?>">
+                                        <span> <?= substr($user->name, 0, 58) ?> </span>
                                     </div>
                                 <?php endforeach; ?>
                             </div>

@@ -1,3 +1,24 @@
+<style>
+    @media screen and (max-width: 600px) {
+        h2 {
+            font-size: 20px;
+        }
+        h3 {
+            font-size: 15px;
+        }
+        a {
+            font-size: 10px;
+        }
+        h1 {
+            font-size: 22px;
+            width: 97%;
+            margin-top: 2em;
+        }
+        div {
+            width: 100%;
+        }
+    }
+</style>
 <h1 style="background: #b11116;color: white;width: 70%;margin-bottom: 0;margin-left: auto;margin-right: auto;padding: 20px;margin-top: 2em;box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);text-align: center; font-family: Arial, Helvetica, sans-serif;">
     Recuperação de senha
 </h1>
@@ -28,24 +49,3 @@
         Equipe Cidade Inteligente
     </p>
 </div>
-<style>
-    @media screen and (max-width: 600px) {
-        h2 {
-            font-size: 20px;
-        }
-        h3 {
-            font-size: 15px;
-        }
-        a {
-            font-size: 10px;
-        }
-        h1 {
-            font-size: 22px;
-            width: 97%;
-            margin-top: 2em;
-        }
-        div {
-            width: 100%;
-        }
-    }
-</style>

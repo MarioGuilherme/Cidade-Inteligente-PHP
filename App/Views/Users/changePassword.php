@@ -11,9 +11,9 @@
                             Alteração de Senha
                         </h3>
                         <form id="formulario" class="form">
-                            <input type="hidden" name="token" value="<?= $page["token"] ?>">
+                            <input type="hidden" name="token" value="<?= $page->data["token"] ?>">
                             <label class="text-dark">
-                                Olá <b><?= $page["name"] ?></b>, digite sua nova senha:
+                                Olá <b><?= $page->data["name"] ?></b>, digite sua nova senha:
                             </label>
                             <div class="inputIcon">
                                 <input type="password" name="password" class="form-input" placeholder="Digite a sua nova senha">
@@ -27,6 +27,9 @@
                         <button type="button" class="btn mb-2 btn-strong-red btn-block btn-changePassword">
                             Alterar Senha
                         </button>
+                        <div class="text-center font-weight-bold mt-3">
+                            &copy;<?= date("Y") ?>
+                        </div>
                     </div>
                 </div>
             </div>
