@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="row mt-5 text-center">
-            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <h5 class="font-weight-bold default-color">
                     Área
                 </h5>
@@ -43,7 +43,7 @@
                     <?= $page->data["project"]->area ?>
                 </p>
             </div>
-            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <h5 class="font-weight-bold default-color">
                     Curso
                 </h5>
@@ -51,7 +51,9 @@
                     <?= $page->data["project"]->course ?>
                 </p>
             </div>
-            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+        </div>
+        <div class="row mt-5 text-center">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <h5 class="font-weight-bold default-color">
                     Data de ínicio do projeto
                 </h5>
@@ -59,7 +61,7 @@
                     <?= date("d/m/Y", strtotime($page->data["project"]->startDate)) ?>
                 </p>
             </div>
-            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                 <h5 class="font-weight-bold default-color">
                     Data de término do projeto
                 </h5>
@@ -82,7 +84,7 @@
         <hr>
         <div class="row justify-content-center align-items-center m-1 p-1">
             <?php foreach ($page->data["project"]->medias as $media): ?>
-                <div class="col-12 col-sm-12 col-lg-3 col-md-3">
+                <div class="col-12 col-sm-12 col-lg-3 col-md-3 mt-2">
                     <div class="card">
                         <div class="card-body text-center">
                             <?php if ($media->type == "video/mp4"): ?>

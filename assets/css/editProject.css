@@ -138,4 +138,13 @@ label {
     h3 {
         font-size: 1.5em;
     }
+    .btn-change-media{
+        margin-top: 1em;
+    }
+    .btn-remove-media{
+        margin-top: 1em;
+    }
+    .card-info{
+        margin-top: 2em;
+    }
 }

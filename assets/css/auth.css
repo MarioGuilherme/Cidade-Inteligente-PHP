@@ -15,20 +15,10 @@
     width: 100px;
 }
 
-.painel {
-    background: rgb(231, 231, 231);
-    margin: 1em;
-    padding: 25px;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.315);
-}
-
 .form {
     padding: 10px;
 }
 
-.title {
-    color: #7d0c0f;
-}
 
 .forget-password {
     color: rgb(61, 61, 61);
@@ -118,4 +108,37 @@
     top: 0;
     left: 0;
     background-color: rgba(255, 255, 255, 0.795);
+}
+
+.Title_Login {
+    background: #b11116;
+    color: white;
+    width: 45%;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    margin-top: 5em;
+    box-shadow: 0 6px 6px rgba(92, 92, 92, 0.4);
+}
+
+.painel {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    background: rgb(231, 231, 231);
+    padding: 25px;
+    box-shadow: 0 0 1em rgba(0, 0, 0, 0.315);
+}
+
+@media screen and (max-width: 600px) {
+    .Title_Login {
+        width: 97%;
+        margin-top: 2em;
+    }
+    .painel {
+        width: 96%;
+    }
+
 }

@@ -127,20 +127,20 @@
                                         <img class="d-block w-100" src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>">
                                     <?php endif; ?>
                                     <div class="row mt-2 mb-1">
-                                        <div class="col-12 col-lg-6 pr-1">
+                                        <div class="col-12 col-lg-6">
                                             <button type="button" class="btn btn-change-media w-100 btn-warning">
                                                 <i class="mdi mdi-pencil"></i>
                                                 Alterar
                                             </button>
                                         </div>
-                                        <div class="col-12 col-lg-6 pl-1">
+                                        <div class="col-12 col-lg-6">
                                             <button type="button" class="btn w-100 btn-remove-media btn-default-red" id="<?= $media->id_media ?>">
                                                 <i class="mdi mdi-trash-can-outline"></i>
                                                 Apagar
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group card-info">
                                         <label>
                                             Nome
                                         </label>
