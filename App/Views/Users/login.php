@@ -3,19 +3,13 @@
         <div class="main">
             <div class="container">
                 <div class="row justify-content-center align-items-center">
-                    <div class="container-fluid d-flex justify-content-center align-items-center flex-column p-0">
-                        <div class="Title_Login">
-                            <h3 class="m-0 p-2 text-center">
-                                Login
-                            </h3>
-                        </div>
-                        <div class="col-12 col-md-5 painel">
-                        <!-- <div class="img-logo-cidade">
+                    <div class="col-12 col-md-5 painel">
+                        <div class="img-logo-cidade">
                             <img src="assets/img/iconAuth.png">
-                        </div> -->
-                        <!-- <h3 class="text-center title mb-3">
+                        </div>
+                        <h3 class="text-center title mb-3">
                             Login
-                        </h3> -->
+                        </h3>
                         <form id="formulario" class="form">
                             <div class="inputIcon">
                                 <input type="email" name="email" class="form-input" aria-describedby="emailHelp" placeholder="Digite o email">

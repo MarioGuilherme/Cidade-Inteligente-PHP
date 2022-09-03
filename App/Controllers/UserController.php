@@ -86,7 +86,7 @@
                 [ "auth" ], // Arquivos CSS
                 [ "login" ], // Arquivos JS
             );
-            $this->view("Users/formLogin", $page);
+            $this->view("Users/login", $page);
         }
 
         /**
