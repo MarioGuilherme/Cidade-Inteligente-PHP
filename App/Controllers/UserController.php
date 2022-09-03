@@ -7,7 +7,10 @@
     use PDO;
     use App\Core\Controller;
     use App\Controllers\ProjectUserController;
-    use App\Models\User;
+    use App\Models\{
+        User,
+        Project
+    };
     use App\Utils\{
         Form,
         Response,
@@ -169,7 +172,7 @@
                 fields: "p.id_project, title, description",
                 params: [$_SESSION["id_user"]],
                 limit: $currentPage * 6 - 6 . ", 6"
-            )->fetchAll(PDO::FETCH_CLASS, User::class);
+            )->fetchAll(PDO::FETCH_CLASS, Project::class);
 
             (object) $mediaController = new MediaController;
             for ($i = 0; $i < count($projects); $i++) // PARA CADA PROJETO DO USUÁRIO, PEGA A PRIMEIRA MÍDIA DO PROJETO

@@ -10,6 +10,7 @@
      */
     class Media {
         public int $id_media;
+        public int $id_project;
         public string $name;
         public string $type;
         public int $size;
