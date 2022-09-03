@@ -126,7 +126,7 @@
                                     <?php else : ?>
                                         <img class="d-block w-100" src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>">
                                     <?php endif; ?>
-                                    <div class="row mt-1 mb-1">
+                                    <div class="row my-1">
                                         <div class="col-12 col-lg-6">
                                             <button type="button" class="btn btn-change-media w-100 btn-warning my-1">
                                                 <i class="mdi mdi-pencil"></i>
