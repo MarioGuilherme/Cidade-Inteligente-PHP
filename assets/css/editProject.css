@@ -103,6 +103,10 @@
     transition: .3s;
 }
 
+.card-body {
+    width: 100%;
+}
+
 .inputIcon input:focus+i {
     color: rgb(255, 255, 255);
 }
@@ -143,8 +147,5 @@ label {
     }
     .btn-remove-media{
         margin-top: 1em;
-    }
-    .card-info{
-        margin-top: 2em;
     }
 }

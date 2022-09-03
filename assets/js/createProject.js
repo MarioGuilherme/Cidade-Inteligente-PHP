@@ -123,7 +123,7 @@ $(document).ready(() => {
                     let mediaElement = "";
 
                     type == "image" ? 
-                        mediaElement = `<img src="${e.target.result}" class="img-fluid">` :
+                        mediaElement = `<img src="${e.target.result}" class="d-block w-100">` :
                         mediaElement = `<video src="${e.target.result}" style="max-width: 100%;" controls></video>`;
 
                     $(".medias").append(`
@@ -131,15 +131,15 @@ $(document).ready(() => {
                             <div class="card media">
                                 <div class="card-body">
                                     ${mediaElement}
-                                    <div class="row mt-2 mb-1">
-                                        <div class="col-12 col-lg-6 pr-1">
-                                            <button type="button" class="btn btn-change-media w-100 btn-warning">
+                                    <div class="row mt-1 mb-1">
+                                        <div class="col-12 col-lg-6">
+                                            <button type="button" class="btn btn-change-media w-100 btn-warning my-1">
                                                 <i class="mdi mdi-pencil"></i>
                                                 Alterar
                                             </button>
                                         </div>
-                                        <div class="col-12 col-lg-6 pl-1">
-                                            <button type="button" class="btn w-100 btn-remove-media btn-default-red">
+                                        <div class="col-12 col-lg-6">
+                                            <button type="button" class="btn w-100 btn-remove-media btn-default-red my-1">
                                                 <i class="mdi mdi-trash-can-outline"></i>
                                                 Apagar
                                             </button>
