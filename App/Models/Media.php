@@ -14,6 +14,6 @@
         public string $name;
         public string $type;
         public int $size;
-        public string $filename;
+        public string $fileName;
         public string $description;
     }
