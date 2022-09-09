@@ -29,20 +29,20 @@
          */
         public string $pathFormModal;
 
-        public array $css = [
-            "font",
-            "global"
-        ];
         /**
         * Nome dos arquivos css's da página
         * @var array
         */
+        public array $css = [
+            "font",
+            "global"
+        ];
 
-        public array $js;
         /**
         * Nome dos arquivos js's da página
         * @var array
         */
+        public array $js;
 
         /**
          * Contrutor da classe que inicializa o objeto página recebendo todos os dados da mesma.

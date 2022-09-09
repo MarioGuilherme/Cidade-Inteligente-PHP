@@ -48,14 +48,6 @@
         private static string $charset;
 
         /**
-         * Opções da conexão com o banco de dados.
-         * @var string
-         */
-        protected static array $options = [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ];
-
-        /**
          * Nome da tabela a ser manipulada.
          * @var string
          */

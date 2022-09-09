@@ -338,37 +338,6 @@
         }
 
         /**
-         * Método responsável por deletar um projeto e todas as suas mídias e relaçionamentos com usuários.
-         * @param string $id_project ID do projeto
-         * @return void
-         */
-        public function delete(string $id_project) : void {
-            Session::checkAuthWithJson(); // Verificação completa de segurança
-
-            // VERIFICA SE PROJETO EXISTE
-            if (!$this->projectExists((int) $id_project))
-                Response::returnResponse(Response::INVALID_PROJECT, 400, "error");
-
-            if (!$this->userIsRelatedWithProject((int) $id_project)) // Verifica se o usuário editor está incluido no projeto
-                Response::returnResponse(Response::USER_NOT_RELATED, 403, "error");
-
-            (array) $medias = (new MediaController)->getMediasByProjectToCard((int) $id_project);    
-
-            // DELETA O PROJETO
-            $this->getModel();
-            (bool) $isDeleted = $this->projectDAO->delete("id_project = ?", [$id_project]);
-
-            if ($isDeleted) {
-                foreach ($medias as $media)
-                    File::deleteFile($media->fileName);
-
-                Response::returnResponse(Response::PROJECT_DELETED, 200, "success");
-            }
-
-            Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
-        }
-
-        /**
          * Método responsável por atualizar um projeto.
          * @param array $data Dados do projeto.
          */
@@ -465,5 +434,36 @@
                 $mediaController->delete((int) $id_media);
 
             Response::returnResponse(Response::PROJECT_UPDATED, 200, "success");
+        }
+
+        /**
+         * Método responsável por deletar um projeto e todas as suas mídias e relaçionamentos com usuários.
+         * @param string $id_project ID do projeto
+         * @return void
+         */
+        public function delete(string $id_project) : void {
+            Session::checkAuthWithJson(); // Verificação completa de segurança
+
+            // VERIFICA SE PROJETO EXISTE
+            if (!$this->projectExists((int) $id_project))
+                Response::returnResponse(Response::INVALID_PROJECT, 400, "error");
+
+            if (!$this->userIsRelatedWithProject((int) $id_project)) // Verifica se o usuário editor está incluido no projeto
+                Response::returnResponse(Response::USER_NOT_RELATED, 403, "error");
+
+            (array) $medias = (new MediaController)->getMediasByProjectToCard((int) $id_project);    
+
+            // DELETA O PROJETO
+            $this->getModel();
+            (bool) $isDeleted = $this->projectDAO->delete("id_project = ?", [$id_project]);
+
+            if ($isDeleted) {
+                foreach ($medias as $media)
+                    File::deleteFile($media->fileName);
+
+                Response::returnResponse(Response::PROJECT_DELETED, 200, "success");
+            }
+
+            Response::returnResponse(Response::GENERAL_ERROR, 500, "error");
         }
     }

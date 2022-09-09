@@ -24,7 +24,7 @@
          * Diretório onde serão armazenados as mídias.
          * @var string
          */
-        public static string $directory = __DIR__ . "/../../medias/";
+        private static string $directory = __DIR__ . "/../../medias/";
 
         /**
          * Método responsável por criar o arquivo no servidor e retornar o nome do arquivo gerado.
