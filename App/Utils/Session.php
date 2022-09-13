@@ -37,8 +37,8 @@
         }
 
         /**
-         * Método responsável por verificar se o usuário é Professor/Administrador.
-         * @return bool True se o usuário for um Professor/Administrador e false se não for
+         * Método responsável por verificar se o usuário é Administrador.
+         * @return bool True se o usuário for um Administrador e false se não for
          */
         public static function isAdmin() : bool {
             return $_SESSION["isAdmin"] == 1;
@@ -66,7 +66,7 @@
                 Response::returnResponse(Response::USER_LOGGED_DOES_NOT_EXIST, 401, "warning");
             }
 
-            if (!Session::isAdmin()) // Middleware: verifica se o usuário é um Professor/Administrador.
+            if (!Session::isAdmin()) // Middleware: verifica se o usuário é um Administrador.
                 Response::returnResponse(Response::INVALID_PERMISSION, 403, "warning");
         }
 

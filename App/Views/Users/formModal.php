@@ -52,10 +52,10 @@
                 SELECIONE O TIPO DE USUÁRIO
             </option>
             <option value="1">
-                Professor(a)
+                Administrador(a)
             </option>
             <option value="0">
-                Aluno(a)
+                Normal
             </option>
         </select>
     </div>
