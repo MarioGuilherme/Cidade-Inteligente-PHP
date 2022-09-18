@@ -90,7 +90,7 @@
                             <?php if ($media->type == "video/mp4"): ?>
                                 <video class="d-block" style="width:-webkit-fill-available;" preload="metadata" controls src="medias/<?= $media->fileName ?>"></video>
                             <?php else : ?>
-                                <img class="d-block w-100" alt="<?= $media->name ?>" src="medias/<?= $media->fileName ?>">
+                                <img class="d-block w-100 img-card" alt="<?= $media->name ?>" src="medias/<?= $media->fileName ?>">
                             <?php endif; ?>
                             <div class="form-group mt-2">
                                 <h4>

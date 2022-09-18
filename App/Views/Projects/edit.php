@@ -124,7 +124,7 @@
                                     <?php if($media->type == "video/mp4") : ?>
                                         <video class="d-block" style="width:100%;" preload="metadata" controls src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>"></video>
                                     <?php else : ?>
-                                        <img class="d-block w-100" src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>">
+                                        <img class="d-block w-100 img-card" src="medias/<?= $media->fileName ?>" size="<?= $media->size ?>">
                                     <?php endif; ?>
                                     <div class="row my-1">
                                         <div class="col-12 col-lg-6">

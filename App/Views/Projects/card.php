@@ -14,7 +14,7 @@
                     </div>
                 <?php else: ?>
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="medias/<?= $project->medias[0]->fileName ?>">
+                        <img class="d-block w-100 img-card" src="medias/<?= $project->medias[0]->fileName ?>">
                     </div>
                 <?php endif; ?>
                 <?php for ($i = 1; $i < count($project->medias); $i++) : ?>
@@ -24,7 +24,7 @@
                         </div>
                     <?php else: ?>
                         <div class="carousel-item">
-                            <img class="d-block w-100" src="medias/<?= $project->medias[$i]->fileName ?>">
+                            <img class="d-block w-100 img-card" src="medias/<?= $project->medias[$i]->fileName ?>">
                         </div>
                     <?php endif; ?>
                 <?php endfor; ?>

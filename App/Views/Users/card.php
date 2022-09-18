@@ -3,7 +3,7 @@
         <?php if ($project->media->type == "video/mp4"): ?>
             <video class="d-block" style="width:inherit;" preload="metadata" src="medias/<?= $project->media->fileName ?>"></video>
         <?php else: ?>
-            <img class="card-img-top" src="medias/<?= $project->media->fileName ?>">
+            <img class="card-img-top img-card" src="medias/<?= $project->media->fileName ?>">
         <?php endif; ?>
         <div class="card-body">
             <h5 class="card-title">
