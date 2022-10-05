@@ -19,66 +19,23 @@
         private PHPMailer $mailer;
 
         /**
-         * Host do servidor de e-mail.
-         * @var string
-         */
-        private static string $host = "smtp.gmail.com";
-
-        /**
-         * Email do usuário do servidor de e-mail.
-         * @var string
-         */
-        private static string $username = "cidadeinteligente2022@gmail.com";
-
-        /**
-         * Senha do usuário do servidor de e-mail.
-         * @var string
-         */
-        private static string $password = "cidadeinteligenteSMTPAdmin";
-
-        /**
-         * Segurança do servidor de e-mail.
-         * @var string
-         */
-        private static string $SMTPSecure = "tls";
-
-        /**
-         * Porta do servidor de emal.
-         * @var int
-         */
-        private static int $port = 587;
-
-        /**
-         * Email do remetente.
-         * @var string
-         */
-        private static string $from = "cidadeinteligente2022@gmail.com";
-
-        /**
-         * Tipo de codificação.
-         * @var string
-         */
-        private static string $charSet = "UTF-8";
-
-        /**
          * Constutor da classe que inicializa o objeto PHPMailer.
          * @param string $receiver E-mail do destinatário
          */
         public function __construct(string $receiver) {
             $this->mailer = new PHPMailer(true);
-            $this->mailer->SMTPDebug = DEV_ENV === "true" ? SMTP::DEBUG_SERVER : 0;
+            $this->mailer->SMTPDebug = ENVIRONMENT->ISDEV == true ? SMTP::DEBUG_SERVER : 0;
             $this->mailer->isSMTP();
-            $this->mailer->Host = self::$host;
+            $this->mailer->Host = EMAIL->HOST;
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = self::$username;
-            $this->mailer->Password = self::$password;
-            $this->mailer->SMTPSecure = self::$SMTPSecure;
-            $this->mailer->Port = self::$port;
-            $this->mailer->SMTPDebug = 0;
-            $this->mailer->setFrom(self::$from);
+            $this->mailer->Username = EMAIL->USERNAME;
+            $this->mailer->Password = EMAIL->PASSWORD;
+            $this->mailer->SMTPSecure = EMAIL->SMTPSECURE;
+            $this->mailer->Port = EMAIL->PORT;
+            $this->mailer->setFrom(EMAIL->USERNAME);
             $this->mailer->addAddress($receiver);
             $this->mailer->isHTML(true);
-            $this->mailer->CharSet = self::$charSet;
+            $this->mailer->CharSet = EMAIL->CHARSET;
         }
 
         /**

@@ -77,11 +77,15 @@
          */
         public static function checkAuthWithRedirect() : void {
             // Se o usúario não estiver logado ou não for administrador, redireciona para a raiz.
-            if (!Session::isLogged() || !Session::isAdmin())
+            if (!Session::isLogged() || !Session::isAdmin()) {
                 header("Location: /");
+                exit;
+            }
 
             // Se o usuário da sessão não existe no banco, ele realiZa o logout imediatamente.
-            if (!Session::userLoggedExist())
+            if (!Session::userLoggedExist()) {
                 header("Location: services/logout");
+                exit;
+            }
         }
     }

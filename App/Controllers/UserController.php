@@ -318,7 +318,7 @@
             (string) $token = $this->userDAO->select(where: "id_user = ?", fields: "token, email", params: [$idUser])->fetchObject($this->model::class)->token;
             (object) $objEmail = new Email($emailUser);
             (string) $bodyEmail = file_get_contents(__DIR__ . "/../Views/Users/bodyEmail.php");
-            $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [URL, $token], $bodyEmail);
+            $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [ENVIRONMENT->URL, $token], $bodyEmail);
             $objEmail->sendEmail("Recuperação de Senha", $bodyEmail);
             Response::returnResponse(Response::CHANGE_PASSWORD_REQUEST_SEND, 200, "success");
         }

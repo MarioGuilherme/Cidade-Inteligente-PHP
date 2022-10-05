@@ -96,12 +96,12 @@
                 $this->PDO = new PDO(self::$driver.":host=".self::$host.";dbname=".self::$database.";charset=".self::$charset, self::$user, self::$password);
                 $this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch(Exception $error) {
-                if (DEV_ENV == "true")
+                if (ENVIRONMENT->ISDEV == "true")
                     die("For Dev Env [ERROR: {$error->getMessage()}]");
 
                 throw new Exception(Response::GENERAL_ERROR);
             } catch(PDOException $error) {
-                if (DEV_ENV == "true")
+                if (ENVIRONMENT->ISDEV == "true")
                     die("For Dev Env [ERROR: {$error->getMessage()}]");
 
                 throw new PDOException(Response::GENERAL_ERROR);
@@ -120,12 +120,12 @@
                 $stmt->execute($params);
                 return $stmt;
             } catch(Exception $error) {
-                if (DEV_ENV == "true")
+                if (ENVIRONMENT->ISDEV == "true")
                     die("For Dev Env [ERROR: {$error->getMessage()}]");
 
                 throw new Exception(Response::GENERAL_ERROR);
             } catch(PDOException $error) {
-                if (DEV_ENV == "true")
+                if (ENVIRONMENT->ISDEV == "true")
                     die("For Dev Env [ERROR: {$error->getMessage()}]");
 
                 throw new PDOException(Response::GENERAL_ERROR);

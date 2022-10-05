@@ -10,17 +10,17 @@
     use App\Database\Database;
 
     // CONFIGURA EXIBIÇÃO DE ERROS, CONFIGURA D TIME ZONE E ESPECIFICAÇÕES LOCAIS E INICIA A SESSÃO
-    ini_set("display_errors", DEV_ENV);
+    ini_set("display_errors", (string) ENVIRONMENT->ISDEV);
     setlocale(LC_ALL, "pt_BR", "pt_BR.utf-8", "pt_BR.utf-8", "portuguese");
     date_default_timezone_set("America/Sao_Paulo");
     Session::startSession();
-    
+
     // SETA AS CONFIGURAÇÕES DA CONEXÃO COM O BANCO DE DADOS
     Database::config(
-        DRIVER,
-        HOST,
-        DATABASE,
-        USER,
-        PASSWORD,
-        CHARSET
+        DATABASE->DRIVER,
+        DATABASE->HOST,
+        DATABASE->DATABASE,
+        DATABASE->USER,
+        DATABASE->PASSWORD,
+        DATABASE->CHARSET
     );

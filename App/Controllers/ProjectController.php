@@ -334,7 +334,7 @@
             foreach ($medias as $media) // CRIA A MÍDIA NO SERVIDOR E A CADASTRA NO BANCO
                 $mediaController->create($media, $idProjectRegistered);
 
-            Response::returnResponse(URL . "ver-projeto?id=$idProjectRegistered", 200, "success");
+            Response::returnResponse(ENVIRONMENT->URL . "ver-projeto?id=$idProjectRegistered", 200, "success");
         }
 
         /**

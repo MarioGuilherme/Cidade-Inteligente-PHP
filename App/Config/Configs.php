@@ -1,10 +1,9 @@
 <?php
 
-    const DRIVER = "mysql";
-    const HOST = "localhost";
-    const USER = "root";
-    const PASSWORD = "";
-    const DATABASE = "cidade_inteligente";
-    const CHARSET = "utf8";
-    const URL = "http://localhost/Cidade-Inteligente/";
-    const DEV_ENV = "true";
+    $json = json_decode(file_get_contents(__DIR__ . "/options.json"));
+
+    define("DATABASE", $json->DATABASE);
+    define("EMAIL", $json->EMAIL);
+    define("ENVIRONMENT", $json->ENVIRONMENT);
+
+    unset($json);

@@ -1,3 +1,4 @@
 vendor/
 medias/
 composer.lock
+options.json
