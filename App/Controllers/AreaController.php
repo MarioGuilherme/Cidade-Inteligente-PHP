@@ -53,7 +53,7 @@
                 "areas", // Nome do item da navbar a ser desativado
                 $this->getAllAreas(), // Dados para a tela
                 [ "genericNavbar", "dataTable" ], // Arquivos CSS
-                [ "navbar", "areas" ], // Arquivos JS
+                [ "areas" ], // Arquivos JS
                 "Areas", // Caminho para o formulário de cadastro no modal
             );
             $this->view("Areas/main", $page);

@@ -8,7 +8,7 @@
                     Você não está relacionado à este projeto para poder alterá-lo
                 </h1>
                 <hr>
-                <a href="<?= URL ?>" class="default-color">
+                <a href="<?= ENVIRONMENT->URL ?>" class="default-color">
                     Voltar ao início
                 </a>
             </div>

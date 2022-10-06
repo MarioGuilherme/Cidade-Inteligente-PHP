@@ -9,71 +9,53 @@
         <ul class="navbar-nav ml-auto">
             <?php if (App\Utils\Session::isLogged()) : ?>
                 <?php if(\App\Utils\Session::isAdmin()) : ?>
-                    <li class="nav-item active">
-                        <div class="dropdown">
-                            <a class="nav-link" aria-colcount="dropdown-toggle" id="dropDownAdmin" data-toggle="dropdown" aria-expanded="false" href="#">
-                                Admin
-                                <i class="fas fa-chevron-up"></i>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropDownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="usuarios">
+                                Usuários
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropDownAdmin">
-                                <li>
-                                    <a class="dropdown-item" href="usuarios">
-                                        Usuários
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="cursos">
-                                        Cursos
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item areas" href="areas">
-                                        Áreas
-                                    </a>
-                                </li>
-                            </ul>
+                            <a class="dropdown-item" href="cursos">
+                                Cursos
+                            </a>
+                            <a class="dropdown-item" href="areas">
+                                Áreas
+                            </a>
                         </div>
                     </li>
                 <?php endif; ?>
             <?php endif; ?>
-            <li class="nav-item active">
-                <div class="dropdown">
-                    <a class="nav-link" aria-colcount="dropdown-toggle" id="dropDownProject" data-toggle="dropdown" aria-expanded="false" href="#">
-                        Projetos
-                        <i class="fas fa-chevron-up"></i>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropDownProject" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Projetos
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<?= ENVIRONMENT->URL ?>">
+                        Todos os <br> Projetos
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropDownProject">
-                        <li>
-                            <a class="dropdown-item" href="/">
-                                Todos os <br> Projetos
+                    <?php if (App\Utils\Session::isLogged()) : ?>
+                        <?php if(\App\Utils\Session::isAdmin()) : ?>
+                            <a class="dropdown-item" href="criar-projeto">
+                                Cadastrar <br> Projeto
                             </a>
-                        </li>
-                        <?php if (App\Utils\Session::isLogged()) : ?>
-                            <?php if(\App\Utils\Session::isAdmin()) : ?>
-                                <li>
-                                    <a class="dropdown-item" href="criar-projeto">
-                                        Cadastrar <br> Projeto
-                                    </a>
-                                </li>   
-                            <?php endif ; ?>
-                            <li>
-                                <a class="dropdown-item" href="meus-projetos">
-                                    Meus Projetos
-                                </a>
-                            </li>
                         <?php endif ; ?>
-                    </ul>
+                        <a class="dropdown-item" href="meus-projetos">
+                            Meus Projetos
+                        </a>
+                    <?php endif ; ?>
                 </div>
             </li>
             <?php if (App\Utils\Session::isLogged()) : ?>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="services/logout">
                         Sair
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
             <?php else : ?>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link btn btn-default-red" href="login">
                         LOGIN
                         <span class="sr-only">(current)</span>

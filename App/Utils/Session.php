@@ -25,7 +25,7 @@
          */
         public static function destroySession() : void {
             session_destroy();
-            header("Location: /");
+            header("Location: " . ENVIRONMENT->URL);
         }
 
         /**

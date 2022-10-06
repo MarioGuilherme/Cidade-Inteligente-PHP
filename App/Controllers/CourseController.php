@@ -53,7 +53,7 @@
                 "cursos", // Nome do item da navbar a ser desativado
                 $this->getAllCourses(), // Dados para a tela
                 [ "genericNavbar", "dataTable" ], // Arquivos CSS
-                [ "navbar", "courses" ], // Arquivos JS
+                [ "courses" ], // Arquivos JS
                 "Courses" // Caminho para o formulário de cadastro no modal
             );
             $this->view("Courses/main", $page);

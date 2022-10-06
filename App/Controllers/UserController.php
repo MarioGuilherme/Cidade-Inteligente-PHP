@@ -62,7 +62,7 @@
                     "courses" => (new CourseController)->getAllCourses()
                 ], // Dados para a tela
                 [ "genericNavbar", "dataTable" ], // Arquivos CSS
-                [ "navbar", "users" ], // Arquivos JS
+                [ "users" ], // Arquivos JS
                 "Users", // Caminho para o formulário de cadastro no modal
             );
             $this->view("Users/main", $page);
@@ -187,7 +187,7 @@
                     "currentPage" => $currentPage
                 ], // Dados para a tela
                 [ "genericNavbar", "myProjects" ], // Arquivos CSS
-                [ "navbar", "myProjects" ] // Arquivos JS
+                [ "myProjects" ] // Arquivos JS
             );
             $this->view("Users/myProjects", $page);
         }

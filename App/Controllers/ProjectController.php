@@ -92,7 +92,7 @@
                     "currentPage" => $currentPage
                 ], // Dados para a tela
                 [ "indexNavbar", "projects" ], // Arquivos CSS
-                [ "navbar", "projects" ], // Arquivos JS
+                [ "projects" ], // Arquivos JS
                 "Areas", // Caminho para o formulário de cadastro no modal
             );
             $this->view("Projects/main", $page);
@@ -118,7 +118,7 @@
                     "", // Nome do item da navbar a ser desativado
                     [], // Dados para a tela
                     [ "genericNavbar" ], // Arquivos CSS
-                    [ "navbar" ], // Arquivos JS
+                    [], // Arquivos JS
                 );
                 $this->view("Projects/notFound", $page);
             }
@@ -130,7 +130,7 @@
                 "", // Nome do item da navbar a ser desativado
                 [ "project" => $project ], // Dados para a tela
                 [ "genericNavbar" ], // Arquivos CSS
-                [ "navbar", "qrcode.min", "viewProject" ], // Arquivos JS
+                [ "qrcode.min", "viewProject" ], // Arquivos JS
             );
             $this->view("Projects/view", $page);
         }
@@ -150,7 +150,7 @@
                     "courses" => (new CourseController)->getAllCourses(false)
                 ], // Dados para a tela
                 [ "genericNavbar", "form", "createProject" ], // Arquivos CSS
-                [ "navbar", "createProject", "qrcode.min" ], // Arquivos JS
+                [ "createProject", "qrcode.min" ], // Arquivos JS
             );
             $this->view("Projects/form", $page);
         }
@@ -177,7 +177,7 @@
                     "", // Nome do item da navbar a ser desativado
                     [], // Dados para a tela
                     [ "genericNavbar" ], // Arquivos CSS
-                    [ "navbar" ], // Arquivos JS
+                    [], // Arquivos JS
                 );
                 $this->view("Projects/notFound", $page);
             }
@@ -188,7 +188,7 @@
                     "", // Nome do item da navbar a ser desativado
                     [], // Dados para a tela
                     [ "genericNavbar" ], // Arquivos CSS
-                    [ "navbar" ], // Arquivos JS
+                    [], // Arquivos JS
                 );
                 $this->view("Projects/Forbidden", $page);
             }
@@ -214,7 +214,7 @@
                     "allUsers" => $allUsers
                 ], // Dados para a tela
                 [ "genericNavbar", "form", "editProject" ], // Arquivos CSS
-                [ "navbar", "editProject" ], // Arquivos JS
+                [ "editProject" ], // Arquivos JS
             );
             $this->view("Projects/edit", $page);
         }
