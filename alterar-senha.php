@@ -4,4 +4,4 @@
 
     use App\Controllers\UserController;
 
-    !isset($_GET["token"]) ? header("Location: /") : (new UserController)->formChangePassword($_GET["token"]);;
+    !isset($_GET["token"]) ? header("Location: /") : (new UserController)->formChangePassword($_GET["token"]);

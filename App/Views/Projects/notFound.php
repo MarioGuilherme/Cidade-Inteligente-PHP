@@ -8,7 +8,7 @@
                     Projeto não encontrado
                 </h1>
                 <hr>
-                <a href="<?= ENVIRONMENT->URL ?>" class="default-color">
+                <a href="<?= URL ?>" class="default-color">
                     Voltar ao início
                 </a>
             </div>

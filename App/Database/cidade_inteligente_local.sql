@@ -144,4 +144,4 @@ INSERT INTO areas (area) VALUES ("Rural");
 INSERT INTO areas (area) VALUES ("Urbana");
 
 -- SENHA DO ADMINISTRADOR: 123
-INSERT INTO users (id_course, name, email, password, isAdmin) VALUES (1, "Mário Guilherme", "marioguifatec2021@gmail.com", "$2y$10$amLSaXM/l4MJy.X8Pjnq7.3KBFOKyP9bKxyZfPQu3HXp4Lwhp63ZG", 1);
+INSERT INTO users (id_course, name, email, password, isAdmin) VALUES (1, "João Luís Cardoso Moraes", "joao.lcmoraes@fatec.sp.gov.br", "$2y$10$amLSaXM/l4MJy.X8Pjnq7.3KBFOKyP9bKxyZfPQu3HXp4Lwhp63ZG", 1);

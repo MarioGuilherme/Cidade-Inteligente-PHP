@@ -32,7 +32,7 @@
                     Projetos
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?= ENVIRONMENT->URL ?>">
+                    <a class="dropdown-item" href="<?= URL ?>">
                         Todos os <br> Projetos
                     </a>
                     <?php if (App\Utils\Session::isLogged()) : ?>

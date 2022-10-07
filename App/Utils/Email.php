@@ -24,18 +24,18 @@
          */
         public function __construct(string $receiver) {
             $this->mailer = new PHPMailer(true);
-            $this->mailer->SMTPDebug = ENVIRONMENT->ISDEV == true ? SMTP::DEBUG_SERVER : 0;
+            $this->mailer->SMTPDebug = ISDEV == true ? SMTP::DEBUG_SERVER : 0;
             $this->mailer->isSMTP();
-            $this->mailer->Host = EMAIL->HOST;
+            $this->mailer->Host = EMAIL["HOST"];
             $this->mailer->SMTPAuth = true;
-            $this->mailer->Username = EMAIL->USERNAME;
-            $this->mailer->Password = EMAIL->PASSWORD;
-            $this->mailer->SMTPSecure = EMAIL->SMTPSECURE;
-            $this->mailer->Port = EMAIL->PORT;
-            $this->mailer->setFrom(EMAIL->USERNAME);
+            $this->mailer->Username = EMAIL["USERNAME"];
+            $this->mailer->Password = EMAIL["PASSWORD"];
+            $this->mailer->SMTPSecure = EMAIL["SMTPSECURE"];
+            $this->mailer->Port = EMAIL["PORT"];
+            $this->mailer->setFrom(EMAIL["USERNAME"]);
             $this->mailer->addAddress($receiver);
             $this->mailer->isHTML(true);
-            $this->mailer->CharSet = EMAIL->CHARSET;
+            $this->mailer->CharSet = EMAIL["CHARSET"];
         }
 
         /**

@@ -1,3 +1,1 @@
 options All -Indexes
-
-ErrorDocument 403 "Acesso bloqueado"

@@ -24,7 +24,7 @@
         <div class="row justify-content-center mt-3">
             <?php for ($i = 1; $i <= $page->data["totalPages"]; $i++) : ?>
                 <?php if ($i != $page->data["currentPage"]) : ?>
-                    <a href="<?= ENVIRONMENT->URL . "?page=$i" ?>">
+                    <a href="<?= URL . "?page=$i" ?>">
                         <button class="btn btn-default-red m-1">
                             <?= $i ?>
                         </button>

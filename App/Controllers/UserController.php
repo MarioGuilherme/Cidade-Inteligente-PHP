@@ -171,7 +171,7 @@
                 where: "pu.id_user = ?",
                 fields: "p.id_project, title, description",
                 params: [$_SESSION["id_user"]],
-                limit: $currentPage * 6 - 6 . ", 6"
+                limit: ($currentPage * 6 - 6) . ", 6"
             )->fetchAll(PDO::FETCH_CLASS, Project::class);
 
             (object) $mediaController = new MediaController;
@@ -318,7 +318,7 @@
             (string) $token = $this->userDAO->select(where: "id_user = ?", fields: "token, email", params: [$idUser])->fetchObject($this->model::class)->token;
             (object) $objEmail = new Email($emailUser);
             (string) $bodyEmail = file_get_contents(__DIR__ . "/../Views/Users/bodyEmail.php");
-            $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [ENVIRONMENT->URL, $token], $bodyEmail);
+            $bodyEmail = str_replace(["{{ URL }}", "{{ TOKEN }}"], [URL, $token], $bodyEmail);
             $objEmail->sendEmail("Recuperação de Senha", $bodyEmail);
             Response::returnResponse(Response::CHANGE_PASSWORD_REQUEST_SEND, 200, "success");
         }

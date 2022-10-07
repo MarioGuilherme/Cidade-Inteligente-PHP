@@ -76,7 +76,7 @@
 
             (array) $projects = $this->projectDAO->select(
                 fields: "id_project, title, description",
-                limit: $currentPage * 8 - 8 . ", 8"
+                limit: ($currentPage * 8 - 8) . ", 8"
             )->fetchAll(PDO::FETCH_CLASS, $this->projectModel::class);
 
             (object) $mediaController = new MediaController;
@@ -334,7 +334,7 @@
             foreach ($medias as $media) // CRIA A MÍDIA NO SERVIDOR E A CADASTRA NO BANCO
                 $mediaController->create($media, $idProjectRegistered);
 
-            Response::returnResponse(ENVIRONMENT->URL . "ver-projeto?id=$idProjectRegistered", 200, "success");
+            Response::returnResponse(URL . "ver-projeto?id=$idProjectRegistered", 200, "success");
         }
 
         /**
