@@ -85,7 +85,7 @@
 
             $page = new Page(
                 "Projetos", // Título da página
-                "/", // Nome do item da navbar a ser desativado
+                URL, // Nome do item da navbar a ser desativado
                 [
                     "projects" => $projects,
                     "totalPages" => $totalPages,
