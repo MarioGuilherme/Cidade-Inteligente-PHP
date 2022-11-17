@@ -43,9 +43,9 @@
             </a>
         </div>
         <div class="card-body">
-            <h5 class="card-title">
+            <h4 class="card-title">
                 <?= $project->title ?>
-            </h6>
+            </h4>
             <p class="card-text">
                 <?= mb_strlen($project->description) <= 125 ? $project->description : substr($project->description, 0, 125) .  " ..." ?> 
             </p>
